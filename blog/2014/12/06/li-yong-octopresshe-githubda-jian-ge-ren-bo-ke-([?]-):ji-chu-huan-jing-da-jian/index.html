@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>利用Octopress和Github搭建个人博客（一）：基础环境搭建 - GLGJing&#8217;s Blog</title>
+  <meta name="author" content="GLGJing">
+
+  
+  <meta name="description" content="利用Octopress和Github Pages搭建个人博客。">
+  <meta name="keywords" content="Octopress github 博客 搭建博客">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="GLGJing's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-57387022-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57387022-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+</head>
+
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">GLGJing&#8217;s Blog</a></h1>
+  
+    <h2>If you want to go fast, go alone. If you want to go far, bring others along.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+<ul class="subscribe">
+  <li><a href="https://github.com/GLGJing" rel="subscribe-github" title="@GLGJing on GitHub"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 50,0 C 22.385714,0 0,22.385714 0,50 0,77.614286 22.385714,100 50,100 77.614286,100 100,77.614286 100,50 100,22.385714 77.614286,0 50,0 z m 29.692858,79.692858 c -3.859184,3.859182 -8.351022,6.887754 -13.35,9.00306 -1.27041,0.536736 -2.560204,1.009184 -3.867348,1.415306 v -7.493878 c 0,-3.938774 -1.35102,-6.835714 -4.053062,-8.690816 1.692858,-0.163264 3.24694,-0.390816 4.663266,-0.683672 1.416326,-0.292858 2.913266,-0.716328 4.491838,-1.27041 1.57857,-0.55408 2.994896,-1.213264 4.247958,-1.97755 1.253062,-0.765306 2.458164,-1.758164 3.613266,-2.978572 1.155102,-1.220408 2.12449,-2.604082 2.905102,-4.15 0.780612,-1.545918 1.4,-3.40204 1.855102,-5.566326 0.455102,-2.164286 0.683674,-4.54898 0.683674,-7.153062 0,-5.045918 -1.643878,-9.341836 -4.931634,-12.890816 C 77.44796,33.35 77.285714,29.10204 75.463266,24.512244 l -1.22143,-0.145918 c -0.845918,-0.09796 -2.368366,0.260204 -4.565306,1.07449 -2.196938,0.814286 -4.663264,2.14796 -7.396938,4.004082 -3.87449,-1.07449 -7.893878,-1.611224 -12.061224,-1.611224 -4.19898,0 -8.203062,0.536734 -12.012246,1.611224 -1.72449,-1.17245 -3.361224,-2.139796 -4.907142,-2.905102 C 31.753062,25.77449 30.516326,25.254082 29.587756,24.97653 28.660204,24.7 27.79796,24.528572 27,24.463266 c -0.79796,-0.0653 -1.310204,-0.08062 -1.537756,-0.04898 -0.22755,0.03164 -0.390816,0.0653 -0.487754,0.09796 -1.82347,4.62245 -1.985714,8.87143 -0.487756,12.743878 -3.287754,3.54796 -4.931632,7.844898 -4.931632,12.890816 0,2.604082 0.227552,4.988776 0.683674,7.153062 0.456122,2.164286 1.07449,4.020408 1.855102,5.566326 0.780612,1.545918 1.75,2.929592 2.905102,4.15 1.155102,1.220408 2.360204,2.213266 3.613264,2.978572 1.253062,0.766326 2.669388,1.42449 4.24796,1.97755 1.578572,0.554082 3.07551,0.976532 4.491836,1.27041 1.416328,0.292856 2.970408,0.521428 4.663266,0.683672 -2.669388,1.82347 -4.004082,4.720408 -4.004082,8.690816 v 7.639796 C 36.536734,89.818368 35.083674,89.3 33.656122,88.695918 c -4.99898,-2.115306 -9.490816,-5.143878 -13.35,-9.00306 -3.859184,-3.859184 -6.887754,-8.351022 -9.00306,-13.35 C 9.1163263,61.171428 8.0071428,55.67347 8.0071428,50 c 0,-5.67347 1.1091835,-11.171428 3.2969392,-16.342858 2.115306,-4.998978 5.143878,-9.490816 9.00306,-13.35 3.859184,-3.859182 8.351022,-6.887754 13.35,-9.00306 C 38.828572,9.1163266 44.32653,8.0071428 50,8.0071428 c 5.67347,0 11.171428,1.1091838 16.342858,3.2969392 5,2.115306 9.490816,5.143878 13.35,9.00306 3.859182,3.859184 6.887754,8.351022 9.00306,13.35 2.186736,5.17245 3.295918,10.67041 3.295918,16.342858 0,5.672448 -1.109182,11.171428 -3.296938,16.342858 -2.115306,4.998978 -5.143878,9.490816 -9.00204,13.35 l 0,0 z"></path></svg></a></li>
+</ul>
+  
+  
+  
+  
+  
+    
+      <form action="https://www.google.com/search" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="q" value="site:glgjing.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">主页</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">利用Octopress和Github搭建个人博客（一）：基础环境搭建</h1>
+      
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-12-06T15:30:04+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:30 pm</span></time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img class="center" src="/images/1-1.png"></p>
+
+<h2>引言</h2>
+
+
+<p>如果你只想安安静静的写博客而不被各种博客网站的条条框框限制，如果你想自建博客网站而又不想买域名租服务器等繁琐流程，如果你恰好懂些shell command和git，那么Octopress + Gitbub搭建个人博客是个不错的选择。<a href="http://octopress.org/">Octopress</a>是一个基于<a href="https://github.com/jekyll/jekyll"><code>Jekyll</code></a>博客引擎开发的博客框架，可以很方便的生成静态页面用于在<a href="https://pages.github.com/">Github Pages</a>上展现。官方说法：<code>A blogging framework for hackers</code>。
+本文主要介绍在mac下如何利用Octopress和Github搭建个人博客的基础环境。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
+
+<h2>目录</h2>
+
+
+<ul>
+  <li>一 安装基本环境</li>
+  <li>二 通过Octopress将博客部署到Github</li>
+  <li>三 发布个人博客</li>
+  <li>四 其他配置</li>
+</ul>
+
+
+<h2>一 安装基本环境</h2>
+
+
+<h3>1 安装Ruby</h3>
+
+
+<p>Octopress运行需要Ruby环境，所以首先需要安装Ruby（<a href=“https://ruby-china.org/wiki/install_ruby_guide”>详细教程</a>）。
+首先安装RVM，RVM是用来安装和管理Ruby环境的。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -L https://get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后，载入 RVM 环境，如果新开 Terminal 就不用这么做了，会自动重新载入的。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source ~/.rvm/scripts/rvm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>检查一下是否安装正确</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm -v
+</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;wayneeseguin@gmail.com>, Michal Papis &lt;mpapis@gmail.com> [https://rvm.io/]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过RVM安装Ruby，后面参数为版本号，可以根据版本进行调整。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完成以后，Ruby就安装好了。RVM 装好以后，需要执行下面的命令将指定版本的 Ruby 设置为系统默认版本。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm 2.0.0 --default</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试是否设置正确</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby -v
+</span><span class='line'>ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin13.0.0]</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>2 安装Octopress</h3>
+
+
+<p>安装Octopress，需要git。所以先确保你的电脑里已经安装了git，在终端输入<code>git —version</code>，如果看到版本号类似<code>git version x.x.x.x&hellip;</code>，证明git环境已经OK，否则请先<a href="http://git-scm.com/">安装git</a>。
+git安装完成之后，就可以把Octopress从Github上clone到本地。切换到你想存储Octopress的目录运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来安装依赖项：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd octopuses
+</span><span class='line'>gem install bundler
+</span><span class='line'>rbenv rehash # If you use rbenv, rehash to be able to run the bundle command
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后安装默认主题：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2>二 通过Octopress将博客部署到Github</h2>
+
+
+<p>首先需要在Github上建立一个仓库，Github号称是程序员的Facebook，如果还没有Github账号那就赶紧注册一个吧，仓库名称格式为：<code>username.github.io</code>。该名称就是博客以后的访问地址：<code><a href="http://username.github.io">http://username.github.io</a></code>。仓库创建完成后，需要运行下面命令来将该仓库和Octopress关联起来：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行该命令期间会要求你输入仓库url，按照提示格式进行输入即可。该命令的具体功能详细参考<a href="http://octopress.org/docs/deploying/github/"><code>Deploying to Github Pages</code></a>。主要就是设置Github仓库的URL，在本地创建_deploy，该目录存储的就是后续要部署到Github Pages的文件。详细内容会在后面的Octopress目录结构介绍博文中说明。
+接下来就可以将博客相关文件部署到Github Pages上了，运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上述命令主要是根据<code>source</code>目录下的文件，生成博客文件到<code>public</code>目录下，然后将<code>public</code>目录下的文件拷贝到<code>deploy</code>目录，并将<code>deploy</code>目录下的文件commit和push到Github上的<code>username.github.io</code>仓库里的<code>master</code>分支，执行完上述操作就可以访问<code><a href="http://username.github.io">http://username.github.io</a></code>了。有时会需要过几分钟才能打开，是正常现象。
+到此为止我们就完成了，博客的基本部署，但一般习惯性的我们会把生成博客文件的原始文件提交到另外一个<code>source</code>分之上，执行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m 'Initial source commit'
+</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2>三 发布个人博客</h2>
+
+
+<p>想要新建一个博文，运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post[“title"]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中title为博客名，该命令会在<code>source/_posts/</code>目录下创建一个名称类似<code>2014-12-5-title.markdown</code>的文件，当然你也可以不用上述命令，手动在该目录下添加该文件，命名需要遵守<code>year-month-day-title.markdown</code>的规则。这个文件就是后续我们写博客的地方，通过<code>rake new_post</code>命令生成的文件会默认带如下内容：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>layout: post
+</span><span class='line'>title: “title"
+</span><span class='line'>date: 2013-08-03 16:36
+</span><span class='line'>comments: true
+</span><span class='line'>categories:
+</span><span class='line'>---</span></code></pre></td></tr></table></div></figure>
+
+
+<p>到目前为止我们就可以在这里写自己的博客了。博客完成之后，通过如下步骤部署到Github上：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在部署到Github之前可以运行如下命令，在浏览器中输入<code><a href="http://localhost:4000/">http://localhost:4000/</a></code> 进行本地预览：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>总结一下发布博文的完成流程：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post[’title’]     # 新建博文文件
+</span><span class='line'>rake generate              # 将编辑好的博文生成网页
+</span><span class='line'>rake preview               # 提交前可以进行本地预览
+</span><span class='line'>rake deploy                # 将博文部署到Github上
+</span><span class='line'>git commit -a              # 提交本地更改的文件
+</span><span class='line'>git push origin source     # 将源文件push到Github的source分支</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>四 其他配置</h2>
+
+
+<p>更多的<code>Octopress</code>配置如：侧边栏定制，添加评论插件，字体高亮等等，会在后续博文中<code>持续更新</code>。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    GLGJing
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-12-06T15:30:04+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:30 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/octopress/'>octopress</a>, <a class='category' href='/blog/categories/bo-ke/'>博客</a>, <a class='category' href='/blog/categories/da-jian-bo-ke/'>搭建博客</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/" data-via="" data-counturl="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/11/29/windows-wen-jian-guan-lian-qian-xi/" title="Previous Post: Windows 文件关联浅析">&laquo; Windows 文件关联浅析</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/" title="Next Post: 利用Octopress和Github搭建个人博客（二）：自定义主题">利用Octopress和Github搭建个人博客（二）：自定义主题 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+
+</div>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - GLGJing
+</p>
+
+</footer>
+  <!--返回顶部开始-->
+<div id="full" style="width:0px; height:0px; position:fixed; right:180px; bottom:150px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+<!--返回顶部结束-->
+
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'GLGJing';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/';
+        var disqus_url = 'http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

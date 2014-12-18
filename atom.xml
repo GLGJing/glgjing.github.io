@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[GLGJing's Blog]]></title>
+  <link href="http://glgjing.github.io/atom.xml" rel="self"/>
+  <link href="http://glgjing.github.io/"/>
+  <updated>2014-12-18T13:02:16+08:00</updated>
+  <id>http://glgjing.github.io/</id>
+  <author>
+    <name><![CDATA[GLGJing]]></name>
+    <email><![CDATA[GLGJing@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（二）：自定义主题]]></title>
+    <link href="http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/"/>
+    <updated>2014-12-12T16:19:09+08:00</updated>
+    <id>http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://glgjing.github.io/images/1-2.png"></p>
+
+<h2>引言</h2>
+
+
+<p>在为Octopress博客自定义主题之前，你应该已经搭建好了基础环境。如果还没开始搭建可以参考<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">利用Octopress和Github搭建个人博客（一）：基础环境搭建</a>。在搭建好基础环境之后，如果单纯的写写博文，默认主题也是可以满足需求的。但既然选择了用Octopress和Github Pages来管理自己的博客，不折腾折腾都对不起自己。不要求效果有多炫，但要方便浏览查找。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
+
+<h2>目录</h2>
+
+
+<ul>
+    <li><h3>一 Octopress目录结构介绍</h3></li>
+    <li><h3>二 安装第三方主题</h3></li>
+    <li><h3>三 主题样式修改</h3></li>
+    <li><h3>四 总结</h3></li>
+</ul>
+
+
+<h2>一 Octopress目录结构介绍</h2>
+
+
+<p>在更改主题之前有必要了解一下Octopress目录下的文件结构，后续所有的修改都在这个目录下进行的。Octopress的目录文件如下：
+<img class="center" src="http://glgjing.github.io/images/1-3.png">
+初始的Octopress目录下是没有source、sass、public、_deploy这几个文件夹的，运行<code>rake install[&lsquo;theme_name&rsquo;]</code>命令后会生成这几个文件夹。</p>
+
+<ul>
+    <li>_config.yml: 站点的配置文件，也是后续需要修改最多的文件。</li>
+    <li>source: 该目录是执行<code>rake install['theme_name']</code>后从.themes\theme_name目录中的source拷贝而来(theme_name是你选择的主题名)，并且添加了一个_posts目录了，当执行了rake new_post[&#8221;title&#8221;]后会在_post生成博文的markdown文件。包括后面的很多设置页是在该目录中进行；</li>
+    <li>sass：也是在执行<code>rake install['theme_name']</code>后从.themes\theme_name目录中的sass拷贝而来。关于sass可以参考<a href="http://sass-lang.com/guide">这里</a></li>
+    <li>public: 当执行了<code>rake generate</code>命令后会编译source目录下的内容然后将编译后的内容复制到public目录中。</li>
+  <li>_deploy: 在执行<code>rake deploy</code>命令后，会将public的内容拷贝到_deploy目录下然后提交到Github的master分支上，我们最终看到的网站内容就是master分支下的内容。所以public和_deploy中的内容都是自动生成的，不要手动修改，否则在运行<code>rake generate</code>和<code>rake deploy</code>命令后所有的更改都会被覆盖掉。</li>
+</ul>
+
+
+<h2>二 安装第三方主题</h2>
+
+
+<p>在做任何主题相关的修改之前，最好选定一款自己喜欢的主题，否则后续再更换主题，会覆盖之前的修改。Github上有很多第三方的主题，可以到<a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">这里</a>下载。运行类似如下命令进行主题安装：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd octopress
+</span><span class='line'>git clone git://github.com/macjasp/cleanpress.git .themes/cleanpress
+</span><span class='line'>rake install['cleanpress']
+</span><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>三 主题样式修改</h2>
+
+
+<h3>1 基本配置修改</h3>
+
+
+<p>在选定好主题之后就可以进行自定义修改了。首先更改基本配置，Octopress的基本配置存在_config.yml文件里，具体内容如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>url: http://glgjing.github.io  # 网站的url
+</span><span class='line'>title: GLGJing's Blog          # 网站的标题
+</span><span class='line'>author: GLGJing                # 网站作者，会显示在底部等位置
+</span><span class='line'>simple_search: https://www.google.com/search #搜索引擎
+</span><span class='line'>description:                   # 网站描述</span></code></pre></td></tr></table></div></figure>
+
+
+<p>此处列出了主要的博客配置信息，有些配置项大概看名字就知道功能了，例如网站title, email等；有些配置项比较复杂，后面单独介绍，如添加评论插件、侧边栏等。</p>
+
+<h3>2 设置标题栏: Header</h3>
+
+
+<p>Octopress的很多自定义配置是存储在/source/_includes/custom/目录下的，如果想要更改标题栏，可以修改该文件夹下的header.html文件。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;hgroup&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;h1&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>GLGJing&#39;s Blog<span class="nt">&lt;/a&gt;&lt;/h1&gt;</span>
+</span><span class='line'>  {% if site.subtitle %}
+</span><span class='line'>    <span class="nt">&lt;h2&gt;</span>{{ site.subtitle }}<span class="nt">&lt;/h2&gt;</span>
+</span><span class='line'>  {% endif %}
+</span><span class='line'><span class="nt">&lt;/hgroup&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中的title和subtitle可以直接在_config.yml中修改。</p>
+
+<h3>3 设置导航栏: Navigation</h3>
+
+
+<p>Navigation的配置方法和Header类似，直接修改/source/_includes/custom/navigation.html文件。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;main-navigation&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>主页<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/blog/archives&quot;</span><span class="nt">&gt;</span>文章<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/about&quot;</span><span class="nt">&gt;</span>关于<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想添加新的页面，可以运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_page['page_name']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>该命令会建立source/page_name/index.html文件，然后编辑此文件，添加自己想要展示的内容即可，再在navigation.html里添加正确的路径即可,如:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/page_name&quot;</span><span class="nt">&gt;</span>新标签页<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4 设置尾栏: Footer</h3>
+
+
+<p>修改/source/_includes/custom/footer.html文件来设置尾栏。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;p&gt;</span>
+</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2014 - GLGJing -
+</span><span class='line'>  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;credit&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    Powered by<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://octopress.org&quot;</span><span class="nt">&gt;</span>Octopress<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/span&gt;</span>
+</span><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以将不需要的信息去掉，添加自己想要的信息如：流量统计工具，个人声明等。</p>
+
+<h3>5 设置背景图和LOGO</h3>
+
+
+<p>想要更改背景图片，可以在sass/custom/_styles.scss中添加如下内容：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>html {
+</span><span class='line'>  background: #555555 url(&quot;/images/bg3.jpg&quot;);
+</span><span class='line'>}
+</span><span class='line'>body &gt; div {
+</span><span class='line'>  background-image: none;
+</span><span class='line'>}
+</span><span class='line'>body &gt; div &gt; div {
+</span><span class='line'>  background-image: none;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更改LOGO图片可以直接替换/source目录下的favicon.png, 或者将LOGO图片放入source/images中，然后修改source/_includes/head.html，找到favicon.png，修改其路径指向你的图片即可。</p>
+
+<h2>四 总结</h2>
+
+
+<p>这里介绍了Octopress主题配置的几个主要部分，其他更细节配置如：字体的配置优化、侧边栏的定制、评论插件的配置等，会在后续的博文中更新。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（一）：基础环境搭建]]></title>
+    <link href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/"/>
+    <updated>2014-12-06T15:30:04+08:00</updated>
+    <id>http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-([?]-):ji-chu-huan-jing-da-jian</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://glgjing.github.io/images/1-1.png"></p>
+
+<h2>引言</h2>
+
+
+<p>如果你只想安安静静的写博客而不被各种博客网站的条条框框限制，如果你想自建博客网站而又不想买域名租服务器等繁琐流程，如果你恰好懂些shell command和git，那么Octopress + Gitbub搭建个人博客是个不错的选择。<a href="http://octopress.org/">Octopress</a>是一个基于<a href="https://github.com/jekyll/jekyll"><code>Jekyll</code></a>博客引擎开发的博客框架，可以很方便的生成静态页面用于在<a href="https://pages.github.com/">Github Pages</a>上展现。官方说法：<code>A blogging framework for hackers</code>。
+本文主要介绍在mac下如何利用Octopress和Github搭建个人博客的基础环境。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
+
+<h2>目录</h2>
+
+
+<ul>
+  <li>一 安装基本环境</li>
+  <li>二 通过Octopress将博客部署到Github</li>
+  <li>三 发布个人博客</li>
+  <li>四 其他配置</li>
+</ul>
+
+
+<h2>一 安装基本环境</h2>
+
+
+<h3>1 安装Ruby</h3>
+
+
+<p>Octopress运行需要Ruby环境，所以首先需要安装Ruby（<a href=“https://ruby-china.org/wiki/install_ruby_guide”>详细教程</a>）。
+首先安装RVM，RVM是用来安装和管理Ruby环境的。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl -L https://get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后，载入 RVM 环境，如果新开 Terminal 就不用这么做了，会自动重新载入的。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>source ~/.rvm/scripts/rvm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>检查一下是否安装正确</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm -v
+</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;wayneeseguin@gmail.com>, Michal Papis &lt;mpapis@gmail.com> [https://rvm.io/]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过RVM安装Ruby，后面参数为版本号，可以根据版本进行调整。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完成以后，Ruby就安装好了。RVM 装好以后，需要执行下面的命令将指定版本的 Ruby 设置为系统默认版本。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rvm 2.0.0 --default</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试是否设置正确</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ruby -v
+</span><span class='line'>ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin13.0.0]</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h3>2 安装Octopress</h3>
+
+
+<p>安装Octopress，需要git。所以先确保你的电脑里已经安装了git，在终端输入<code>git —version</code>，如果看到版本号类似<code>git version x.x.x.x&hellip;</code>，证明git环境已经OK，否则请先<a href="http://git-scm.com/">安装git</a>。
+git安装完成之后，就可以把Octopress从Github上clone到本地。切换到你想存储Octopress的目录运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来安装依赖项：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd octopuses
+</span><span class='line'>gem install bundler
+</span><span class='line'>rbenv rehash # If you use rbenv, rehash to be able to run the bundle command
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后安装默认主题：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2>二 通过Octopress将博客部署到Github</h2>
+
+
+<p>首先需要在Github上建立一个仓库，Github号称是程序员的Facebook，如果还没有Github账号那就赶紧注册一个吧，仓库名称格式为：<code>username.github.io</code>。该名称就是博客以后的访问地址：<code><a href="http://username.github.io">http://username.github.io</a></code>。仓库创建完成后，需要运行下面命令来将该仓库和Octopress关联起来：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行该命令期间会要求你输入仓库url，按照提示格式进行输入即可。该命令的具体功能详细参考<a href="http://octopress.org/docs/deploying/github/"><code>Deploying to Github Pages</code></a>。主要就是设置Github仓库的URL，在本地创建_deploy，该目录存储的就是后续要部署到Github Pages的文件。详细内容会在后面的Octopress目录结构介绍博文中说明。
+接下来就可以将博客相关文件部署到Github Pages上了，运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上述命令主要是根据<code>source</code>目录下的文件，生成博客文件到<code>public</code>目录下，然后将<code>public</code>目录下的文件拷贝到<code>deploy</code>目录，并将<code>deploy</code>目录下的文件commit和push到Github上的<code>username.github.io</code>仓库里的<code>master</code>分支，执行完上述操作就可以访问<code><a href="http://username.github.io">http://username.github.io</a></code>了。有时会需要过几分钟才能打开，是正常现象。
+到此为止我们就完成了，博客的基本部署，但一般习惯性的我们会把生成博客文件的原始文件提交到另外一个<code>source</code>分之上，执行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m 'Initial source commit'
+</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<h2>三 发布个人博客</h2>
+
+
+<p>想要新建一个博文，运行如下命令：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post[“title"]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中title为博客名，该命令会在<code>source/_posts/</code>目录下创建一个名称类似<code>2014-12-5-title.markdown</code>的文件，当然你也可以不用上述命令，手动在该目录下添加该文件，命名需要遵守<code>year-month-day-title.markdown</code>的规则。这个文件就是后续我们写博客的地方，通过<code>rake new_post</code>命令生成的文件会默认带如下内容：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>layout: post
+</span><span class='line'>title: “title"
+</span><span class='line'>date: 2013-08-03 16:36
+</span><span class='line'>comments: true
+</span><span class='line'>categories:
+</span><span class='line'>---</span></code></pre></td></tr></table></div></figure>
+
+
+<p>到目前为止我们就可以在这里写自己的博客了。博客完成之后，通过如下步骤部署到Github上：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
+</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在部署到Github之前可以运行如下命令，在浏览器中输入<code><a href="http://localhost:4000/">http://localhost:4000/</a></code> 进行本地预览：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>总结一下发布博文的完成流程：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post[’title’]     # 新建博文文件
+</span><span class='line'>rake generate              # 将编辑好的博文生成网页
+</span><span class='line'>rake preview               # 提交前可以进行本地预览
+</span><span class='line'>rake deploy                # 将博文部署到Github上
+</span><span class='line'>git commit -a              # 提交本地更改的文件
+</span><span class='line'>git push origin source     # 将源文件push到Github的source分支</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>四 其他配置</h2>
+
+
+<p>更多的<code>Octopress</code>配置如：侧边栏定制，添加评论插件，字体高亮等等，会在后续博文中<code>持续更新</code>。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Windows 文件关联浅析]]></title>
+    <link href="http://glgjing.github.io/blog/2014/11/29/windows-wen-jian-guan-lian-qian-xi/"/>
+    <updated>2014-11-29T23:43:14+08:00</updated>
+    <id>http://glgjing.github.io/blog/2014/11/29/windows-wen-jian-guan-lian-qian-xi</id>
+    <content type="html"><![CDATA[<h2>引言</h2>
+
+
+<p>所谓的文件关联就是指系统把指定扩展名的文件自动关联到相应的应用程序，例如.doc默认打开方式是Microsoft Word，当用户双击时就会启动Word打开该文件。windows平台下的文件默认打开方式一直是各大互联网公司的必争之地，如：各种播放器抢媒体文件的默认打开方式，说白了就是为了争入口你抢我的我抢你的，写这篇文章并不是想比谁更流氓，只是简单的总结下windows下的文件关联方式。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
+
+<h2>一 文件关联相关的注册表</h2>
+
+
+<p>Windows用注册表来保存当前系统的所有文件关联设置，如果想更改文件关联设置，就要在注册表上做文章。首先简单介绍下注册表的各个目录(<a href="http://msdn.microsoft.com/zh-cn/library/cc776231%28v=ws.10%29.aspx">引用自msdn</a>)。</p>
+
+<ul>
+    <li><code>HKEY_LOCAL_MACHINE</code>：包含关于本地计算机系统的信息，包括硬件和操作系统数据，如总线类型、系统内存、设备驱动程序和启动控制数据。</li>
+    <li><code>HKEY_CURRENT_USER</code>：包含当前以交互方式（与远程方式相反）登录的用户的用户配置文件，包括环境变量、桌面设置、网络连接、打印机和程序首选项。该子树是 HKEY_USERS 子树的别名，它指向 HKEY_USERS\当前用户的安全 ID。</li>
+    <li><code>HKEY_CLASSES_ROOT</code>：包含用于各种 OLE 技术和文件类关联数据的信息。如果HKEY_LOCAL_MACHINE\SOFTWARE\Classes 或HKEY_CURRENT_USER\SOFTWARE\Classes 中存在相应的项或值，则在 HKEY_CLASSES_ROOT中会存在某个特定的项或值。如果两处均存在项或值，则 HKEY_CURRENT_USER 版本将是出现在HKEY_CLASSES_ROOT 中的那一个。</li>
+    <li><code>HKEY_USERS</code>：包含关于动态加载的用户配置文件和默认配置文件的信息。它包含同时出现在 HKEY_CURRENT_USER中的信息。正在远程访问服务器的用户在服务器上的该项下没有配置文件；他们的配置文件将加载到自己计算机的注册表中。</li>
+    <li><code>HKEY_CURRENT_CONFIG</code>：包含在启动时由本地计算机系统使用的硬件配置文件的相关信息。该信息用于配置一些设置，如要加载的设备驱动程序、显示时要使用的分辨率。该子树属于 HKEY_LOCAL_MACHINE 子树，它指向HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Hardware Profiles\Current。</li>
+</ul>
+
+
+<p>与文件关联相关的注册表项主要有以下几项：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HKEY_CURRENT_USER\Software\Classe
+</span><span class='line'>HKEY_LOCAL_MACHINE\Software\Classe
+</span><span class='line'>HKEY_CLASS_ROOT
+</span><span class='line'>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以下<code>HKEY_LOCAL_MACHINE</code>简称为<code>HKLM</code>，<code>HKEY_CURRENT_USER</code>简称为<code>HKCU</code>，<code>HKEY_CLASSES_ROOT</code>简称为<code>HKCR</code>。
+其中<code>HKCU</code>保存了当前用户的文件关联设置，<code>HKLM</code>保存了本机上所有用户的设置，<code>HKCR</code>是上面两个位置下的键值合并，是为了访问方便而建立的视图，<code>&hellip;\FileExts\</code>保存了右键选择“打开方式”改变默认的关联程序。</p>
+
+<h2>二 各项注册表的关联优先级及权限</h2>
+
+
+<h3>1 关联优先级</h3>
+
+
+<p><code>&hellip;\FileExts\</code>高于<code>HKCU</code>高于<code>HKLM</code>。（由于<code>HKCR</code>只是为了访问方便而建立的视图，最好只用于读取，若要更改则可以更改<code>HKCU</code>和<code>HKLM</code>下对应的内容即可）</p>
+
+<h3>2 修改权限</h3>
+
+
+<p>vista以上的windows版本在开启UAC的情况下，更改<code>HKLM</code>本机设置需要管理员权限（提权），更改<code>HKCU</code>当前用户设置不需要提权。</p>
+
+<h3>3 用户双击文件时查找顺序</h3>
+
+
+<p>首先检查<code>&hellip;\FileExts\</code>，找不到时查找<code>HKCU</code>，最后才是<code>HKLM</code>。因此检查一个文件是否与某个程序关联可以按照这个顺序检查。</p>
+
+<h2>三 如何关联文件</h2>
+
+
+<p>以apk文件为例，需要在上面所说几个位置下有 .apk 注册表项，该项的默认值对应ProgId，例如命名为ApkFile）。在.apk的相同层级下写入ApkFile注册表项，包含subkey：DefaultIcon和shell\open\command。其中DefaultIcon子项的值为显示的图标，shell\open\command的值为关联的程序。整体结构如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HKEY_CURRENT_USER\Software\Classes
+</span><span class='line'>  .apk
+</span><span class='line'>      (Default) = ApkFile
+</span><span class='line'>  ApkFile
+</span><span class='line'>      DefaultIcon
+</span><span class='line'>          (Default) = xxx
+</span><span class='line'>  shell
+</span><span class='line'>      open
+</span><span class='line'>          command
+</span><span class='line'>              (Default) = xxx.exe %1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在更改了文件关联以后，需要调用<code>SHChangeNotify</code>参数为<code>SHCNE_ASSOCCHANGED</code>通知Windows文件关联设置已经改变，否则要下次登录才能看到变化。</p>
+
+<h2>总结</h2>
+
+
+<p>文件关联实际上就是更改相应的注册表项，更改<code>HKLM</code>下的注册表项对计算机上所有用户都会有影响，但在开启UAC的计算机上需要提权，而且优先级不如<code>HKCU</code>只对当前用户起作用，且不需要提权，而且优先级高于<code>HKLM</code>，所以一般的桌面软件建议更改这一项，至于以什么方式更改（常驻进程定时查询，暴力抢占等等）就看产品了。<code>&hellip;\FileExts\</code>下的UserChoice是用户选择的默认关联方式，由用户指定，不建议更改。</p>
+]]></content>
+  </entry>
+  
+</feed>
