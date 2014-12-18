@@ -1,0 +1,39 @@
+
+$img-border: inline-image('dotted-border.png');
+
+// Main Link Colors
+$link-color: #3baa24 !default;
+$link-color-hover: #62bb50 !default;
+$link-color-visited: adjust-color($link-color, $saturation: -20, $lightness: -4) !default;
+$link-color-active: adjust-color($link-color-hover, $lightness: -15) !default;
+
+// Main Section Colors
+$main-bg: #f5f5f5 !default;
+$page-bg: #f5f5f5 !default;
+$article-border: #eeeeee !default;
+
+$header-bg: #f5f5f5 !default;
+$header-border: lighten($header-bg, 15) !default;
+$title-color: #828282 !default;
+$subtitle-color: lighten($title-color, 10) !default;
+
+/* Sidebar colors */
+$sidebar-bg: #f5f5f5 !default;
+
+// Main Text Colors
+$subheader-color: lighten($title-color, 5) !default;
+$text-color: #666666 !default;
+$text-color-light: lighten($text-color, 10) !default;
+$type-border: #ddd !default;
+
+// Navigation
+$nav-bg: #f5f5f5 !default;
+$nav-bg-back: linear-gradient(lighten($nav-bg, 8), $nav-bg, darken($nav-bg, 11)) !default;
+$nav-color: darken($nav-bg, 55) !default;
+$nav-color-hover: #62bb50 !default;
+$nav-placeholder: desaturate(darken($nav-bg, 10), 15) !default;
+$nav-border: darken($nav-bg, 10) !default;
+$nav-border-top: darken($nav-bg, 5) !default;
+$nav-border-bottom: darken($nav-bg, 5) !default;
+$nav-border-left: darken($nav-bg, 11) !default;
+$nav-border-right: lighten($nav-bg, 7) !default;
