@@ -46,7 +46,7 @@ author: GLGJing                # 网站作者，会显示在底部等位置
 simple_search: https://www.google.com/search #搜索引擎
 description:                   # 网站描述
 {% endcodeblock %}
-此处列出了主要的博客配置信息，有些配置项大概看名字就知道功能了，例如网站title, email等；有些配置项比较复杂，后面单独介绍，如添加评论插件、侧边栏等。
+此处列出了主要的博客配置信息，有些配置项大概看名字就知道功能了，例如网站title，email等；有些配置项比较复杂，后面单独介绍，如添加评论插件、侧边栏等。
 <h3>2 设置标题栏: Header</h3>
 Octopress的很多自定义配置是存储在/source/_includes/custom/目录下的，如果想要更改标题栏，可以修改该文件夹下的header.html文件。
 {% codeblock lang:html %}
