@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 主题 | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/zhu-ti/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2014-12-18T13:02:16+08:00</updated>
+  <updated>2014-12-20T12:12:10+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -82,7 +82,7 @@
 </span><span class='line'>author: GLGJing                # 网站作者，会显示在底部等位置
 </span><span class='line'>simple_search: &lt;a href="https://www.google.com/search">https://www.google.com/search&lt;/a> #搜索引擎
 </span><span class='line'>description:                   # 网站描述</span></code></pre></td></tr></table></div></figure>
-此处列出了主要的博客配置信息，有些配置项大概看名字就知道功能了，例如网站title, email等；有些配置项比较复杂，后面单独介绍，如添加评论插件、侧边栏等。</p>
+此处列出了主要的博客配置信息，有些配置项大概看名字就知道功能了，例如网站title，email等；有些配置项比较复杂，后面单独介绍，如添加评论插件、侧边栏等。</p>
 
 <h3>2 设置标题栏: Header</h3>
 
