@@ -3,7 +3,7 @@ layout: post
 title: "利用Octopress和Github搭建个人博客（一）：基础环境搭建"
 date: 2014-12-06 15:30:04 +0800
 comments: true
-categories: Octopress github 博客 搭建博客
+categories: Octopress
 keywords: Octopress github 博客 搭建博客
 description: 利用Octopress和Github Pages搭建个人博客。
 ---

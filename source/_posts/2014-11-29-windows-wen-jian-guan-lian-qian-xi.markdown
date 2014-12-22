@@ -3,9 +3,9 @@ layout: post
 title: "Windows 文件关联浅析"
 date: 2014-11-29 23:43:14 +0800
 comments: true
-categories: Windows 文件关联 注册表 打开方式
+categories: Windows
 keywords: Windows 文件关联 注册表 打开方式
-description: 对windows下各种文件关联方式进行总结.
+description: 对windows下各种文件关联方式进行总结。
 ---
 <h2>引言</h2>
 所谓的文件关联就是指系统把指定扩展名的文件自动关联到相应的应用程序，例如.doc默认打开方式是Microsoft Word，当用户双击时就会启动Word打开该文件。windows平台下的文件默认打开方式一直是各大互联网公司的必争之地，如：各种播放器抢媒体文件的默认打开方式，说白了就是为了争入口你抢我的我抢你的，写这篇文章并不是想比谁更流氓，只是简单的总结下windows下的文件关联方式。转载请注明出处：<code>http://glgjing.github.io/</code>。<!-- more -->

@@ -3,8 +3,8 @@ layout: post
 title: "利用Octopress和Github搭建个人博客（二）：自定义主题"
 date: 2014-12-12 16:19:09 +0800
 comments: true
-categories: Octopress github 博客 搭建博客 主题
-keywords: Octopress github 博客 搭建博客 主题
+categories: Octopress
+keywords: Octopress github 搭建博客 主题
 description: 自定义Octopress的主题。
 ---
 {% img center /images/1-2.png %}
@@ -12,10 +12,10 @@ description: 自定义Octopress的主题。
 在为Octopress博客自定义主题之前，你应该已经搭建好了基础环境。如果还没开始搭建可以参考<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">利用Octopress和Github搭建个人博客（一）：基础环境搭建</a>。在搭建好基础环境之后，如果单纯的写写博文，默认主题也是可以满足需求的。但既然选择了用Octopress和Github Pages来管理自己的博客，不折腾折腾都对不起自己。不要求效果有多炫，但要方便浏览查找。转载请注明出处：<code>http://glgjing.github.io/</code>。<!-- more -->
 <h2>目录</h2>
 <ul>
-	<li><h3>一 Octopress目录结构介绍</h3></li>
-	<li><h3>二 安装第三方主题</h3></li>
-	<li><h3>三 主题样式修改</h3></li>
-	<li><h3>四 总结</h3></li>
+	<li>一 Octopress目录结构介绍</li>
+	<li>二 安装第三方主题</li>
+	<li>三 主题样式修改</li>
+	<li>四 总结</li>
 </ul>
 <h2>一 Octopress目录结构介绍</h2>
 在更改主题之前有必要了解一下Octopress目录下的文件结构，后续所有的修改都在这个目录下进行的。Octopress的目录文件如下：
