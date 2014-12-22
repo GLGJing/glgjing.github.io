@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2014-12-20T15:09:22+08:00</updated>
+  <updated>2014-12-22T20:01:52+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（三）：添加统计信息]]></title>
+    <link href="http://glgjing.github.io/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/"/>
+    <updated>2014-12-22T16:46:14+08:00</updated>
+    <id>http://glgjing.github.io/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi</id>
+    <content type="html"><![CDATA[<p><img class="center" src="/images/1-4.png"></p>
+
+<h2>引言</h2>
+
+
+<p>搭建好基本环境（如果没有请戳<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">这里</a>），折腾完主题（如果想折腾请戳<a href="http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/">这里</a>），就可以安安静静的写博客了。但博客毕竟不是日记，还是需要和其他人分享交流的，尤其是技术博客。那么首先你需要别人能够通过搜索引擎找到你的博客，其次你需要别人能够更方便准确的找到你的博客，这就需要为你的博客录入搜索引擎，添加统计信息，以便进行SEO。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
+
+<h2>目录</h2>
+
+
+<ul>
+    <li>一 录入搜索引擎</li>
+    <li>二 添加统计信息</li>
+    <li>三 总结</li>
+</ul>
+
+
+<h2>一 录入搜索引擎</h2>
+
+
+<p>在自建博客网站上写的博客，一开始并不会在搜索引擎中搜得到，不像博客平台一样，因为你还没有向搜索引擎提交你的网站URL，让它去抓取你博客网站的内容。所以赶紧提交吧，提交地址：<code><a href="http://www.gongju.com/addurl/">http://www.gongju.com/addurl/</a></code>，也可以自行google：搜索引擎提交入口。提交完成之后，就可以在相应的搜索引擎中找到你的博客了。现在你还需要为你的网站和博文添加描述信息以及关键字，让其他人可以在搜索引擎中更方便准确的找到你的博客。为每篇博文添加关键字和描述的方法是，打开<code>source/_posts/</code>目录下对应的博文文件，在文件头部添加类似如下内容：</p>
+
+<h2><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/h2>
+</span><span class='line'>
+</span><span class='line'>&lt;p>layout: post
+</span><span class='line'>title: &ldquo;利用Octopress和Github搭建个人博客（三）：添加统计信息&rdquo;
+</span><span class='line'>date: 2014-12-22 16:46:14 +0800
+</span><span class='line'>comments: true
+</span><span class='line'>categories: Octopress
+</span><span class='line'>keywords: Octopress github 搭建博客 添加统计 SEO 录入搜索引擎&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h2>description: 为Octopress博客录入搜索引擎，并添加流量统计信息，进行SEO。&lt;/h2>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure>
+如果没有为博文添加描述信息，Octopress会自动以文章的前150字作为博文的描述信息。为网站首页添加关键字和描述的方法是，打开<code>source/index.html</code>文件，在文件头部添加类似如下内容：</p>
+
+<h2><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/h2>
+</span><span class='line'>
+</span><span class='line'>&lt;p>layout: default
+</span><span class='line'>tags: [windows c++ octopress Github DirectUI GDI]
+</span><span class='line'>keywords: windows c++ octopress Github&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h2>description: 博客网站的描述信息在这里&lt;/h2>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure>
+通过以上操作，搜索引擎就可以根据用户输入的关键字对你的博文进行更准确的索引。如果想让自己的博客出现在搜索结果中靠前的位置，就需要网站流量统计工具进行进一步的SEO了。</p>
+
+<h2>二 添加统计信息</h2>
+
+
+<p>常用的网站统计工具有：Google Analytics，Yahoo网站流量统计，百度统计，CNZZ，51.la等等。Octopress自带Google Analytics工具，所以添加Google统计比较方便：</p>
+
+<ol>
+    <li>注册<a href="http://www.google.com/analytics/">Google Analytics</a>账号</li>
+    <li>获得一个google_analytics_tracking_id，添加到_config.yml中google_analytics_tracking_id:后面</li>
+    <li>按照Google Analytics提示，对博客网站进行验证</li>
+</ol>
+
+
+<p>完成以上步骤，就可以利用Google Analytics进行流量统计了，你还可以注册<a href="https://www.google.com/webmasters/tools/home?hl=zh-CN">Google站长工具</a>，进行更详细的分析和SEO。
+除了自带的Google Analytics你还可以添加其他统计工具，具体步骤都比较类似，这里以CNZZ为例：</p>
+
+<ol>
+    <li>注册<a href="http://zhanzhang.cnzz.com/">CNZZ账号</a></li>
+    <li>按照提示获取统计代码</li>
+    <li>将统计代码添加到需要统计的页面，一般可以添加到<code>source/_includes/custom/footer.html</code>中</li>
+</ol>
+
+
+<p>添加到<code>source/_includes/custom/footer.html</code>中的统计代码类似如下：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2014 - GLGJing
+</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span><span class="kd">var</span> <span class="nx">cnzz_protocol</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;https:&quot;</span> <span class="o">==</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot; https://&quot;</span> <span class="o">:</span> <span class="s2">&quot; http://&quot;</span><span class="p">);</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="s2">&quot;%3Cspan id=&#39;cnzz_stat_icon_1253899728&#39;%3E%3C/span%3E%3Cscript src=&#39;&quot;</span> <span class="o">+</span> <span class="nx">cnzz_protocol</span> <span class="o">+</span> <span class="s2">&quot;s4.cnzz.com/z_stat.php%3Fid%3D1253899728&#39; type=&#39;text/javascript&#39;%3E%3C/script%3E&quot;</span><span class="p">));</span><span class="nt">&lt;/script&gt;</span>
+</span><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>三 总结</h2>
+
+
+<p>这里主要介绍了如何将博客网站添加到搜索引擎，并添加网站流量统计工具，各种流量统计工具的优劣可以自行google，后面需要做的就是SEO了，而SEO是一件长期持续的工作。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（二）：自定义主题]]></title>
@@ -29,10 +152,10 @@
 
 
 <ul>
-    <li><h3>一 Octopress目录结构介绍</h3></li>
-    <li><h3>二 安装第三方主题</h3></li>
-    <li><h3>三 主题样式修改</h3></li>
-    <li><h3>四 总结</h3></li>
+    <li>一 Octopress目录结构介绍</li>
+    <li>二 安装第三方主题</li>
+    <li>三 主题样式修改</li>
+    <li>四 总结</li>
 </ul>
 
 
@@ -238,7 +361,7 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rvm -v
-</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x77;&#x61;&#121;&#110;&#x65;&#101;&#x73;&#x65;&#103;&#117;&#x69;&#x6e;&#x40;&#x67;&#109;&#x61;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#x77;&#x61;&#x79;&#110;&#x65;&#101;&#x73;&#x65;&#x67;&#117;&#105;&#x6e;&#x40;&#103;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#x6d;&lt;/a>, Michal Papis &lt;a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#109;&#112;&#97;&#x70;&#x69;&#115;&#x40;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#109;">&#x6d;&#112;&#x61;&#x70;&#105;&#115;&#64;&#x67;&#x6d;&#x61;&#105;&#108;&#46;&#99;&#x6f;&#109;&lt;/a> [&lt;a href="https://rvm.io/">https://rvm.io/&lt;/a>]</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;a href="&#109;&#97;&#105;&#108;&#116;&#x6f;&#58;&#119;&#97;&#121;&#110;&#101;&#x65;&#115;&#x65;&#x67;&#x75;&#x69;&#110;&#x40;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#x6f;&#x6d;">&#119;&#97;&#x79;&#110;&#101;&#x65;&#x73;&#x65;&#x67;&#x75;&#105;&#x6e;&#x40;&#103;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;&lt;/a>, Michal Papis &lt;a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#109;&#112;&#x61;&#x70;&#x69;&#115;&#x40;&#x67;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#109;&#112;&#x61;&#112;&#105;&#x73;&#64;&#103;&#109;&#97;&#x69;&#x6c;&#x2e;&#99;&#111;&#x6d;&lt;/a> [&lt;a href="https://rvm.io/">https://rvm.io/&lt;/a>]</span></code></pre></td></tr></table></div></figure>
 通过RVM安装Ruby，后面参数为版本号，可以根据版本进行调整。
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0</span></code></pre></td></tr></table></div></figure>

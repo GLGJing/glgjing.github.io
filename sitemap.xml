@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://glgjing.github.io/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/</loc>
+    <lastmod>2014-12-22T16:46:14+08:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/</loc>
     <lastmod>2014-12-12T16:19:09+08:00</lastmod>
     <priority>0.8</priority>
@@ -17,19 +22,19 @@
   </url>
   <url>
     <loc>http://glgjing.github.io/blog/archives/</loc>
-    <lastmod>2014-12-20T15:09:22+08:00</lastmod>
+    <lastmod>2014-12-22T20:01:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>http://glgjing.github.io/</loc>
-    <lastmod>2014-12-20T15:09:22+08:00</lastmod>
+    <lastmod>2014-12-22T20:01:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>http://glgjing.github.io/about/</loc>
-    <lastmod>2014-12-20T15:09:22+08:00</lastmod>
+    <lastmod>2014-12-22T20:01:52+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
