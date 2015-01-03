@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2014-12-27T23:14:52+08:00</updated>
+  <updated>2015-01-04T04:49:23+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -121,7 +121,7 @@
 </pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2014 - GLGJing
+</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2015 - GLGJing
 </span><span class='line'>  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span><span class="kd">var</span> <span class="nx">cnzz_protocol</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;https:&quot;</span> <span class="o">==</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot; https://&quot;</span> <span class="o">:</span> <span class="s2">&quot; http://&quot;</span><span class="p">);</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="s2">&quot;%3Cspan id=&#39;cnzz_stat_icon_1253899728&#39;%3E%3C/span%3E%3Cscript src=&#39;&quot;</span> <span class="o">+</span> <span class="nx">cnzz_protocol</span> <span class="o">+</span> <span class="s2">&quot;s4.cnzz.com/z_stat.php%3Fid%3D1253899728&#39; type=&#39;text/javascript&#39;%3E%3C/script%3E&quot;</span><span class="p">));</span><span class="nt">&lt;/script&gt;</span>
 </span><span class='line'><span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
@@ -277,7 +277,7 @@
 </pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2014 - GLGJing -
+</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2015 - GLGJing -
 </span><span class='line'>  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;credit&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>    Powered by<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://octopress.org&quot;</span><span class="nt">&gt;</span>Octopress<span class="nt">&lt;/a&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;/span&gt;</span>
@@ -361,7 +361,7 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rvm -v
-</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#119;&#97;&#x79;&#x6e;&#x65;&#101;&#x73;&#101;&#x67;&#x75;&#105;&#110;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#109;">&#x77;&#x61;&#121;&#110;&#101;&#101;&#x73;&#101;&#x67;&#x75;&#x69;&#110;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;&lt;/a>, Michal Papis &lt;a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x6d;&#112;&#97;&#112;&#105;&#115;&#64;&#x67;&#x6d;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#109;">&#109;&#x70;&#97;&#112;&#x69;&#115;&#64;&#103;&#109;&#97;&#x69;&#108;&#x2e;&#x63;&#x6f;&#109;&lt;/a> [&lt;a href="https://rvm.io/">https://rvm.io/&lt;/a>]</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#58;&#x77;&#97;&#121;&#110;&#101;&#x65;&#115;&#101;&#103;&#117;&#105;&#x6e;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#46;&#x63;&#111;&#109;">&#x77;&#97;&#121;&#110;&#101;&#101;&#x73;&#101;&#x67;&#117;&#105;&#x6e;&#64;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;&lt;/a>, Michal Papis &lt;a href="&#109;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6d;&#112;&#97;&#x70;&#105;&#x73;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#109;">&#x6d;&#112;&#x61;&#112;&#x69;&#115;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;&lt;/a> [&lt;a href="https://rvm.io/">https://rvm.io/&lt;/a>]</span></code></pre></td></tr></table></div></figure>
 通过RVM安装Ruby，后面参数为版本号，可以根据版本进行调整。
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0</span></code></pre></td></tr></table></div></figure>

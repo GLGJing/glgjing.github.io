@@ -4,7 +4,7 @@
   <title><![CDATA[GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2014-12-27T23:14:52+08:00</updated>
+  <updated>2015-01-04T04:49:23+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,177 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C++虚函数浅析]]></title>
+    <link href="http://glgjing.github.io/blog/2015/01/03/c-plus-plus-xu-han-shu-qian-xi/"/>
+    <updated>2015-01-03T01:59:30+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/01/03/c-plus-plus-xu-han-shu-qian-xi</id>
+    <content type="html"><![CDATA[<h2>一 引言</h2>
+
+
+<p>C++面向对象语言的一大特性就是抽象，在程序设计上的体现就是鼓励面向接口编程，而不要面向具体实现编程。这里所说的抽象和接口与C++的多态性密切相关。C++的多态分为静态多态（编译时多态）和动态多态（运行时多态）两大类。静态多态通过重载、模板来实现；动态多态就是通过本文的主角虚函数来体现的。虚函数是C++语言一个非常重要的特性，不同编译器对此特性的实现机制也略有差别，虽然具体实现细节由编译器说的算，在大多情况下我们不需要关心，但虚函数在某些情况下对程序的占用内存大小和执行效率有比较明显的影响，这时候知道虚函数背后的实现原理，知其然、知其所以然是很有必要的。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
+
+<h2>二 虚函数实现原理</h2>
+
+
+<p>虚函数的作用说白了就是：<font color="red">当调用一个虚函数时，被执行的代码必须和调用函数的对象的动态类型相一致。</font>编译器需要做的就是如何高效的实现提供这种特性。不同编译器实现细节也不相同。大多数编译器通过vtbl（virtual table）和vptr（virtual table pointer）来实现的。
+当一个类声明了虚函数或者继承了虚函数，这个类就会有自己的vtbl。vtbl实际上就是一个函数指针数组，有的编译器用的是链表，不过方法都是差不多。vtbl数组中的每一个元素对应一个函数指针指向该类的一个虚函数，同时该类的每一个对象都会包含一个vptr，vptr指向该vtbl的地址。例如一个类的定义如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func1</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">Func2</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">Func3</span><span class="p">();</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">Func4</span><span class="p">();</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>A</code>类的对象的结构如下：
+<img class="center" src="http://glgjing.github.io/images/1-5.png">
+从图中可以看出<code>A</code>类对象中包含一个vptr，而vptr的值就是<code>A</code>类的vtbl的地址，vtbl中三个元素的值分别是虚函数<code>Func1</code>、<code>Func2</code>、<code>Func3</code>的地址，而非虚函数<code>Func4</code>并没有在vtbl中。</p>
+
+<h3>1 单继承情况</h3>
+
+
+<p>下面定义一个类<code>B</code>继承自类<code>A</code>，重写了(override)虚函数<code>Func1</code>，并且定义了自己的虚函数。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">B</span> <span class="o">:</span> <span class="k">public</span> <span class="n">A</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func1</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">Func5</span><span class="p">();</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>声明一个<code>A</code>类指针<code>A* a = new B;</code>。a的内容如下：
+<img class="center" src="http://glgjing.github.io/images/1-6.png">
+同样<code>a</code>的值包含一个vptr，vptr指向<code>B</code>类的vtbl，而<code>B</code>类的vtbl中元素的值相比<code>A</code>类的vtbl有一些变化，<code>B</code>类重写<code>A</code>类虚函数的地址<code>B::Func1</code>取代了<code>A::Func1</code>在vtbl的位置，<code>B</code>类新定义的虚函数<code>B::Func5</code>也被添加到vtbl中，且父类的虚函数在子类的虚函数前面。此时通过指针<code>a</code>调用<code>Func1</code>过程相当于：</p>
+
+<ol>
+  <li>通过指针<code>a</code>指向的地址，取出的具体值为类型<code>B</code>，找到里面的vptr，该vptr指向的是<code>B</code>类的vtbl</li>
+  <li>通过vptr找到<code>B</code>类的vtbl地址</li>
+  <li>然后通过<code>B</code>类的vtbl找到<code>Func1</code>的函数地址，调用执行，最终执行的就是<code>B::Func1</code></li>
+</ol>
+
+
+<p>以上过程就基本解释了C++虚函数是如何做到被执行的代码和调用函数的对象的动态类型相一致的特性了。</p>
+
+<h3>2 多继承情况</h3>
+
+
+<p>上面讨论的是单继承的情况，下面来看一下多继承情况。定义三个类<code>Base1</code><code>Base2</code><code>Base3</code>，和一个子类<code>SubClass</code>如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">Base1</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">FuncB1</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Base2</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">FuncB2</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Base3</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">FuncB3</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">SubClass</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base1</span><span class="p">,</span> <span class="k">public</span> <span class="n">Base2</span><span class="p">,</span> <span class="k">public</span> <span class="n">Base3</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Func</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">FuncSub</span><span class="p">()</span> <span class="p">{}</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>SubClass</code>对象的结构如下：
+<img class="center" src="http://glgjing.github.io/images/1-7.png">
+可以看到<code>SubClass</code>对象包含三个vptr分别指向三个vtbl，每个vtbl对应一个父类的vtbl。当子类覆盖父类的虚函数时，对应的vtbl变化与单继承情况相同，就是子类的虚函数替换父类相应虚函数在vtbl的位置。子类新定义的虚函数，会放在第一个父类的vtbl的后面，这里的第一个是指继承类的顺序（<font color="red">其实这个并不是一定的，不同编译器有自由去选择不同的实现方式</font>）。之所以这样设计就是为了解决不同的父类类型指针在指向同一个子类实例，能够调用到各自实际的虚函数。具体的调用过程同单继承的情况相同。</p>
+
+<h3>结论：</h3>
+
+
+<ul>
+  <li>每个声明了虚函数或者继承了虚函数的类，都会有一个自己的vtbl</li>
+  <li>同时该类的每个对象都会包含一个vptr去指向该vtbl</li>
+  <li>虚函数按照其声明顺序放于vtbl表中, vtbl数组中的每一个元素对应一个函数指针指向该类的虚函数</li>
+  <li>如果子类覆盖了父类的虚函数，将被放到了虚表中原来父类虚函数的位置</li>
+  <li>在多继承的情况下，每个父类都有自己的虚表。子类的成员函数被放到了第一个父类的表中</li>
+</ul>
+
+
+<h2>三 虚函数所需的代价</h2>
+
+
+<p>上面介绍了虚函数的基本实现原理，虚函数的优点不用多说，实现了运行时多态的特性。下面来分析下虚函数所需的代价，程序运行时代价无非主要体现在时间和空间上。</p>
+
+<h3>调用性能方面</h3>
+
+
+<p>从前面虚函数的调用过程可知。当调用虚函数时过程如下（引自More Effective C++）:</p>
+
+<ol>
+  <li>通过对象的 vptr 找到类的 vtbl。这是一个简单的操作,因为编译器知道在对象内 哪里能找到 vptr(毕竟是由编译器放置的它们)。因此这个代价只是一个偏移调整(以得到 vptr)和一个指针的间接寻址(以得到 vtbl)。</li>
+  <li>找到对应 vtbl 内的指向被调用函数的指针。这也是很简单的, 因为编译器为每个虚函数在 vtbl 内分配了一个唯一的索引。这步的代价只是在 vtbl 数组内 的一个偏移。</li>
+  <li>调用第二步找到的的指针所指向的函数。</li>
+</ol>
+
+
+<p>在单继承的情况下，调用虚函数所需的代价基本上和非虚函数效率一样，在大多数计算机上它多执行了很少的一些指令，所以有很多人一概而论说虚函数性能不行是不太科学的。在多继承的情况下，由于会根据多个父类生成多个vptr，在对象里为寻找 vptr 而进行的偏移量计算会变得复杂一些，但这些并不是虚函数的性能瓶颈。
+<font color="red">虚函数运行时所需的代价主要是虚函数不能是内联函。</font>这也是非常好理解的，是因为内联函数是指在编译期间用被调用的函数体本身来代替函数调用的指令，但是虚函数的“虚”是指“直到运行时才能知道要调用的是哪一个函数。”但虚函数的运行时多态特性就是要在运行时才知道具体调用哪个虚函数，所以没法在编译时进行内联函数展开。当然如果通过对象直接调用虚函数它是可以被内联，但是大多数虚函数是通过对象的指针或引用被调用的，这种调用不能被内联。 因为这种调用是标准的调用方式，所以虚函数实际上不能被内联。</p>
+
+<h3>占用空间方面</h3>
+
+
+<p>在上面的虚函数实现原理部分，可以看到为了实现运行时多态机制，编译器会给每一个包含虚函数或继承了虚函数的类自动建立一个虚函数表，<font color="red">所以虚函数的一个代价就是会增加类的体积。</font>在虚函数接口较少的类中这个代价并不明显，虚函数表vtbl的体积相当于几个函数指针的体积，如果你有大量的类或者在每个类中有大量的虚函数,你会发现 vtbl 会占用大量的地址空间。但这并不是最主要的代价，主要的代价是发生在类的继承过程中，在上面的分析中，可以看到，当子类继承父类的虚函数时，子类会有自己的vtbl，如果子类只覆盖父类的一两个虚函数接口，子类vtbl的其余部分内容会与父类重复。这在如果存在大量的子类继承，且重写父类的虚函数接口只占总数的一小部分的情况下，会造成大量地址空间浪费。在一些GUI库上这种大量子类继承自同一父类且只覆盖其中一两个虚函数的情况是经常有的，这样就导致UI库的占用内存明显变大。
+<font color="red">由于虚函数指针vptr的存在，虚函数也会增加该类的每个对象的体积。</font>在单继承或没有继承的情况下，类的每个对象会多一个vptr指针的体积，也就是4个字节；在多继承的情况下，类的每个对象会多N个（N＝包含虚函数的父类个数）vptr的体积，也就是4N个字节。当一个类的对象体积较大时，这个代价不是很明显，但当一个类的对象很轻量的时候，如成员变量只有4个字节，那么再加上4（或4N）个字节的vptr，对象的体积相当于翻了1（或N）倍，这个代价是非常大的。</p>
+
+<h2>四 总结</h2>
+
+
+<p>本文主要介绍了虚函数的实现机制，以及实现该机制所付出的代价，这里没有进一步讨论继承的利与弊，但经过上面的一些讨论，也可以从侧面反映出一些问题。理解虚函数的代价是有必要的，一方面是有利于高效恰当的使用它，一方面也该意识到如果你需要这些功能, 不管采取什么样的方法你都得为此付出代价，在多数情况下,你的人工模拟可能比编译器生成的代码效率更低,稳定性更差。例如使用嵌套的<code>switch</code>语句或层叠的<code>if-then-else</code>语句模拟虚函数的调用,其产生的代码比虚函数的调用还要多,而且代码运行速度也更慢。再有你必须自己人工跟踪对象类型,这意味着对象会携带它们自己的类型标签(type tag)，因此你不会得到更小的对象。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C++重载、重写、重定义区别]]></title>
@@ -452,7 +623,7 @@
 <h2>四 总结</h2>
 
 
-<p>重载、重写、重定义书面上的区别，以及各自的规则没有太大意义，而且这些名词本身都是翻译过来的，不同的地方翻译也不尽相同，如果初学C++，弄清每个概念的实际意义，以及为什么这么设计才是最重要的。</p>
+<p>重载、重写、重定义书面上的区别，以及各自的规则没有太大意义，而且这些名词本身都是翻译过来的，不同的地方翻译也不尽相同，如果初学C++，弄清每个概念的实际意义，以及为什么这么设计才是最重要的。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</p>
 ]]></content>
   </entry>
   
@@ -550,7 +721,7 @@
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2014 - GLGJing
+</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2015 - GLGJing
 </span><span class='line'>  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span><span class="kd">var</span> <span class="nx">cnzz_protocol</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;https:&quot;</span> <span class="o">==</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot; https://&quot;</span> <span class="o">:</span> <span class="s2">&quot; http://&quot;</span><span class="p">);</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="s2">&quot;%3Cspan id=&#39;cnzz_stat_icon_1253899728&#39;%3E%3C/span%3E%3Cscript src=&#39;&quot;</span> <span class="o">+</span> <span class="nx">cnzz_protocol</span> <span class="o">+</span> <span class="s2">&quot;s4.cnzz.com/z_stat.php%3Fid%3D1253899728&#39; type=&#39;text/javascript&#39;%3E%3C/script%3E&quot;</span><span class="p">));</span><span class="nt">&lt;/script&gt;</span>
 </span><span class='line'><span class="nt">&lt;/p&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -704,7 +875,7 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2014 - GLGJing -
+</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2015 - GLGJing -
 </span><span class='line'>  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;credit&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>    Powered by<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://octopress.org&quot;</span><span class="nt">&gt;</span>Octopress<span class="nt">&lt;/a&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;/span&gt;</span>
