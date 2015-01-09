@@ -109,6 +109,72 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/01/09/git-qing-chu-wei-gen-zong-wen-jian/">Git 清除未跟踪文件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-09T16:34:45+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:34 pm</span></time>
+        
+         | <a href="/blog/2015/01/09/git-qing-chu-wei-gen-zong-wen-jian/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在利用<code>git</code>工作时，工程目录下经常会出现一些未跟踪文件，虽然<code>git</code>支持通过<code>.gitingore</code>文件添加一些忽略文件类型和文件目录。但有时需要清理一些临时文件和自动生成的文件，手动删除显得太麻烦，这时你可以利用<code>git clean</code>命令来帮你完成这项操作。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<code>git clean</code>命令支持以下参数：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean [-d] [-f] [-i] [-n] [-q] [-e &lt;pattern>] [-x | -X] [--] &lt;path>...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中几个主要参数用法如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-d   # 删除未跟踪目录以及目录下的文件，如果目录下包含其他git仓库文件，并不会删除（-dff可以删除）。
+</span><span class='line'>-f   # 如果 git cofig 下的 clean.requireForce 为true，那么clean操作需要-f(--force)来强制执行。
+</span><span class='line'>-i   # 进入交互模式
+</span><span class='line'>-n   # 查看将要被删除的文件，并不实际删除文件</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过以上几根参数组合，基本上可以满足删除未跟踪文件的需求了。例如在删除前先查看有哪些文件将被删除运行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -n</span></code></pre></td></tr></table></div></figure>
+
+
+<p>想删除当前工作目录下的未跟踪文件，但不删除文件夹运行（如果<code>clean.requireForce</code>为<code>false</code>可以不加<code>-f</code>选项）：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -f</span></code></pre></td></tr></table></div></figure>
+
+
+<p>想删除当前工作目录下的未跟踪文件以及文件夹运行：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -df</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/01/06/git-xiu-gai-ti-jiao-li-shi/">Git 修改提交历史</a></h1>
     
     

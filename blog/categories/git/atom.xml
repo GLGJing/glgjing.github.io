@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-01-06T14:48:26+08:00</updated>
+  <updated>2015-01-09T17:27:56+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Git 清除未跟踪文件]]></title>
+    <link href="http://glgjing.github.io/blog/2015/01/09/git-qing-chu-wei-gen-zong-wen-jian/"/>
+    <updated>2015-01-09T16:34:45+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/01/09/git-qing-chu-wei-gen-zong-wen-jian</id>
+    <content type="html"><![CDATA[<p>在利用<code>git</code>工作时，工程目录下经常会出现一些未跟踪文件，虽然<code>git</code>支持通过<code>.gitingore</code>文件添加一些忽略文件类型和文件目录。但有时需要清理一些临时文件和自动生成的文件，手动删除显得太麻烦，这时你可以利用<code>git clean</code>命令来帮你完成这项操作。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<code>git clean</code>命令支持以下参数：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean [-d] [-f] [-i] [-n] [-q] [-e &lt;pattern>] [-x | -X] [&ndash;] &lt;path>&hellip;</span></code></pre></td></tr></table></div></figure>
+其中几个主要参数用法如下：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-d   # 删除未跟踪目录以及目录下的文件，如果目录下包含其他git仓库文件，并不会删除（-dff可以删除）。
+</span><span class='line'>-f   # 如果 git cofig 下的 clean.requireForce 为true，那么clean操作需要-f(&ndash;force)来强制执行。
+</span><span class='line'>-i   # 进入交互模式
+</span><span class='line'>-n   # 查看将要被删除的文件，并不实际删除文件</span></code></pre></td></tr></table></div></figure>
+通过以上几根参数组合，基本上可以满足删除未跟踪文件的需求了。例如在删除前先查看有哪些文件将被删除运行：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -n</span></code></pre></td></tr></table></div></figure>
+想删除当前工作目录下的未跟踪文件，但不删除文件夹运行（如果<code>clean.requireForce</code>为<code>false</code>可以不加<code>-f</code>选项）：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -f</span></code></pre></td></tr></table></div></figure>
+想删除当前工作目录下的未跟踪文件以及文件夹运行：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clean -df</span></code></pre></td></tr></table></div></figure></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Git 修改提交历史]]></title>
