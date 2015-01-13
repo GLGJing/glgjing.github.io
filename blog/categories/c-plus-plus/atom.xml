@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/c-plus-plus/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-01-09T17:27:56+08:00</updated>
+  <updated>2015-01-13T19:40:33+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,160 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C++ 自增、自减操作符前缀与后缀的区别]]></title>
+    <link href="http://glgjing.github.io/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/"/>
+    <updated>2015-01-12T20:28:11+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie</id>
+    <content type="html"><![CDATA[<p>自减和自增操作符规则相同，这里就以自增为例进行说明。C++的自增<code>++</code>操作符分为前缀形式和后缀形式，在语法上前缀与后形式的主要区别在于：前缀形式有时叫做“增加然后取回”，后缀形式叫做“取回然后增加”。例如：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">a</span><span class="o">++</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">a</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="o">++</span><span class="n">b</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">b</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+然而有一个句法上的问题，当对<code>operator ++</code>函数进行重载时，需要自增操作符的前缀和后缀形式有不同的参数。但是不论是自增或自减的前缀还是后缀都只有一个参数。为了解决这个语言问题，<code>C++</code>规定后缀形式有一个<code>int</code>类型参数,当函数被调用时,编译器传递一个<code>0</code>做为<code>int</code>参数的值给该函数，具体实现如下：<!-- more -->
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">UPInt</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">UPInt</span><span class="p">()</span> <span class="o">:</span> <span class="n">value</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">UPInt</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="k">operator</span><span class="o">++</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="k">this</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="k">this</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">const</span> <span class="n">UPInt</span> <span class="k">operator</span><span class="o">++</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">UPInt</span> <span class="n">old</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="k">this</span><span class="p">;</span>
+</span><span class='line'>    <span class="o">++</span><span class="p">(</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">old</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">UPInt</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="k">operator</span><span class="o">+=</span><span class="p">(</span><span class="kt">int</span> <span class="n">rValue</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">value</span> <span class="o">+=</span> <span class="n">rValue</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="kt">int</span> <span class="n">getValue</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">value</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">int</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">UPInt</span> <span class="n">tmp</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">UPInt</span> <span class="n">a</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">++</span><span class="p">;</span> <span class="c1">// 调用 const UPInt operator++(int)</span>
+</span><span class='line'>  <span class="n">UPInt</span> <span class="n">b</span> <span class="o">=</span> <span class="o">++</span><span class="n">tmp</span><span class="p">;</span> <span class="c1">// 调用 UPInt&amp;amp; operator++()</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">a</span><span class="p">.</span><span class="n">getValue</span><span class="p">()</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">b</span><span class="p">.</span><span class="n">getValue</span><span class="p">()</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+输出结果：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">2</span>
+</span></code></pre></td></tr></table></div></figure>
+在重载<code>++</code>和<code>&ndash;</code>操作符时最好是遵从<code>c++</code>规范，否则会写出让其他人很迷惑的代码。这里有几点需要注意的地方：</p>
+
+<ol>
+    <li>前缀形式返回值是引用很好理解，但为什么后缀返回值是<code>const</code>类型？</li>
+    <li>看到后缀形式的<code>++</code>实现，是否有效率上的问题？</li>
+    <li>为什么后缀形式的<code>++</code>内部没有直接实现自增功能，而是调用了前缀形式的<code>++</code>？</li>
+</ol>
+
+
+<h3>1 为什么后缀返回值是<code>const</code>类型？</h3>
+
+
+<p>假设不是 const 对象,下面的代码就是正确的:
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">UPInt</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'><span class="n">i</span><span class="o">++++</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+上面的代码相当于<code>i.operator++(0).operator++(0);</code>。很明显，第一个调用的 <code>operator++</code>函数返回的临时对象调用了第二个<code>operator++</code>函数。这样做的问题是：一是与内置类型行为不一致，当设计一
+个类遇到问题时,一个好的准则是使该类的行为与int类型一致，而int类型不允许连续进行两次后缀自增；二是使用两次后缀<code>++</code>所产生的结果与调用者期望的不一致，第二次调用<code>operator++</code>改变的值是第一次调用返回对象的值，而不是原始对象的值。 因此如果<code>i++++;</code>是合法的，<code>i</code>将仅仅增加了一次。</p>
+
+<h3>2 后缀形式的<code>++</code>实现，是否有效率上的问题?</h3>
+
+
+<p>后缀形式的<code>++</code>函数必须建立一个临时对象以做为它的返回值，上述实现代码建立了一个临时对象(oldValue)，这个临时对象必须被构造并在最后被析构。所以如果仅为了提高代码效率，应该尽量使用前缀形式的<code>++</code>，因为它的效率较高。</p>
+
+<h3>3 为什么后缀形式的<code>++</code>内部没有直接实现自增功能，而是调用了前缀形式的<code>++</code>？</h3>
+
+
+<p>可以看出后缀与前缀形式的<code>++</code>操作符除了返回值不同外，所完成的功能是一样的。所以需要确保后缀和前缀的<code>++</code>的行为一致性，当不同的程序员去维护和升级代码时，有什么能保证它们不会产生差异？遵守上述代码里的原则，则仅仅需要维护前缀版本,因为后缀形式自动与前缀形式的行为一致。
+转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C++虚函数浅析]]></title>

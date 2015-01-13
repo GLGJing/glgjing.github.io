@@ -109,6 +109,77 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/">C++ 自增、自减操作符前缀与后缀的区别</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-12T20:28:11+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:28 pm</span></time>
+        
+         | <a href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>自减和自增操作符规则相同，这里就以自增为例进行说明。C++的自增<code>++</code>操作符分为前缀形式和后缀形式，在语法上前缀与后形式的主要区别在于：前缀形式有时叫做“增加然后取回”，后缀形式叫做“取回然后增加”。例如：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="nf">_tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">_TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="o">++</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">++</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="mi">0</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">1</span>
+</span><span class='line'><span class="mi">1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然而有一个句法上的问题，当对<code>operator ++</code>函数进行重载时，需要自增操作符的前缀和后缀形式有不同的参数。但是不论是自增或自减的前缀还是后缀都只有一个参数。为了解决这个语言问题，<code>C++</code>规定后缀形式有一个<code>int</code>类型参数,当函数被调用时,编译器传递一个<code>0</code>做为<code>int</code>参数的值给该函数，具体实现如下：</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/01/09/git-qing-chu-wei-gen-zong-wen-jian/">Git 清除未跟踪文件</a></h1>
     
     
