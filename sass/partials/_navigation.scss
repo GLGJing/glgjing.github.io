@@ -42,7 +42,7 @@ body > nav {
   }
   ul { display: none; }
   @media only screen and (min-width: 550px) {
-    font-size: 0.95em;
+    font-size: 1.2em;
     ul {
       @include horizontal-list(0);
       float: left;
