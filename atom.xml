@@ -4,7 +4,7 @@
   <title><![CDATA[GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-02-02T19:56:42+08:00</updated>
+  <updated>2015-02-02T20:32:45+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -26,7 +26,7 @@
 <h2>生成新的 rsa key</h2>
 
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x59;&#79;&#85;&#x52;&#95;&#x45;&#77;&#65;&#x49;&#x4c;&#x40;&#x59;&#x4f;&#85;&#x52;&#x45;&#77;&#65;&#73;&#x4c;&#x2e;&#x43;&#x4f;&#77;">&#x59;&#79;&#x55;&#x52;&#95;&#69;&#x4d;&#x41;&#x49;&#x4c;&#64;&#x59;&#79;&#85;&#82;&#69;&#x4d;&#x41;&#x49;&#76;&#x2e;&#x43;&#79;&#77;</a> 改为你的 Email 地址。</p>
+<p>在命令行输入如下命令，将命令中的 <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#89;&#79;&#85;&#x52;&#x5f;&#69;&#x4d;&#65;&#73;&#x4c;&#x40;&#x59;&#x4f;&#85;&#82;&#69;&#x4d;&#65;&#x49;&#76;&#46;&#x43;&#x4f;&#77;">&#89;&#x4f;&#x55;&#x52;&#x5f;&#x45;&#77;&#65;&#73;&#x4c;&#x40;&#x59;&#x4f;&#x55;&#x52;&#x45;&#77;&#65;&#73;&#x4c;&#x2e;&#67;&#x4f;&#77;</a> 改为你的 Email 地址。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>

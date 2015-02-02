@@ -415,15 +415,18 @@
   </div>
   <footer role="contentinfo"><p>
   Copyright &copy; 2015 - GLGJing
-  <script>
-    var _hmt = _hmt || [];
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-59236534-1']);
+    _gaq.push(['_trackPageview']);
+
     (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?a102f2286701aa4e01ca5c77ea2ae04f";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
+
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
