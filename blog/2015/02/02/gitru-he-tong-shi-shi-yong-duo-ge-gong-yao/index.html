@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>利用Octopress和Github搭建个人博客（四）：自定义字体 - GLGJing&#8217;s Blog</title>
+  <title>为 Git 添加多个公秘钥 - GLGJing&#8217;s Blog</title>
   <meta name="author" content="GLGJing">
 
   
-  <meta name="description" content="本文介绍了如何配置Octopress的字体。">
-  <meta name="keywords" content="Octopress github 博客 搭建博客 自定义字体 字体配置">
+  <meta name="description" content="本文介绍了git如何同时使用多个公钥。">
+  <meta name="keywords" content="git 公钥 多个公钥 rsa gitcafe">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://glgjing.github.io/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti">
+  <link rel="canonical" href="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="GLGJing's Blog" type="application/atom+xml">
@@ -107,7 +107,7 @@
   <header>
     
       
-        <h1 class="entry-title">利用Octopress和Github搭建个人博客（四）：自定义字体</h1>
+        <h1 class="entry-title">为 Git 添加多个公秘钥</h1>
       
     
     
@@ -117,7 +117,7 @@
 
 
 
-<time class='entry-date' datetime='2015-01-31T17:00:48+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>5:00 pm</span></time>
+<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -127,10 +127,21 @@
   </header>
 
 
-<div class="entry-content"><h2>修改博客字体</h2>
+<div class="entry-content"><h2>小引</h2>
 
 
-<p>Octopress字体的设置文件是：sass/custom/_fonts.scss，内容类似如下：</p>
+<p>最近将博客从 github 上迁移到了国内的 gitcafe，主要原因是在国内的访问速度你懂的。迁移之后发现问题来了，每次连接时 SSH 客户端发送本地私钥到服务端验证，而这个私钥默认是 ~/.ssh/id_rsa 文件，如果只有一个账户，连接的服务器上保存的公钥和发送的私钥自然是配对的。但是我已经有了两个账户了，当然 username 和 email 是完全不同的，如果还是都读取默认的 ~/.ssh/id_rsa 文件，那么 gitcafe 账户的公钥和私钥显然是不匹配的。所以需要为 gitcafe 账户再添加一对公秘钥，并且可以根据账户自动寻找匹配的公秘钥。转载请注明出处<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code><!-- more --></p>
+
+<h2>生成新的 rsa key</h2>
+
+
+<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x59;&#79;&#85;&#82;&#95;&#69;&#77;&#65;&#73;&#76;&#64;&#x59;&#79;&#x55;&#82;&#x45;&#77;&#x41;&#x49;&#76;&#46;&#67;&#79;&#77;">&#89;&#79;&#x55;&#x52;&#x5f;&#69;&#x4d;&#65;&#73;&#x4c;&#64;&#x59;&#x4f;&#85;&#x52;&#69;&#x4d;&#x41;&#x49;&#x4c;&#x2e;&#x43;&#79;&#x4d;</a> 改为你的 Email 地址。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
+
+
+<p>生成过程中会出现以下信息，按屏幕提示操作输入 passphrase 口令，也可以直接回车设为空。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -138,25 +149,49 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$sans: "Open Sans","Helvetica Neue", Arial, sans-serif !default;
-</span><span class='line'>$serif: "PT Serif", Georgia, Times, "Times New Roman", serif !default;
-</span><span class='line'>$mono: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace !default;
-</span><span class='line'>$heading-font-family: "Fjalla One", "Georgia", "Helvetica Neue", Arial, sans-serif !default;
-</span><span class='line'>$header-title-font-family: $heading-font-family !default;
-</span><span class='line'>$header-subtitle-font-family: $serif !default;</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Generating public/private rsa key pair.
+</span><span class='line'>Enter passphrase (empty for no passphrase):
+</span><span class='line'>Enter same passphrase again:
+</span><span class='line'>Your identification has been saved in /Users/username/.ssh/gitcafe_rsa.
+</span><span class='line'>Your public key has been saved in /Users/username/.ssh/gitcafe_rsa.pub.
+</span><span class='line'>The key fingerprint is:
+</span><span class='line'>15:81:d2:7a:c6:6c:0f:ec:b0:b6:d4:18:b8:d1:41:48 YOUR_EMAIL@YOUREMAIL.COM</span></code></pre></td></tr></table></div></figure>
 
 
-<ul>
-    <li>$sans：定义的是无衬线正文的字体</li>
-    <li>$serif：定义的是衬线正文的字体</li>
-    <li>$mono：定义的是代码的字体</li>
-    <li>$heading-font-family：定义的是文章标题的字体</li>
-    <li>$header-title-font-family：定义的是博客标题的字体</li>
-    <li>$header-subtitle-font-family：定义的是博客子标题的字体</li>
-</ul>
+<p>此时在 ~/.ssh/ 目录下会生成 gitcafe_rsa 和 gitcafe_rsa.pub两个文件。</p>
+
+<h2>配置新的 rsa key</h2>
 
 
-<p>如果需要更改字体，在这里更改对应的值即可。需要注意的是在跨平台的情况下，一些字体在很多机上不一定会有，所以尽量定义一些常用字体作为备选方案。例如Adobe的开源字体Source Code Pro作为代码字体，个人感觉很不错，但很多机器上不一定有装，所以这里最好补上其他字体作为备选，Windows上比较适合的编程字体Consolas，Mac上比较适合的编程字体Monaco，以及Ubuntu上比较适合的编程字体Ubuntu Mono。浏览器在渲染字体的时候会依次进行寻找，如果本机装有Source Code Pro就用该字体进行渲染，如果没有则寻找下一个也就是Consolas，依此类推直到找到一个可用的字体进行渲染，上诉三款字体都是三个平台默认安装的，这样可以最大程度地保证代码阅读质量。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</p>
+<p>在 SSH 用户配置文件 ~/.ssh/config 中指定对应服务所使用的公秘钥名称，如果没有 config 文件的话就新建一个，并输入以下内容：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
+</span><span class='line'>  IdentityFile ~/.ssh/gitcafe</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后将 gitcafe_rsa.pub 文件中的内容复制到 gitcafe 的 SSH 公钥中，具体参见<a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E5%92%8C%E8%AE%BE%E7%BD%AE%20Git">这里</a>，这样就完成了新的公秘钥配置。可以运行下面的命令进行测试</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
+</span><span class='line'>ssh -T git@gitcafe.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果连接成功的话，会出现以下信息。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
+</span><span class='line'>Hi USERNAME! You've successfully authenticated, but GitCafe does not provide shell access.</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>总结</h2>
+
+
+<p>这里以 gitcafe 为例讲述了如何为git添加多个公秘钥，其他的公秘钥添加方法基本类似。参考：<a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E5%85%AC%E7%A7%98%E9%92%A5">如何同时使用多个公秘钥</a>。</p>
 </div>
 
 
@@ -179,13 +214,13 @@
 
 
 
-<time class='entry-date' datetime='2015-01-31T17:00:48+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>31</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>5:00 pm</span></time>
+<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
       
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>octopress</a>
+    <a class='category' href='/blog/categories/git/'>git</a>
   
 </span>
 
@@ -194,7 +229,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" >Tweet</a>
   
   
   
@@ -203,10 +238,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/" title="Previous Post: C++ 自增、自减操作符前缀与后缀的区别">&laquo; C++ 自增、自减操作符前缀与后缀的区别</a>
+        <a class="basic-alignment left" href="/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/" title="Previous Post: 利用Octopress和Github搭建个人博客（四）：自定义字体">&laquo; 利用Octopress和Github搭建个人博客（四）：自定义字体</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" title="Next Post: 为 git 添加多个公秘钥">为 git 添加多个公秘钥 &raquo;</a>
       
     </p>
   </footer>
@@ -252,8 +285,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://glgjing.github.io/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/';
-        var disqus_url = 'http://glgjing.github.io/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/';
+        var disqus_identifier = 'http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/';
+        var disqus_url = 'http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/';
         var disqus_script = 'embed.js';
       
     (function () {
