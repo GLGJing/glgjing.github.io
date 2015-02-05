@@ -144,7 +144,7 @@ body.sidebar-footer {
     .no-sidebar & { margin-right: 0; border-right: 0; }
     .collapse-sidebar & { margin-right: 20px; }
     > div, > article {
-      text-align:justify;
+      text-align:left;
       float: left;
     }
     article { padding-top: 3.3em; }
