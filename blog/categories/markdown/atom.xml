@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Markdown | GLGJing's Blog]]></title>
+  <link href="http://glgjing.github.io/blog/categories/markdown/atom.xml" rel="self"/>
+  <link href="http://glgjing.github.io/"/>
+  <updated>2015-02-05T14:56:37+08:00</updated>
+  <id>http://glgjing.github.io/</id>
+  <author>
+    <name><![CDATA[GLGJing]]></name>
+    <email><![CDATA[GLGJing@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Markdown语法新手指南]]></title>
+    <link href="http://glgjing.github.io/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/"/>
+    <updated>2015-02-04T11:18:16+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan</id>
+    <content type="html"><![CDATA[<h2>引言</h2>
+
+<p>Markdown 的权威介绍<a href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax</a>，中文版<a href="http://wowubuntu.com/markdown/">Markdown 语法说明</a>，本文只是把常用的一些语法总结一下，适合新手快速入门。转载请注明出处<a href="http://glgjing.github.io/">http://glgjing.github.io/</a><!--more--></p>
+
+<h2>标题</h2>
+
+<p>Markdown 支持在行首插入 1 到 6 个 <code>#</code>来表示 1 到 6 级标题，例如：</p>
+
+<pre><code>## 这是 H2
+### 这是 H3
+###### 这是 H6
+</code></pre>
+
+<p><strong>显示效果：</strong></p>
+
+<h2>这是 H2</h2>
+
+<h3>这是 H3</h3>
+
+<h6>这是 H6</h6>
+
+<p>你可以选择性地「闭合」样式的标题，这纯粹只是美观用的，若是觉得这样看起来比较舒适，你就可以在行尾加上<code>#</code>，而行尾的<code>#</code> 数量也不用和开头一样。</p>
+
+<h2>段落和换行</h2>
+
+<p>一个 Markdown 段落是由一个或多个连续的文本行组成，它的前后要有一个以上的空行。Markdown 对换行的处理和其他大部分的 text-to-HTML 格式不太一样，其他的格式会把每个换行自动转换为<code>&lt;br/&gt;</code>标签，而 Markdown 对换行的处理原则是：在换行处需插入两个及以上的空格再回车。例如：</p>
+
+<pre><code>其实我想换行（一个空格 + 回车）
+但是没用成功
+</code></pre>
+
+<p><strong>显示效果：</strong><br/>
+其实我想换行（一个空格 + 回车）
+但是没用成功</p>
+
+<pre><code>再试一次（两个空格 + 回车）
+成功换行
+</code></pre>
+
+<p><strong>显示效果：</strong><br/>
+再试一次（两个空格 + 回车）<br/>
+成功换行</p>
+
+<h2>列表</h2>
+
+<p>Markdown 支持有序列表和无序列表。无序列表使用<code>*</code>、<code>+</code>或<code>-</code>作为列表标记，且标记后面要有一个空格，例如：</p>
+
+<pre><code>* 星号Red
+* 星号Green
+* 星号Blue
++ 加号Red
++ 加号Green
++ 加号Blue
+- 减号Red
+- 减号Green
+- 减号Blue
+</code></pre>
+
+<p><strong>显示效果：</strong></p>
+
+<ul>
+<li>星号Red</li>
+<li>星号Green</li>
+<li>星号Blue</li>
+<li>加号Red</li>
+<li>加号Green</li>
+<li>加号Blue</li>
+<li>减号Red</li>
+<li>减号Green</li>
+<li>减号Blue</li>
+</ul>
+
+
+<p>有序列表则使用数字接着一个英文句点，而且你在列表标记上使用的数字并不会影响输出的 HTML 结果，例如：</p>
+
+<pre><code>2. Red
+1. Green
+3. Blue
+</code></pre>
+
+<p><strong>显示结果：</strong></p>
+
+<ol>
+<li>Red</li>
+<li>Green</li>
+<li>Blue</li>
+</ol>
+
+
+<h2>引用</h2>
+
+<p>Markdown 的引用是在行首插入<code>&gt;</code>，例如：</p>
+
+<pre><code>&gt;锄禾日当午，汗滴禾下土。
+&gt;谁知盘中餐，粒粒皆辛苦。
+</code></pre>
+
+<p><strong>显示结果：</strong></p>
+
+<blockquote><p>锄禾日当午，汗滴禾下土。 <br/>
+谁知盘中餐，粒粒皆辛苦。</p></blockquote>
+
+<p>Markdown 也允许你偷懒只在整个段落的第一行最前面加上<code>&gt;</code>，例如：</p>
+
+<pre><code>&gt;锄禾日当午，汗滴禾下土。（换行处要留有 2 个及以上空格）
+谁知盘中餐，粒粒皆辛苦。
+</code></pre>
+
+<p><strong>显示结果：</strong></p>
+
+<blockquote><p>锄禾日当午，汗滴禾下土。<br/>
+谁知盘中餐，粒粒皆辛苦。</p></blockquote>
+
+<p>区块引用可以嵌套（例如：引用内的引用），只要根据层次加上不同数量的<code>&gt;</code> :</p>
+
+<pre><code>&gt; 一级引用内容
+&gt;
+&gt; &gt; 二级引用内容  
+&gt; 
+&gt; 一级引用内容
+</code></pre>
+
+<p><strong>显示结果：</strong></p>
+
+<blockquote><p>一级引用内容</p>
+
+<blockquote><p>二级引用内容</p></blockquote>
+
+<p>一级引用内容</p></blockquote>
+
+<p>引用的区块内也可以使用其他的 Markdown 语法，包括标题、列表、代码区块等：</p>
+
+<pre><code>&gt; ## 这是一个二级标题。
+&gt; 
+&gt; 1. 这是第一行列表项。
+&gt; 2. 这是第二行列表项。
+&gt; 
+&gt; 下面是一个代码块：
+&gt; 
+&gt;     return "Hello Markdown！";
+</code></pre>
+
+<p><strong>显示结果：</strong></p>
+
+<blockquote><h2>这是一个二级标题。</h2>
+
+<ol>
+<li>这是第一行列表项。</li>
+<li>这是第二行列表项。</li>
+</ol>
+
+
+<p>下面是一个代码块：</p>
+
+<pre><code>return "Hello Markdown！";
+</code></pre></blockquote>
+
+<h2>链接</h2>
+
+<p>Markdown 的链接格式为：<code>[展现的内容](链接的地址)</code>。要建立一个链接，只要在方块括号后面紧接着圆括号并插入网址链接即可，如果你还想要加上链接的 title 文字，只要在网址后面，用双引号把 title 文字包起来即可，例如：</p>
+
+<pre><code>我的博客地址 [GLGJing's Blog](http://glgjing.github.io "鼠标 hover 上去会显示该内容")
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+我的博客地址 <a href="http://glgjing.github.io" title="鼠标 hover 上去会显示该内容">GLGJing&rsquo;s Blog</a></p>
+
+<p>如果想要链接到本机的资源，可以使用相对路径：</p>
+
+<pre><code>博客的关于页 [about](/about/)
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+博客的关于页 <a href="/about/">about</a></p>
+
+<p>Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用尖括号包起来， Markdown 就会自动把它转成链接。一般网址的链接文字就和链接地址一样，例如：</p>
+
+<pre><code>网址：&lt;http://glgjing.github.io&gt;  
+邮箱：&lt;GLGJing@gmail.com&gt;
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+ 网址：<a href="http://glgjing.github.io">http://glgjing.github.io</a><br/>
+ 邮箱：<a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#58;&#x47;&#x4c;&#71;&#74;&#x69;&#x6e;&#103;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x47;&#76;&#x47;&#x4a;&#105;&#110;&#x67;&#x40;&#103;&#109;&#x61;&#105;&#108;&#x2e;&#x63;&#x6f;&#109;</a></p>
+
+<h2>强调</h2>
+
+<p>Markdown 使用星号<code>*</code>和底线<code>_</code>作为标记强调字词的符号，被一个<code>*</code>或<code>_</code>包围的字词会被转成用<code>&lt;em&gt;</code>标签包围，被两个<code>*</code>或<code>_</code>包起来的话，则会被转成<code>&lt;strong&gt;</code>，但是如果你的<code>*</code>或<code>_</code>两边都有空白的话，它们就只会被当成普通的符号，例如：</p>
+
+<pre><code>*我要强调一下*
+_我要再强调一下_
+**我要重点强调一下**
+__我要重点再强调一下__
+* 此强调没用 * 
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+<em>我要强调一下</em><br/>
+<em>我要再强调一下</em><br/>
+<strong>我要重点强调一下</strong><br/>
+<strong>我要重点再强调一下</strong><br/>
+* 此强调没用 *</p>
+
+<h2>代码块</h2>
+
+<p>如果要标记一小段行内代码，你可以用反引号<code>`</code>把它包起来，例如：</p>
+
+<pre><code>这里的`Func()`是一个函数
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+这里的<code>Func()</code>是一个函数</p>
+
+<p>要在 Markdown 中建立代码区块也很简单，只要缩进 4 个空格或是 1 个制表符就可以，但要注意代码段和普通段落之间要留有一个及以上的空行，例如，下面的输入：</p>
+
+<pre><code>这是一个普通段落：（注意此处留有 2 个以上空格和换行）
+
+    这是一个代码区块。
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+这是一个普通段落：（注意此处留有 2 个以上空格和换行）</p>
+
+<pre><code>这是一个代码区块。
+</code></pre>
+
+<h2>图片</h2>
+
+<p>Markdown 使用一种和链接很相似的语法来标记图片，具体格式为<code>![]()</code>，其中一个惊叹号<code>!</code>接着一个方括号<code>[]</code>，里面放上图片的替代文字
+接着一个普通括号<code>()</code>，里面放上图片的网址，最后还可以用引号包住并加上选择性的 &lsquo;title&rsquo; 文字，例如：</p>
+
+<pre><code>![示例图片](/images/photo.png)
+</code></pre>
+
+<p><strong>显示结果：</strong><br/>
+<img src="/images/photo.png" alt="示例图片" /><br/>
+到目前为止， Markdown 还没有办法指定图片的宽高，如果你需要的话，你可以使用普通的<code>&lt;img&gt;</code>标签。</p>
+
+<h2>反斜杠转义</h2>
+
+<p>介绍完前面各种标记格式，相信有人心里会有疑问：如果我想在正文显示上面的标记该怎么办，例如我就想显示 *Hello Markdown* ,但被显示成 <em>Hello Markdown</em>，<code>*</code>被当成了重点标记。Markdown 是支持反斜杠转义的，可被转义的字符包括：</p>
+
+<pre><code>\   反斜线
+`   反引号
+*   星号
+_   底线
+{}  花括号
+[]  方括号
+()  括弧
+#   井字号
++   加号
+-   减号
+.   英文句点
+!   惊叹号
+</code></pre>
+
+<p>所以上面那种情况，你就可以输入<code>\*Hello Markdown\*</code>，就会被显示为：*Hello Markdown*。</p>
+
+<h2>Markdown 免费编辑器</h2>
+
+<p><a href="http://wowubuntu.com/markdown/">Markdown 语法说明</a>里面有介绍各个平台的 Markdown 免费编辑器，这里就不再列出，我用的是<a href="http://25.io/mou/">Mou</a>，个人觉得还可以，比较简洁，只是偶尔会卡顿，免费的东西已经算很不错了。</p>
+]]></content>
+  </entry>
+  
+</feed>
