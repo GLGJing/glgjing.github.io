@@ -28,7 +28,7 @@ body > header h2 {
 }
 
 body {
-  line-height: 1.5em;
+  line-height: 1.8em;
   color: $text-color;
   @extend .sans;
   font-size: .9em;
@@ -45,24 +45,24 @@ h1 {
   font-weight: bold;
 }
 h2, section h1 {
-  font-size: 1.2em;
+  font-size: 1.3em;
   font-weight: bold;
 }
 h3, section h2, section section h1 {
-  font-size: 1em;
+  font-size: 1.2em;
   color: $subheader-color;
   font-weight: bold;
 }
 h4, section h3, section section h2, section section section h1 {
-  font-size: .9em;
+  font-size: 1.1em;
   color: $subheader-color;
 }
 h5, section h4, section section h3 {
-  font-size: .8em;
+  font-size: 1em;
   color: $subheader-color;
 }
 h6, section h5, section section h4, section section section h3 {
-  font-size: .7em;
+  font-size: 1em;
   color: $subheader-color;
 }
 
