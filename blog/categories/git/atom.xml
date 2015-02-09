@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Git | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/git/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-02-09T14:31:48+08:00</updated>
+  <updated>2015-02-09T14:36:33+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -26,9 +26,9 @@
 <h2>生成新的 rsa key</h2>
 
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x59;&#79;&#85;&#82;&#x5f;&#69;&#77;&#65;&#73;&#76;&#x40;&#x59;&#x4f;&#x55;&#x52;&#x45;&#x4d;&#65;&#x49;&#x4c;&#46;&#67;&#79;&#x4d;">&#89;&#x4f;&#x55;&#82;&#95;&#69;&#x4d;&#x41;&#x49;&#x4c;&#x40;&#89;&#x4f;&#x55;&#x52;&#x45;&#x4d;&#65;&#73;&#76;&#x2e;&#67;&#79;&#77;</a> 改为你的 Email 地址。
+<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#89;&#79;&#85;&#x52;&#x5f;&#69;&#77;&#x41;&#73;&#x4c;&#64;&#89;&#x4f;&#x55;&#82;&#x45;&#x4d;&#65;&#73;&#76;&#x2e;&#67;&#x4f;&#x4d;">&#x59;&#x4f;&#85;&#x52;&#x5f;&#69;&#x4d;&#65;&#73;&#x4c;&#x40;&#89;&#79;&#x55;&#x52;&#69;&#x4d;&#65;&#x49;&#76;&#x2e;&#x43;&#x4f;&#77;</a> 改为你的 Email 地址。
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C &ldquo;&lt;a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x59;&#79;&#x55;&#x52;&#95;&#69;&#77;&#x41;&#x49;&#76;&#64;&#x59;&#x4f;&#x55;&#82;&#x45;&#x4d;&#x41;&#x49;&#x4c;&#46;&#x43;&#x4f;&#x4d;">&#89;&#x4f;&#85;&#x52;&#95;&#69;&#x4d;&#65;&#73;&#x4c;&#x40;&#x59;&#x4f;&#85;&#82;&#69;&#77;&#x41;&#x49;&#x4c;&#46;&#67;&#79;&#x4d;&lt;/a>&rdquo; -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C &ldquo;&lt;a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#58;&#x59;&#x4f;&#85;&#82;&#95;&#69;&#77;&#65;&#73;&#x4c;&#x40;&#89;&#x4f;&#x55;&#82;&#69;&#77;&#65;&#x49;&#76;&#x2e;&#67;&#x4f;&#77;">&#x59;&#x4f;&#x55;&#x52;&#x5f;&#x45;&#x4d;&#65;&#73;&#x4c;&#64;&#89;&#x4f;&#85;&#x52;&#69;&#77;&#65;&#73;&#x4c;&#x2e;&#67;&#x4f;&#x4d;&lt;/a>&rdquo; -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
 生成过程中会出现以下信息，按屏幕提示操作输入 passphrase 口令，也可以直接回车设为空。
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -43,7 +43,7 @@
 </span><span class='line'>Your identification has been saved in /Users/username/.ssh/gitcafe_rsa.
 </span><span class='line'>Your public key has been saved in /Users/username/.ssh/gitcafe_rsa.pub.
 </span><span class='line'>The key fingerprint is:
-</span><span class='line'>15:81:d2:7a:c6:6c:0f:ec:b0:b6:d4:18:b8:d1:41:48 &lt;a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#x59;&#x4f;&#x55;&#82;&#95;&#x45;&#77;&#65;&#x49;&#x4c;&#x40;&#89;&#79;&#x55;&#x52;&#69;&#x4d;&#65;&#x49;&#x4c;&#46;&#x43;&#x4f;&#77;">&#89;&#x4f;&#x55;&#82;&#x5f;&#x45;&#77;&#65;&#x49;&#x4c;&#x40;&#x59;&#79;&#x55;&#x52;&#69;&#77;&#65;&#73;&#76;&#46;&#x43;&#79;&#x4d;&lt;/a></span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>15:81:d2:7a:c6:6c:0f:ec:b0:b6:d4:18:b8:d1:41:48 &lt;a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x59;&#79;&#x55;&#x52;&#x5f;&#69;&#77;&#x41;&#73;&#76;&#x40;&#89;&#x4f;&#85;&#x52;&#x45;&#77;&#65;&#73;&#x4c;&#x2e;&#67;&#x4f;&#x4d;">&#x59;&#x4f;&#85;&#x52;&#95;&#x45;&#x4d;&#x41;&#x49;&#76;&#64;&#89;&#79;&#x55;&#x52;&#69;&#x4d;&#x41;&#73;&#76;&#x2e;&#67;&#79;&#x4d;&lt;/a></span></code></pre></td></tr></table></div></figure>
 此时在 ~/.ssh/ 目录下会生成 gitcafe_rsa 和 gitcafe_rsa.pub两个文件。</p>
 
 <h2>配置新的 rsa key</h2>
@@ -58,7 +58,7 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>ssh -T &lt;a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#x63;&#x61;&#x66;&#101;&#46;&#99;&#x6f;&#x6d;">&#103;&#x69;&#116;&#64;&#x67;&#105;&#116;&#x63;&#x61;&#x66;&#101;&#46;&#x63;&#x6f;&#109;&lt;/a></span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>ssh -T &lt;a href="&#109;&#97;&#105;&#x6c;&#116;&#x6f;&#58;&#x67;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#99;&#97;&#x66;&#x65;&#46;&#x63;&#111;&#109;">&#x67;&#x69;&#x74;&#64;&#x67;&#105;&#116;&#x63;&#x61;&#102;&#x65;&#x2e;&#x63;&#111;&#x6d;&lt;/a></span></code></pre></td></tr></table></div></figure>
 如果连接成功的话，会出现以下信息。
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
