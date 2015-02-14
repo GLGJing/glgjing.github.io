@@ -8,7 +8,7 @@ keywords: markdown 入门教程 指南 语法 说明
 description: markdown 基本语法说明。
 ---
 ## 引言
-Markdown 的权威介绍[Markdown Syntax](http://daringfireball.net/projects/markdown/syntax)，中文版[Markdown 语法说明](http://wowubuntu.com/markdown/)，本文只是把常用的一些语法总结一下，适合新手快速入门。转载请注明出处<http://glgjing.github.io/><!--more-->
+Markdown 的权威介绍[Markdown Syntax](http://daringfireball.net/projects/markdown/syntax)，中文版[Markdown 语法说明](http://wowubuntu.com/markdown/)，本文只是把常用的一些语法总结一下，适合新手快速入门。转载请注明出处：<http://glgjing.github.io/><!--more-->
 ## 标题
 Markdown 支持在行首插入 1 到 6 个 `#`来表示 1 到 6 级标题，例如：   
 
