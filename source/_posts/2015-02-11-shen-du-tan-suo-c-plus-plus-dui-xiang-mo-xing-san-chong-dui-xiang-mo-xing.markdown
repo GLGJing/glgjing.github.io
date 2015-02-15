@@ -27,7 +27,7 @@ class Point {
 这个类在机器上是通过什么模型来表示的呢？下面就介绍三种不同的实现方式。转载请注明出处：<http://glgjing.github.io/><!-- more -->
 ## 1. 简单对象模型
 简单对象模型名副其实，十分简单。在简单对象模型中，一个 `object`是由一系列`slots`组成，每个`slot`相当于一个指针，指向一个`member`，`memebers`按照声明的顺序与`slots`一一对应，这里的`members`包括`data members`和`function members`。如果将简单对象模型应用在`Point Class`上，结构图如下：   
-{% img center /images/1-8.png %}  
+{% img center /images/1-8.png 400 %}  
 
 - 优点：十分简单，降低了编译器设计的复杂度。  
 
@@ -35,7 +35,7 @@ class Point {
 
 ## 2. 表格驱动对象模型
 表格驱动对象模型将`member data`和`member function`分别映射成两个表格`member data table`和`function member table`，而`object`本身只存储指向这两个表格的指针。	其中`function member table`是由一系列的`slot`组成，每个`slot`指向一个`member function`; `member data table`则直接存储的`member data`本身。如果将表格驱动对象模型应用在`Point Class`上，结构图如下：         
-{% img center /images/1-9.png %}   
+{% img center /images/1-9.png 400 %}   
 
 - 优点：采用两层索引机制，对`object`变化提供比较好的弹性，在`object`的`nonstatic data member`有所改变时，而应用程序代码没有改变，这时是不需要重新编译的。
 - 缺点：空间和时间上的效率降低，具体原因可以参考简单对象模型的缺点分析。
@@ -47,7 +47,7 @@ Stroustrup 早期设计的`C++`对象模型是从简单对象模型改进而来�
 - 每个`class`所关联的`type_info object`也是由`virtual table`存储的，一般会存在该表格的首个`slot`，`type_info`用于支持`runtime type identification` (`RTTI`)。  
 
 如果将`C++`对象模型应用在`Point Class`上，结构图如下：  
-{% img center /images/2-1.png %}    
+{% img center /images/2-1.png 400 %}    
 
 - 优点：空间和存取效率高，所有`static data members`以及所有的`function members`被独立存储在所有`object`之外，可以减少每个`object`的大小，而`nonstatic data members`存储在每一个`object`中，又提升了存取效率。  
 - 缺点：如果应用程序的代码未曾更改，但所用到的`class`的`nonstatic data members`有所更改，那么那些代码仍然需要全部重新编译，而前面的表格驱动模型在这方面提供了较大的弹性，因为他多提供了一层间接性，当然是付出了时间和空间上的代价。    
