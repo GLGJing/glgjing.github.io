@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 深度探索c++对象模型 | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-02-15T17:41:35+08:00</updated>
+  <updated>2015-02-15T18:05:29+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -53,7 +53,7 @@
 <h2>1. 简单对象模型</h2>
 
 <p>简单对象模型名副其实，十分简单。在简单对象模型中，一个 <code>object</code>是由一系列<code>slots</code>组成，每个<code>slot</code>相当于一个指针，指向一个<code>member</code>，<code>memebers</code>按照声明的顺序与<code>slots</code>一一对应，这里的<code>members</code>包括<code>data members</code>和<code>function members</code>。如果将简单对象模型应用在<code>Point Class</code>上，结构图如下： <br/>
-<img class="center" src="/images/1-8.png"></p>
+<img class="center" src="/images/1-8.png" width="400"></p>
 
 <ul>
 <li><p>优点：十分简单，降低了编译器设计的复杂度。</p></li>
@@ -64,7 +64,7 @@
 <h2>2. 表格驱动对象模型</h2>
 
 <p>表格驱动对象模型将<code>member data</code>和<code>member function</code>分别映射成两个表格<code>member data table</code>和<code>function member table</code>，而<code>object</code>本身只存储指向这两个表格的指针。  其中<code>function member table</code>是由一系列的<code>slot</code>组成，每个<code>slot</code>指向一个<code>member function</code>; <code>member data table</code>则直接存储的<code>member data</code>本身。如果将表格驱动对象模型应用在<code>Point Class</code>上，结构图如下：       <br/>
-<img class="center" src="/images/1-9.png"></p>
+<img class="center" src="/images/1-9.png" width="400"></p>
 
 <ul>
 <li>优点：采用两层索引机制，对<code>object</code>变化提供比较好的弹性，在<code>object</code>的<code>nonstatic data member</code>有所改变时，而应用程序代码没有改变，这时是不需要重新编译的。</li>
@@ -83,7 +83,7 @@
 
 
 <p>如果将<code>C++</code>对象模型应用在<code>Point Class</code>上，结构图如下：<br/>
-<img class="center" src="/images/2-1.png"></p>
+<img class="center" src="/images/2-1.png" width="400"></p>
 
 <ul>
 <li>优点：空间和存取效率高，所有<code>static data members</code>以及所有的<code>function members</code>被独立存储在所有<code>object</code>之外，可以减少每个<code>object</code>的大小，而<code>nonstatic data members</code>存储在每一个<code>object</code>中，又提升了存取效率。</li>
