@@ -109,6 +109,75 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/">深度探索C++对象模型：三种对象模型</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-11T15:57:03+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:57 pm</span></time>
+        
+         | <a href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在有一个<code>Point</code>类，声明如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">Point</span> <span class="p">{</span>
+</span><span class='line'> <span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">Point</span><span class="p">(</span><span class="kt">float</span> <span class="n">xval</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="o">~</span><span class="n">Point</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">float</span> <span class="n">x</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="nf">PointCount</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="n">print</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">float</span> <span class="n">_x</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">_point_count</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>  <br/>
+这个类在机器上是通过什么模型来表示的呢？下面就介绍三种不同的实现方式。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/">Markdown 语法新手指南</a></h1>
     
     
@@ -130,7 +199,7 @@
 
   <div class="entry-content"><h2>引言</h2>
 
-<p>Markdown 的权威介绍<a href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax</a>，中文版<a href="http://wowubuntu.com/markdown/">Markdown 语法说明</a>，本文只是把常用的一些语法总结一下，适合新手快速入门。转载请注明出处<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></div>
+<p>Markdown 的权威介绍<a href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax</a>，中文版<a href="http://wowubuntu.com/markdown/">Markdown 语法说明</a>，本文只是把常用的一些语法总结一下，适合新手快速入门。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></div>
   
   
     <footer>
@@ -540,46 +609,6 @@
   
     <footer>
       <a rel="full-article" href="/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/">利用Octopress和Github搭建个人博客（二）：自定义主题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-12T16:19:09+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:19 pm</span></time>
-        
-         | <a href="/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/1-2.png"></p>
-
-<h2>引言</h2>
-
-
-<p>在为Octopress博客自定义主题之前，你应该已经搭建好了基础环境。如果还没开始搭建可以参考<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">利用Octopress和Github搭建个人博客（一）：基础环境搭建</a>。在搭建好基础环境之后，如果单纯的写写博文，默认主题也是可以满足需求的。但既然选择了用Octopress和Github Pages来管理自己的博客，不折腾折腾都对不起自己。不要求效果有多炫，但要方便浏览查找。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/">继续阅读 &rarr;</a>
     </footer>
   
 

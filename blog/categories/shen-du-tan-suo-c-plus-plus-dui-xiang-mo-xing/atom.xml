@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: C++, | GLGJing's Blog]]></title>
-  <link href="http://glgjing.github.io/blog/categories/c-plus-plus/atom.xml" rel="self"/>
+  <title><![CDATA[Category: 深度探索c++对象模型 | GLGJing's Blog]]></title>
+  <link href="http://glgjing.github.io/blog/categories/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
   <updated>2015-02-15T17:41:35+08:00</updated>
   <id>http://glgjing.github.io/</id>
