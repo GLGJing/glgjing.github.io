@@ -109,6 +109,78 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/02/26/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:zhi-zhen-de-lei-xing/">深度探索C++对象模型：指针的类型</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-26T11:27:18+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:27 am</span></time>
+        
+         | <a href="/blog/2015/02/26/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:zhi-zhen-de-lei-xing/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>指针对于<code>c++</code>来说是一个非常强大和灵活的特性，他可以支持多态，可以在不同类型之间进行转换，那么指向不同类型的指针在本质上有什么区别呢？转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。例如一个类的定义如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">ZooAnimal</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">ZooAnimal</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="o">~</span><span class="n">ZooAnimal</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">rotate</span><span class="p">();</span>
+</span><span class='line'><span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">loc</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么下面几个指针有什么不同：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">ZooAnimal</span><span class="o">*</span> <span class="n">px</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span><span class="o">*</span> <span class="n">pi</span><span class="p">;</span>
+</span><span class='line'><span class="n">Array</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;*</span> <span class="n">pta</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>单纯从内存需求上来看，没有什么不同，在 32 位机器上都是 4 个字节，也就是一个机器地址大小。从存储的内容来看，也没什么不同，都是存储一个地址。真正不同的是寻址出来的内容类型不同，也就是说：</p>
+
+<blockquote><p>&ldquo;指针类型&#8221;会教导编译器如何解释某个特定地址中的内存内容及其大小。</p></blockquote>
+
+<p>所以说虽然一个<code>void*</code>指针可以指向一个地址，但是我们无法通过<code>void*</code>来操作该地址所存储的内容，因为编译器无法知道应该用什么方式来解释和操作该内容，这时需要进行类型转换（<code>cast</code>）来告诉编译器如何进行操作。</p>
+
+<blockquote><p>所以，转型(<code>cast</code>)其实是一种编译器指令。大部分情况下它并不改变一个指针所含的真正地址，它只影响“被指出之内存的大小和其内容”的解释方式。</p></blockquote>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/02/18/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:claass-yu-struct-de-qu-bie/">深度探索C++对象模型：class 与 Struct 的区别</a></h1>
     
     
@@ -566,59 +638,6 @@
   
     <footer>
       <a rel="full-article" href="/blog/2015/01/03/c-plus-plus-xu-han-shu-qian-xi/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/27/c-plus-plus-zhong-zai-,-zhong-xie-,-zhong-ding-yi-qu-bie/">C++重载、重写、重定义区别</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-27T15:32:17+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:32 pm</span></time>
-        
-         | <a href="/blog/2014/12/27/c-plus-plus-zhong-zai-,-zhong-xie-,-zhong-ding-yi-qu-bie/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>一 重载（overload）</h2>
-
-
-<h4>概念：</h4>
-
-
-<p>函数有同样的名称，但是参数列表不相同的情形，这样的同名不同参数的函数之间，互相称之为重载函数。</p>
-
-<h4>基本条件：</h4>
-
-
-<ul>
-    <li>函数名必须相同；</li>
-    <li>函数参数必须不相同，可以是参数类型或者参数个数不同；</li>
-    <li>函数返回值可以相同，也可以不相同；</li>
-</ul>
-
-
-<blockquote><p></div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/27/c-plus-plus-zhong-zai-,-zhong-xie-,-zhong-ding-yi-qu-bie/">继续阅读 &rarr;</a>
     </footer>
   
 

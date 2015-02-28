@@ -4,7 +4,7 @@
   <title><![CDATA[GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-02-18T02:59:43+08:00</updated>
+  <updated>2015-02-28T16:51:33+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,55 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[深度探索C++对象模型：指针的类型]]></title>
+    <link href="http://glgjing.github.io/blog/2015/02/26/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:zhi-zhen-de-lei-xing/"/>
+    <updated>2015-02-26T11:27:18+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/02/26/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:zhi-zhen-de-lei-xing</id>
+    <content type="html"><![CDATA[<p>指针对于<code>c++</code>来说是一个非常强大和灵活的特性，他可以支持多态，可以在不同类型之间进行转换，那么指向不同类型的指针在本质上有什么区别呢？转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。例如一个类的定义如下：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">ZooAnimal</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">ZooAnimal</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="o">~</span><span class="n">ZooAnimal</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">virtual</span> <span class="kt">void</span> <span class="nf">rotate</span><span class="p">();</span>
+</span><span class='line'><span class="k">protected</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">loc</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么下面几个指针有什么不同：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="n">ZooAnimal</span><span class="o">*</span> <span class="n">px</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span><span class="o">*</span> <span class="n">pi</span><span class="p">;</span>
+</span><span class='line'><span class="n">Array</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;*</span> <span class="n">pta</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>单纯从内存需求上来看，没有什么不同，在 32 位机器上都是 4 个字节，也就是一个机器地址大小。从存储的内容来看，也没什么不同，都是存储一个地址。真正不同的是寻址出来的内容类型不同，也就是说：</p>
+
+<blockquote><p>&ldquo;指针类型&#8221;会教导编译器如何解释某个特定地址中的内存内容及其大小。</p></blockquote>
+
+<p>所以说虽然一个<code>void*</code>指针可以指向一个地址，但是我们无法通过<code>void*</code>来操作该地址所存储的内容，因为编译器无法知道应该用什么方式来解释和操作该内容，这时需要进行类型转换（<code>cast</code>）来告诉编译器如何进行操作。</p>
+
+<blockquote><p>所以，转型(<code>cast</code>)其实是一种编译器指令。大部分情况下它并不改变一个指针所含的真正地址，它只影响“被指出之内存的大小和其内容”的解释方式。</p></blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[深度探索C++对象模型：class 与 Struct 的区别]]></title>
@@ -322,7 +371,7 @@
 
 <p><strong>显示结果：</strong><br/>
  网址：<a href="http://glgjing.github.io">http://glgjing.github.io</a><br/>
- 邮箱：<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#71;&#x4c;&#x47;&#x4a;&#105;&#110;&#x67;&#x40;&#103;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#x47;&#76;&#71;&#74;&#105;&#110;&#x67;&#x40;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;</a></p>
+ 邮箱：<a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#x3a;&#x47;&#x4c;&#x47;&#74;&#x69;&#110;&#x67;&#x40;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#x6d;">&#71;&#76;&#71;&#74;&#105;&#110;&#x67;&#64;&#x67;&#109;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;</a></p>
 
 <h2>强调</h2>
 
@@ -416,7 +465,7 @@ _   底线
 <h2>生成新的 rsa key</h2>
 
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#89;&#x4f;&#85;&#82;&#x5f;&#x45;&#x4d;&#x41;&#x49;&#76;&#x40;&#x59;&#79;&#85;&#x52;&#69;&#x4d;&#x41;&#73;&#x4c;&#x2e;&#x43;&#x4f;&#x4d;">&#89;&#79;&#x55;&#x52;&#x5f;&#69;&#77;&#x41;&#73;&#76;&#x40;&#x59;&#x4f;&#85;&#82;&#x45;&#77;&#65;&#73;&#76;&#46;&#67;&#79;&#x4d;</a> 改为你的 Email 地址。</p>
+<p>在命令行输入如下命令，将命令中的 <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x59;&#x4f;&#x55;&#x52;&#95;&#x45;&#x4d;&#x41;&#73;&#76;&#x40;&#x59;&#x4f;&#x55;&#x52;&#x45;&#77;&#x41;&#73;&#76;&#x2e;&#67;&#79;&#77;">&#x59;&#x4f;&#85;&#82;&#95;&#x45;&#x4d;&#x41;&#x49;&#76;&#64;&#x59;&#79;&#x55;&#x52;&#69;&#77;&#65;&#x49;&#x4c;&#46;&#67;&#79;&#77;</a> 改为你的 Email 地址。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
