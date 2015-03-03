@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 深度探索c++对象模型 | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-02-28T17:10:32+08:00</updated>
+  <updated>2015-03-03T20:53:00+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,90 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[深度探索C++对象模型：默认构造函数]]></title>
+    <link href="http://glgjing.github.io/blog/2015/03/03/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:mo-ren-gou-zao-han-shu/"/>
+    <updated>2015-03-03T19:36:08+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/03/03/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:mo-ren-gou-zao-han-shu</id>
+    <content type="html"><![CDATA[<blockquote><p>默认构造函数在被需要的时候被编译器产生出来。</p></blockquote>
+
+<p>这句话的关键部分是：</p>
+
+<ol>
+<li>被谁需要？</li>
+<li>什么时候被需要？</li>
+<li>做什么事情？</li>
+</ol>
+
+
+<h3>被谁需要？</h3>
+
+<p>编译器为程序构建默认构造函数是因为编译器需要它，而不是因为程序需要它。程序需要什么应该是程序员的责任，应该由程序员提供。举个例子，例如下面这段代码：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">Foo</span> <span class="p">{</span>
+</span><span class='line'><span class="k">public</span><span class="o">:</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Foo</span><span class="o">*</span> <span class="n">pnext</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">void</span> <span class="n">foo_bar</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">Foo</span> <span class="n">bar</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">// 程序需要 bar&amp;rsquo;s members 都被初始化为 0</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">bar</span><span class="p">.</span><span class="n">val</span> <span class="o">||</span> <span class="n">bar</span><span class="p">.</span><span class="n">pnext</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// do something</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>  <br/>
+该段程序的正确语意是希望<code>Foo</code>的默认构造函数将<code>val</code>和<code>pnext</code>初始化为 0，但此处编译器并不会为<code>Foo</code>生成默认构造函数，因为这里不满足“需要的时候“这个条件，程序需要不代表编译器需要。后面我们会了解到就算此处编译器为<code>Foo</code>生成了默认构造函数，该默认构造函数也不会对<code>val</code>和<code>pnext</code>进行初始化，具体原因请看“做什么事情？”部分。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a> <!--more--></p>
+
+<h3>什么时候需要？</h3>
+
+<p>上面解释了默认构造函数是被编译器需要的，那么编译器什么时候需要它呢？在下列四种情况下编译器会生成默认构造函数：</p>
+
+<ol>
+<li><code>class</code>内包含有<code>default constructor</code>的<code>member object</code>，合成<code>default constructor</code>为了调用<code>member object</code>的<code>default constructor</code>。</li>
+<li><code>class</code>继承自含有<code>default constructor</code>的基类，合成<code>default constructor</code>为了调用基类的<code>default constructor</code>。</li>
+<li>带有虚函数的<code>class</code>，合成<code>default constructor</code>主要为了初始化vptr（虚函数表指针）。</li>
+<li><code>class</code> 有一个及以上的虚基类，合成<code>default constructor</code>主要为了初始化虚基类指针。</li>
+</ol>
+
+
+<p>当满足上面的条件时，编译器会对<code>constructor</code>进行扩展，扩展的规则如下：</p>
+
+<ol>
+<li>当<code>class</code>没有定义<code>constructor</code>，编译器会合成<code>default constructor</code>，并加入编译器需要的操作，可能包括调用<code>member object</code>的<code>default constructor</code>，调用基类的<code>default constructor</code>，初始化虚函数表指针及虚基类指针。</li>
+<li>当<code>class</code>已经定义了一个或多个<code>constructor</code>时，编译器不会再去合成<code>constructor</code>，但会扩展所有<code>constructor</code>加入编译器需要的操作。</li>
+</ol>
+
+
+<h3>做什么事情？</h3>
+
+<p>从上面的分析中可以看出，默认构造函数所做的事情用一句话可以概括：只执行编译器所需要的行为。所以说即使编译器为<code>Foo</code>生成了默认构造函数，该默认构造函数也不会对<code>val</code>和<code>pnext</code>进行初始化，因为编译器并不需要该行为，这是程序员应该做的事情。</p>
+
+<h3>总结：</h3>
+
+<p>编译器只合成他需要的<code>default constructor</code>并且只做他需要的操作。C++ 新手常见的两个<font color="ff0000">误解</font>：</p>
+
+<blockquote><ol>
+<li>任何<code>class</code>如果没有定义<code>default constructor</code>，就会被合成出一个来。</li>
+<li>编译器合成出来的<code>default constructor</code>会明确设定<code>class</code> 内每一个<code>data member</code>的默认值。</li>
+</ol>
+</blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[深度探索C++对象模型：指针的类型]]></title>
