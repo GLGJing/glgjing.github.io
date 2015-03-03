@@ -3,7 +3,7 @@ layout: post
 title: "深度探索C++对象模型：指针的类型"
 date: 2015-02-26 11:27:18 +0800
 comments: true
-categories: c++, 深度探索C++对象模型
+categories: c++ 深度探索C++对象模型
 keywords: c++ 指针 指针类型 深度探索 c++对象模型
 description: 介绍了不同类型指针之间的实际区别和联系。
 ---

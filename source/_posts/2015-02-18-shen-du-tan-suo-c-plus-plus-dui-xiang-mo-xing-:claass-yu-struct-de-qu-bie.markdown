@@ -3,7 +3,7 @@ layout: post
 title: "深度探索C++对象模型：class 与 struct 的区别"
 date: 2015-02-18 01:32:20 +0800
 comments: true
-categories: c++, 深度探索C++对象模型
+categories: c++ 深度探索C++对象模型
 keywords: c++ class struct 区别 深度探索 c++对象模型
 description: 介绍了 class 和 struct 的区别。
 ---

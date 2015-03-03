@@ -3,7 +3,7 @@ layout: post
 title: "深度探索C++对象模型：三种对象模型"
 date: 2015-02-11 15:57:03 +0800
 comments: true
-categories: c++, 深度探索C++对象模型
+categories: c++ 深度探索C++对象模型
 keywords: c++ 对象模型 深度探索 c++对象模型
 description: 分别介绍了三种对象模型的原理，以及优缺点。
 ---
