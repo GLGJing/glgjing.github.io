@@ -9,7 +9,7 @@
   <meta name="author" content="GLGJing">
 
   
-  <meta name="description" content="GLGJing的个人博客，主要包含对windows, c++, DirectUI, UI, GUI, GDI, GDI+, octopress等相关技术的探讨。">
+  <meta name="description" content="GLGJing的个人博客，主要包含对windows, c++, DirectUI, Android, Java等相关技术的探讨。">
   <meta name="keywords" content="windows c++ octopress Github DirectUI UI GUI GDI GDI+">
 
   <!-- http://t.co/dKP3o1e -->
@@ -103,6 +103,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/">深度探索C++对象模型：拷贝构造函数</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-06T20:47:13+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:47 pm</span></time>
+        
+         | <a href="/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>对象之间的拷贝操作</h2>
+
+<p>发生对象之间拷贝操作的三种情况：</p>
+
+<ol>
+<li>用一个 object 对另一个 object 进行初始化操作</li>
+<li>当 object 被用作函数参数时</li>
+<li>当一个函数返回值为一个 object 时</li>
+</ol>
+
+
+<p>如果一个<code>class</code>明确定义了<code>copy constructor</code>，那么在上述几种情况中会调用该<code>copy constructor</code>，但如果一个<code>class</code>没有定义<code>copy constructor</code>呢？转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -643,44 +689,6 @@
 
 </div>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/06/git-xiu-gai-ti-jiao-li-shi/">Git 修改提交历史</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-06T11:14:40+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:14 am</span></time>
-        
-         | <a href="/blog/2015/01/06/git-xiu-gai-ti-jiao-li-shi/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>引言</h2>
-
-
-<p>在使用git进行工作时，经常会碰到想要修改本地提交记录（还没有push到远程仓库）的情况。例如这样一个场景：你接到一个任务，这个任务可能需要一个星期的开发时间，于是你从<code>master</code>分之上运行<code>git checkout -b new_branch</code>命令，<code>checkout</code>到<code>new_branch</code>分之上进行该任务的开发，在开发的过程中向<code>new_branch</code>分之提交了多个<code>commit</code>，然后发现有些代码不是很合理，于是又更改代码提交新的<code>commit</code>，反反复复终于完成了该任务的开发，是时候提交review并合并到<code>master</code>分之上了，但是你发现提交记录非常混乱，并不利于同事review，而且你的同事也不关心你的具体修改过程，他们只想看到最终的实现，此时问题来了，如果你把所有的<code>commit</code>合并成一个大<code>commit</code>，虽然你的同事可以直接看到最终代码，但你的各个模块都混在一起提交，很难按模块单独进行review并发现问题；如果你直接提交review，你的同事就不得不把你的所有提交历史都review一遍，包括一些实际上已经在后面提交中被你修改掉的代码，脾气好的估计内心一万只草泥马奔过，脾气不好的保证不打死你！当然<code>git</code>是不可能考虑不到这种情况的，扯了这么多，下面就来看一下如何修改<code>git</code>的提交历史。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/01/06/git-xiu-gai-ti-jiao-li-shi/">继续阅读 &rarr;</a>
-    </footer>
   
 
 

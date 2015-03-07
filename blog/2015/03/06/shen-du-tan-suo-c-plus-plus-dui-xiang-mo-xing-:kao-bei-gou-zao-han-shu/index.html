@@ -5,12 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>为 Git 添加多个公秘钥 - GLGJing&#8217;s Blog</title>
+  <title>深度探索C++对象模型：拷贝构造函数 - GLGJing&#8217;s Blog</title>
   <meta name="author" content="GLGJing">
 
   
-  <meta name="description" content="本文介绍了git如何同时使用多个公钥。">
-  <meta name="keywords" content="git 公钥 多个公钥 rsa gitcafe">
+  <meta name="description" content="对象之间的拷贝操作 发生对象之间拷贝操作的三种情况： 用一个 object 对另一个 object 进行初始化操作
+当 object 被用作函数参数时
+当一个函数返回值为一个 object 时 如果一个class明确定义了copy constructor，那么在上述几种情况中会调用该copy &hellip;">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao">
+  <link rel="canonical" href="http://glgjing.github.io/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="GLGJing's Blog" type="application/atom+xml">
@@ -107,7 +109,7 @@
   <header>
     
       
-        <h1 class="entry-title">为 Git 添加多个公秘钥</h1>
+        <h1 class="entry-title">深度探索C++对象模型：拷贝构造函数</h1>
       
     
     
@@ -117,7 +119,7 @@
 
 
 
-<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
+<time class='entry-date' datetime='2015-03-06T20:47:13+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:47 pm</span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -127,71 +129,56 @@
   </header>
 
 
-<div class="entry-content"><h2>小引</h2>
+<div class="entry-content"><h2>对象之间的拷贝操作</h2>
+
+<p>发生对象之间拷贝操作的三种情况：</p>
+
+<ol>
+<li>用一个 object 对另一个 object 进行初始化操作</li>
+<li>当 object 被用作函数参数时</li>
+<li>当一个函数返回值为一个 object 时</li>
+</ol>
 
 
-<p>最近将博客从 github 上迁移到了国内的 gitcafe，主要原因是在国内的访问速度你懂的。迁移之后发现问题来了，每次连接时 SSH 客户端发送本地私钥到服务端验证，而这个私钥默认是 ~/.ssh/id_rsa 文件，如果只有一个账户，连接的服务器上保存的公钥和发送的私钥自然是配对的。但是我已经有了两个账户了，当然 username 和 email 是完全不同的，如果还是都读取默认的 ~/.ssh/id_rsa 文件，那么 gitcafe 账户的公钥和私钥显然是不匹配的。所以需要为 gitcafe 账户再添加一对公秘钥，并且可以根据账户自动寻找匹配的公秘钥。转载请注明出处<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code><!-- more --></p>
+<p>如果一个<code>class</code>明确定义了<code>copy constructor</code>，那么在上述几种情况中会调用该<code>copy constructor</code>，但如果一个<code>class</code>没有定义<code>copy constructor</code>呢？转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。<!--more--></p>
 
-<h2>生成新的 rsa key</h2>
+<h2>memberwise Initialization</h2>
 
+<p><code>memberwise Initialization</code>的规则是：把每一个内建活继承来的<code>data member</code>从一个<code>object</code>拷贝到另一个<code>object</code>，但并不会拷贝<code>member class object</code>，而是以递归的方式对<code>member class object</code>施行<code>memberwise Initialization</code>。这样的操作是如何完成的呢？</p>
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#x59;&#79;&#x55;&#82;&#95;&#x45;&#x4d;&#65;&#x49;&#x4c;&#x40;&#x59;&#79;&#x55;&#x52;&#x45;&#77;&#65;&#73;&#x4c;&#46;&#x43;&#79;&#77;">&#x59;&#x4f;&#85;&#x52;&#95;&#69;&#x4d;&#x41;&#73;&#76;&#64;&#89;&#x4f;&#x55;&#82;&#69;&#77;&#x41;&#x49;&#76;&#46;&#67;&#x4f;&#77;</a> 改为你的 Email 地址。</p>
+<blockquote><p>从概念上而言，对于一个<code>class X</code>，这个操作是被一个<code>copy constructor</code>实现出来&hellip;</p></blockquote>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
+<p>之所以是“从概念上”，也就是实际上并不是完全由<code>copy constructor</code>实现的。</p>
 
+<blockquote><p>一个良好的编译器可以为大部分<code>class object</code>产生<code>bitwise copies</code>，因为他们有<code>bitewise copy semantics</code>&hellip;</p></blockquote>
 
-<p>生成过程中会出现以下信息，按屏幕提示操作输入 passphrase 口令，也可以直接回车设为空。</p>
+<h2>bitewise copy semantics（位逐次拷贝）</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Generating public/private rsa key pair.
-</span><span class='line'>Enter passphrase (empty for no passphrase):
-</span><span class='line'>Enter same passphrase again:
-</span><span class='line'>Your identification has been saved in /Users/username/.ssh/gitcafe_rsa.
-</span><span class='line'>Your public key has been saved in /Users/username/.ssh/gitcafe_rsa.pub.
-</span><span class='line'>The key fingerprint is:
-</span><span class='line'>15:81:d2:7a:c6:6c:0f:ec:b0:b6:d4:18:b8:d1:41:48 YOUR_EMAIL@YOUREMAIL.COM</span></code></pre></td></tr></table></div></figure>
+<p><code>bitewise copy semantics</code>（位逐次拷贝）顾名思义就是把一个<code>object</code>的内容按位拷贝给另一个<code>object</code>。如果在<code>bitewise copy semantics</code>完全可以满足一个<code>class</code>的拷贝操作的情况下，编译器是不会合成<code>copy constructor</code>。但在有些情况下单纯的<code>bitewise copy semantics</code>不能满足拷贝操作，也就是说编译器在一个<code>class</code>不会表现出<code>bitewise copy semantics</code>时，需要合成<code>copy constructor</code>来完成拷贝操作。一个<code>class</code>不会表现出<code>bitewise copy semantics</code>的四种情况：</p>
+
+<ol>
+<li>当<code>class</code>内含有<code>member object</code>，而且后者的<code>class</code>声明里有一个<code>copy constructor</code>，不管是<code>class</code>的设计者明确声明的，还是被编译器合成的。</li>
+<li>当<code>class</code>继承一个<code>base class</code>，而后者含有一个<code>copy constructor</code>(不管是明确声明的还是编译器合成的)。</li>
+<li>当<code>class</code>还有<code>virtual functions</code>时。</li>
+<li>当<code>class</code>派生链中有<code>virtual base classes</code>时。</li>
+</ol>
 
 
-<p>此时在 ~/.ssh/ 目录下会生成 gitcafe_rsa 和 gitcafe_rsa.pub两个文件。</p>
+<h2>编译器合成 copy constructor 做什么？</h2>
 
-<h2>配置新的 rsa key</h2>
-
-
-<p>在 SSH 用户配置文件 ~/.ssh/config 中指定对应服务所使用的公秘钥名称，如果没有 config 文件的话就新建一个，并输入以下内容：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>  IdentityFile ~/.ssh/gitcafe</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后将 gitcafe_rsa.pub 文件中的内容复制到 gitcafe 的 SSH 公钥中，具体参见<a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E5%92%8C%E8%AE%BE%E7%BD%AE%20Git">这里</a>，这样就完成了新的公秘钥配置。可以运行下面的命令进行测试</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>ssh -T git@gitcafe.com</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果连接成功的话，会出现以下信息。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>Hi USERNAME! You've successfully authenticated, but GitCafe does not provide shell access.</span></code></pre></td></tr></table></div></figure>
+<ol>
+<li>调用<code>member object</code>以及<code>base class</code>的<code>copy constructor</code>。</li>
+<li>重新设定<code>virtual table</code>的指针。</li>
+<li>处理<code>virtual base class subobject</code></li>
+</ol>
 
 
 <h2>总结</h2>
 
+<blockquote><p><code>Default constructor</code> 和 <code>copy constructor</code> 在必要的时候才由编译器产生出来。</p></blockquote>
 
-<p>这里以 gitcafe 为例讲述了如何为git添加多个公秘钥，其他的公秘钥添加方法基本类似。参考：<a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E5%85%AC%E7%A7%98%E9%92%A5">如何同时使用多个公秘钥</a>。</p>
+<p><code>copy constructor</code>的合成原则基本上和<code>default constructor</code>的合成原则一致，具体可以参考：<a href="http://glgjing.github.io/blog/2015/03/03/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:mo-ren-gou-zao-han-shu/">
+深度探索C++对象模型：默认构造函数 </a>。主要原则就是：编译器只合成他需要的<code>copy constructor</code>并且只做他需要的操作。</p>
 </div>
 
 
@@ -214,22 +201,16 @@
 
 
 
-<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
+<time class='entry-date' datetime='2015-03-06T20:47:13+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:47 pm</span></time>
       
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/git/'>git</a>
-  
-</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/" >Tweet</a>
   
   
   
@@ -238,10 +219,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/" title="Previous Post: 利用Octopress和Github搭建个人博客（四）：自定义字体">&laquo; 利用Octopress和Github搭建个人博客（四）：自定义字体</a>
+        <a class="basic-alignment left" href="/blog/2015/03/03/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:mo-ren-gou-zao-han-shu/" title="Previous Post: 深度探索C++对象模型：默认构造函数">&laquo; 深度探索C++对象模型：默认构造函数</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/" title="Next Post: Markdown 语法新手指南">Markdown 语法新手指南 &raquo;</a>
       
     </p>
   </footer>
@@ -295,8 +274,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/';
-        var disqus_url = 'http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/';
+        var disqus_identifier = 'http://glgjing.github.io/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/';
+        var disqus_url = 'http://glgjing.github.io/blog/2015/03/06/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:kao-bei-gou-zao-han-shu/';
         var disqus_script = 'embed.js';
       
     (function () {
