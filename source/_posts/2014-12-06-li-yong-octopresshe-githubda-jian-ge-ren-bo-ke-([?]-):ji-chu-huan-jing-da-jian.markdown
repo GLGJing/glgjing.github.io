@@ -56,7 +56,7 @@ git clone git://github.com/imathis/octopress.git octopress
 {% endcodeblock %}
 接下来安装依赖项：
 {% codeblock %}
-cd octopuses
+cd octopress
 gem install bundler
 rbenv rehash # If you use rbenv, rehash to be able to run the bundle command
 bundle install
