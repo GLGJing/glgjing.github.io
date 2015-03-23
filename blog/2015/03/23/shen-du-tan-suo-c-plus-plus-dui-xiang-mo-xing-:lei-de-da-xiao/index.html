@@ -5,12 +5,27 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>为 Git 添加多个公秘钥 - GLGJing&#8217;s Blog</title>
+  <title>深度探索C++对象模型：类的大小 - GLGJing&#8217;s Blog</title>
   <meta name="author" content="GLGJing">
 
   
-  <meta name="description" content="本文介绍了git如何同时使用多个公钥。">
-  <meta name="keywords" content="git 公钥 多个公钥 rsa gitcafe">
+  <meta name="description" content="现在有这样一段代码： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+class X {
+}; class Y : public virtual X {
+}; class Z : public virtual X {
+}; class A : public Y, public Z {
+}; 对 &hellip;">
+  <meta name="keywords" content="c++ 对象模型 深度探索 c++对象模型 类的大小 sizeof">
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -18,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao">
+  <link rel="canonical" href="http://glgjing.github.io/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="GLGJing's Blog" type="application/atom+xml">
@@ -107,7 +122,7 @@
   <header>
     
       
-        <h1 class="entry-title">为 Git 添加多个公秘钥</h1>
+        <h1 class="entry-title">深度探索C++对象模型：类的大小</h1>
       
     
     
@@ -117,7 +132,7 @@
 
 
 
-<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
+<time class='entry-date' datetime='2015-03-23T19:21:06+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>7:21 pm</span></time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -127,21 +142,7 @@
   </header>
 
 
-<div class="entry-content"><h2>小引</h2>
-
-
-<p>最近将博客从 github 上迁移到了国内的 gitcafe，主要原因是在国内的访问速度你懂的。迁移之后发现问题来了，每次连接时 SSH 客户端发送本地私钥到服务端验证，而这个私钥默认是 ~/.ssh/id_rsa 文件，如果只有一个账户，连接的服务器上保存的公钥和发送的私钥自然是配对的。但是我已经有了两个账户了，当然 username 和 email 是完全不同的，如果还是都读取默认的 ~/.ssh/id_rsa 文件，那么 gitcafe 账户的公钥和私钥显然是不匹配的。所以需要为 gitcafe 账户再添加一对公秘钥，并且可以根据账户自动寻找匹配的公秘钥。转载请注明出处<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code><!-- more --></p>
-
-<h2>生成新的 rsa key</h2>
-
-
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#x69;&#108;&#116;&#111;&#58;&#89;&#79;&#x55;&#x52;&#x5f;&#x45;&#77;&#65;&#73;&#x4c;&#64;&#x59;&#79;&#85;&#x52;&#x45;&#x4d;&#65;&#x49;&#x4c;&#x2e;&#x43;&#79;&#77;">&#x59;&#79;&#85;&#x52;&#95;&#69;&#x4d;&#x41;&#73;&#76;&#64;&#x59;&#x4f;&#85;&#82;&#69;&#77;&#65;&#x49;&#76;&#46;&#67;&#x4f;&#x4d;</a> 改为你的 Email 地址。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
-
-
-<p>生成过程中会出现以下信息，按屏幕提示操作输入 passphrase 口令，也可以直接回车设为空。</p>
+<div class="entry-content"><p>现在有这样一段代码：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -150,48 +151,74 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Generating public/private rsa key pair.
-</span><span class='line'>Enter passphrase (empty for no passphrase):
-</span><span class='line'>Enter same passphrase again:
-</span><span class='line'>Your identification has been saved in /Users/username/.ssh/gitcafe_rsa.
-</span><span class='line'>Your public key has been saved in /Users/username/.ssh/gitcafe_rsa.pub.
-</span><span class='line'>The key fingerprint is:
-</span><span class='line'>15:81:d2:7a:c6:6c:0f:ec:b0:b6:d4:18:b8:d1:41:48 YOUR_EMAIL@YOUREMAIL.COM</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">X</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Y</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">X</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Z</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">X</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Y</span><span class="p">,</span> <span class="k">public</span> <span class="n">Z</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>此时在 ~/.ssh/ 目录下会生成 gitcafe_rsa 和 gitcafe_rsa.pub两个文件。</p>
+<p>对 <code>class X、Y、Z、A</code> 进行 <code>sizeof</code> 运算结果是什么呢？如果你心里已经有了答案，不妨看完下面的分析再说。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></p>
 
-<h2>配置新的 rsa key</h2>
+<p><code>C++</code> 初学者常有一个错误的认识，认为一个 <code>class</code> 的大小就是该 <code>class</code> 内所有 <code>non static members</code> 的大小总和。既然是错误的认识，那么实际上就不是或者不单纯是该 <code>class</code> 内所有 <code>non static members</code> 的大小总和。在 <code>c++</code> 对象模型里，一个 <code>class</code> 的大小主要受下面三个方面影响：<!--more--></p>
+
+<h3>1 语言本身特性造成的额外负担</h3>
+
+<p>这里的额外负担主要是受 <code>virtual</code> 特性影响，包括 <code>virtual base class</code> 和 <code>virtual function</code>。在 <code>derived class</code> 中这种额外负担反映在某种形式的指针上，可以是虚函数指针，或者指向虚基类的 <code>subject class</code> 偏移地址等。详细内容可以参考<a href="http://glgjing.github.io/blog/2015/01/03/c-plus-plus-xu-han-shu-qian-xi/">C++ 虚函数浅析</a>。</p>
+
+<h3>2 编译器对特殊情况的优化处理</h3>
+
+<p>例如对于 <code>empty virtual base class</code> 的特殊支持，在 <code>C++</code> 对象模型中一个空的 <code>class</code> 大小为 <code>1 byte</code>，因为编译器为了使每个 <code>object</code> 在内存中能有独一无二的地址，为空 <code>class</code> 安插了一个 <code>char</code>。如果一个空的 <code>class</code> 大小为 <code>0 byte</code>，那么像该 <code>class</code> 的数组 <code>X x[10];</code>，编译器将无法区分每个元素的地址。但是如果 <code>derived class</code> 的大小不为 <code>0</code>，就不需要 <code>base class</code> 的 <code>1 byte</code> 进行内存地址区分，那么如果编译器对这种情况进行了优化的话，就会将该 <code>1 byte</code> 去掉，如果没有还是会继续保留这个额外的 <code>1 byte</code> 空间。</p>
+
+<p>说到编译器对特殊情况的优化，下面这段话比较恰当表述了编译器演化与<code>C++</code>对象模型的关系：</p>
+
+<blockquote><p>编译器之间的潜在差异正说明了 <code>C++</code> 对象模型的演化。这个模型为一般情况提供了解决之道，当特殊情况渐渐被挖掘出来时，种种启发法于是被引入，提供优化的处理。如果成功，启发法于是就提升为普遍的策略，并跨越各种编译器而合并。他被视为标准（虽然他并不被规范为标准），久而久之也就成了语言的一部分。</p></blockquote>
+
+<h3>3 边界调整（Alignment）的影响</h3>
+
+<p>为了数据能够更有效率的在内存中存取，编译器会 <code>class</code> 的内存边界进行调整，在<code>32</code>位机器上通常 <code>alignment</code> 为 <code>4 bytes</code>，以使总线的运输效率最高。</p>
+
+<p>经过上面的分析后，可以看出具体结果要视编译器而定。首先讨论在编译器没有对 <code>empty virtual base class</code> 进行优化的情况，那么：</p>
+
+<ol>
+<li><code>class X</code>  的大小应该是 <code>1 byte</code>，该 <code>1 byte</code> 由编译器插入。</li>
+<li><code>class Y</code> 和 <code>class Z</code> 的大小相同为 <code>8</code>，包括 <code>4 byte</code> 的 虚基类指针再加上 <code>1 byte</code> 的基类 X的大小，考虑到内存对齐需要补齐 <code>3 byte</code>，所以最终结果为 <code>8 byte</code>。</li>
+<li><code>class A</code> 的大小为<code>12 byte</code>，包括 <code>class Y</code> 和 <code>class Z</code> 内的两个 <code>4 byte</code> 虚基类指针共 <code>8 byte</code>，此外由于 <code>X</code> 为虚基类，所以在 <code>A</code> 内只有一个实体，所以应该再加上 <code>X</code> 的 <code>1 byte</code> 和内存对齐额外补齐的 <code>3 byte</code>，共 <code>12 byte</code>。</li>
+</ol>
 
 
-<p>在 SSH 用户配置文件 ~/.ssh/config 中指定对应服务所使用的公秘钥名称，如果没有 config 文件的话就新建一个，并输入以下内容：</p>
+<p>所以最终结果为：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>  IdentityFile ~/.ssh/gitcafe</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">byte</span>
+</span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">=</span> <span class="mi">8</span> <span class="n">byte</span>
+</span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">=</span> <span class="mi">12</span> <span class="n">byte</span><span class="err">。</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>然后将 gitcafe_rsa.pub 文件中的内容复制到 gitcafe 的 SSH 公钥中，具体参见<a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E5%92%8C%E8%AE%BE%E7%BD%AE%20Git">这里</a>，这样就完成了新的公秘钥配置。可以运行下面的命令进行测试</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>ssh -T git@gitcafe.com</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果连接成功的话，会出现以下信息。</p>
+<p>如果编译器对 <code>empty virtual base class</code> 进行了优化，那么 <code>class X</code> 的 <code>1 byte</code> 空间在派生类中将被拿掉，相应的由于内存对齐而引起的 <code>3 byte</code> 也被去掉了，所以最终结果应该是：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Host gitcafe.com www.gitcafe.com
-</span><span class='line'>Hi USERNAME! You've successfully authenticated, but GitCafe does not provide shell access.</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="n">byte</span>
+</span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">=</span> <span class="mi">4</span> <span class="n">byte</span>
+</span><span class='line'><span class="k">sizeof</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">=</span> <span class="mi">8</span> <span class="n">byte</span><span class="err">。</span>
+</span></code></pre></td></tr></table></div></figure>
 
-
-<h2>总结</h2>
-
-
-<p>这里以 gitcafe 为例讲述了如何为git添加多个公秘钥，其他的公秘钥添加方法基本类似。参考：<a href="https://gitcafe.com/GitCafe/Help/wiki/%E5%A6%82%E4%BD%95%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA%E5%85%AC%E7%A7%98%E9%92%A5">如何同时使用多个公秘钥</a>。</p>
 </div>
 
 
@@ -214,13 +241,13 @@
 
 
 
-<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
+<time class='entry-date' datetime='2015-03-23T19:21:06+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>7:21 pm</span></time>
       
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/git/'>git</a>
+    <a class='category' href='/blog/categories/c-plus-plus/'>c++</a>, <a class='category' href='/blog/categories/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing/'>深度探索c++对象模型</a>
   
 </span>
 
@@ -229,7 +256,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/" >Tweet</a>
   
   
   
@@ -238,10 +265,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/" title="Previous Post: 利用Octopress和Github搭建个人博客（四）：自定义字体">&laquo; 利用Octopress和Github搭建个人博客（四）：自定义字体</a>
+        <a class="basic-alignment left" href="/blog/2015/03/10/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:cheng-yuan-bian-liang-de-chu-shi-hua-lie-biao/" title="Previous Post: 深度探索C++对象模型：成员变量的初始化列表">&laquo; 深度探索C++对象模型：成员变量的初始化列表</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/" title="Next Post: Markdown 语法新手指南">Markdown 语法新手指南 &raquo;</a>
       
     </p>
   </footer>
@@ -295,8 +320,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/';
-        var disqus_url = 'http://glgjing.github.io/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/';
+        var disqus_identifier = 'http://glgjing.github.io/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/';
+        var disqus_url = 'http://glgjing.github.io/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/';
         var disqus_script = 'embed.js';
       
     (function () {

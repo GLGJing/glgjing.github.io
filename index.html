@@ -109,6 +109,70 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/">深度探索C++对象模型：类的大小</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-23T19:21:06+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>7:21 pm</span></time>
+        
+         | <a href="/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>现在有这样一段代码：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">X</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Y</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">X</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Z</span> <span class="o">:</span> <span class="k">public</span> <span class="k">virtual</span> <span class="n">X</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Y</span><span class="p">,</span> <span class="k">public</span> <span class="n">Z</span> <span class="p">{</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对 <code>class X、Y、Z、A</code> 进行 <code>sizeof</code> 运算结果是什么呢？如果你心里已经有了答案，不妨看完下面的分析再说。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></p>
+
+<p><code>C++</code> 初学者常有一个错误的认识，认为一个 <code>class</code> 的大小就是该 <code>class</code> 内所有 <code>non static members</code> 的大小总和。既然是错误的认识，那么实际上就不是或者不单纯是该 <code>class</code> 内所有 <code>non static members</code> 的大小总和。在 <code>c++</code> 对象模型里，一个 <code>class</code> 的大小主要受下面三个方面影响：</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/03/23/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:lei-de-da-xiao/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/03/10/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:cheng-yuan-bian-liang-de-chu-shi-hua-lie-biao/">深度探索C++对象模型：成员变量的初始化列表</a></h1>
     
     
@@ -601,77 +665,6 @@
 <p>如果需要更改字体，在这里更改对应的值即可。需要注意的是在跨平台的情况下，一些字体在很多机上不一定会有，所以尽量定义一些常用字体作为备选方案。例如Adobe的开源字体Source Code Pro作为代码字体，个人感觉很不错，但很多机器上不一定有装，所以这里最好补上其他字体作为备选，Windows上比较适合的编程字体Consolas，Mac上比较适合的编程字体Monaco，以及Ubuntu上比较适合的编程字体Ubuntu Mono。浏览器在渲染字体的时候会依次进行寻找，如果本机装有Source Code Pro就用该字体进行渲染，如果没有则寻找下一个也就是Consolas，依此类推直到找到一个可用的字体进行渲染，上诉三款字体都是三个平台默认安装的，这样可以最大程度地保证代码阅读质量。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</p>
 </div>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/">C++ 自增、自减操作符前缀与后缀的区别</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-01-12T20:28:11+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:28 pm</span></time>
-        
-         | <a href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>自减和自增操作符规则相同，这里就以自增为例进行说明。C++的自增<code>++</code>操作符分为前缀形式和后缀形式，在语法上前缀与后形式的主要区别在于：前缀形式有时叫做“增加然后取回”，后缀形式叫做“取回然后增加”。例如：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">int</span> <span class="nf">_tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">_TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="o">++</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">++</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="mi">0</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="mi">1</span>
-</span><span class='line'><span class="mi">1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然而有一个句法上的问题，当对<code>operator ++</code>函数进行重载时，需要自增操作符的前缀和后缀形式有不同的参数。但是不论是自增或自减的前缀还是后缀都只有一个参数。为了解决这个语言问题，<code>C++</code>规定后缀形式有一个<code>int</code>类型参数,当函数被调用时,编译器传递一个<code>0</code>做为<code>int</code>参数的值给该函数，具体实现如下：</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/01/12/c-plus-plus-zi-zeng-(-plus-plus-)zi-jian-(-)cao-zuo-fu-qian-zhui-yu-hou-zhui-de-qu-bie/">继续阅读 &rarr;</a>
-    </footer>
   
 
 
