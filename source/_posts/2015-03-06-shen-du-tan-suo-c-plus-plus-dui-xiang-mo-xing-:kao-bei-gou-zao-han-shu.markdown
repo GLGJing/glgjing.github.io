@@ -3,7 +3,9 @@ layout: post
 title: "深度探索C++对象模型：拷贝构造函数"
 date: 2015-03-06 20:47:13 +0800
 comments: true
-categories: 
+categories: c++ 深度探索C++对象模型
+keywords: c++ 对象模型 深度探索 c++对象模型 拷贝构造函数
+description: 介绍了拷贝构造函数的基本原理和需要注意的方面
 ---
 ## 对象之间的拷贝操作
 发生对象之间拷贝操作的三种情况：    

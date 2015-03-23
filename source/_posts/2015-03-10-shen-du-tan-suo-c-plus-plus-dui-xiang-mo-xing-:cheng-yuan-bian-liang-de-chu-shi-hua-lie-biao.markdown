@@ -3,7 +3,8 @@ layout: post
 title: "深度探索C++对象模型：成员变量的初始化列表"
 date: 2015-03-10 20:21:00 +0800
 comments: true
-categories: 
+categories: c++ 深度探索C++对象模型
+keywords: c++ 对象模型 深度探索 c++对象模型 初始化 成员变量
 ---
 对`class members`的初始化操作可以放在`member initialization list`或者`construct`中进行，但两者之间是有一些区别的，无论是在效率上还是在语法上。    
 ## 何时应该使用 initialization list ？
