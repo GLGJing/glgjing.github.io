@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Markdown | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/markdown/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-03-23T19:36:24+08:00</updated>
+  <updated>2015-04-09T20:34:35+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Markdown 插入表格语法]]></title>
+    <link href="http://glgjing.github.io/blog/2015/04/03/markdown-biao-ge-yu-fa/"/>
+    <updated>2015-04-03T14:52:47+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/04/03/markdown-biao-ge-yu-fa</id>
+    <content type="html"><![CDATA[<h2>例子：</h2>
+
+<pre><code>| 一个普通标题 | 一个普通标题 | 一个普通标题 |
+| ------| ------ | ------ |
+| 短文本 | 中等文本 | 稍微长一点的文本 |
+| 稍微长一点的文本 | 短文本 | 中等文本 |
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th> 一个普通标题 </th>
+<th> 一个普通标题 </th>
+<th> 一个普通标题 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> 短文本 </td>
+<td> 中等文本 </td>
+<td> 稍微长一点的文本 </td>
+</tr>
+<tr>
+<td> 稍微长一点的文本 </td>
+<td> 短文本 </td>
+<td> 中等文本 </td>
+</tr>
+</tbody>
+</table>
+
+
+<hr />
+
+<pre><code>| 左对齐标题 | 右对齐标题 | 居中对齐标题 |
+| :------| ------: | :------: |
+| 短文本 | 中等文本 | 稍微长一点的文本 |
+| 稍微长一点的文本 | 短文本 | 中等文本 |
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left;"> 左对齐标题 </th>
+<th style="text-align:right;"> 右对齐标题 </th>
+<th style="text-align:center;"> 居中对齐标题 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> 短文本 </td>
+<td style="text-align:right;"> 中等文本 </td>
+<td style="text-align:center;"> 稍微长一点的文本 </td>
+</tr>
+<tr>
+<td style="text-align:left;"> 稍微长一点的文本 </td>
+<td style="text-align:right;"> 短文本 </td>
+<td style="text-align:center;"> 中等文本 </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>语法说明：</h2>
+
+<ul>
+<li><code>|</code>、<code>-</code>、<code>:</code>之间的多余空格会被忽略，不影响布局。</li>
+<li>默认标题栏居中对齐，内容居左对齐。</li>
+<li><code>-:</code>表示内容和标题栏居右对齐，<code>:-</code>表示内容和标题栏居左对齐，<code>:-:</code>表示内容和标题栏居中对齐。</li>
+<li>内容和<code>|</code>之间的多余空格会被忽略，每行第一个<code>|</code>和最后一个<code>|</code>可以省略，<code>-</code>的数量至少有一个。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Markdown 语法新手指南]]></title>
@@ -201,7 +280,7 @@
 
 <p><strong>显示结果：</strong><br/>
  网址：<a href="http://glgjing.github.io">http://glgjing.github.io</a><br/>
- 邮箱：<a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x47;&#x4c;&#71;&#74;&#x69;&#x6e;&#x67;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#109;">&#x47;&#76;&#71;&#x4a;&#105;&#110;&#x67;&#x40;&#103;&#109;&#97;&#x69;&#108;&#46;&#x63;&#111;&#109;</a></p>
+ 邮箱：<a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#71;&#x4c;&#x47;&#74;&#105;&#110;&#103;&#64;&#103;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#x47;&#76;&#71;&#x4a;&#x69;&#110;&#x67;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;</a></p>
 
 <h2>强调</h2>
 
