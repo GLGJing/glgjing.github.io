@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-04-09T20:34:35+08:00</updated>
+  <updated>2015-04-10T15:44:05+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -397,7 +397,7 @@
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rvm -v
-</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#119;&#x61;&#121;&#x6e;&#x65;&#101;&#x73;&#x65;&#103;&#117;&#105;&#x6e;&#x40;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#46;&#99;&#x6f;&#x6d;">&#119;&#x61;&#x79;&#110;&#101;&#101;&#x73;&#x65;&#103;&#117;&#x69;&#110;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;&lt;/a>, Michal Papis &lt;a href="&#109;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x6d;&#112;&#97;&#112;&#x69;&#115;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;">&#109;&#x70;&#97;&#x70;&#105;&#115;&#x40;&#103;&#109;&#97;&#x69;&#108;&#46;&#99;&#111;&#109;&lt;/a> [&lt;a href="https://rvm.io/">https://rvm.io/&lt;/a>]</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x77;&#97;&#x79;&#110;&#x65;&#x65;&#x73;&#x65;&#x67;&#117;&#x69;&#110;&#x40;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#x6d;">&#119;&#x61;&#x79;&#x6e;&#x65;&#x65;&#115;&#x65;&#x67;&#117;&#105;&#110;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;&lt;/a>, Michal Papis &lt;a href="&#x6d;&#97;&#x69;&#108;&#116;&#111;&#x3a;&#109;&#x70;&#x61;&#x70;&#105;&#115;&#64;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#x6d;&#x70;&#x61;&#112;&#x69;&#x73;&#64;&#x67;&#109;&#97;&#105;&#108;&#46;&#99;&#x6f;&#109;&lt;/a> [&lt;a href="https://rvm.io/">https://rvm.io/&lt;/a>]</span></code></pre></td></tr></table></div></figure>
 通过RVM安装Ruby，后面参数为版本号，可以根据版本进行调整。
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0</span></code></pre></td></tr></table></div></figure>

@@ -110,6 +110,44 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/">为 Git 添加多个公秘钥</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-02T16:46:55+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:46 pm</span></time>
+        
+         | <a href="/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>小引</h2>
+
+
+<p>最近将博客从 github 上迁移到了国内的 gitcafe，主要原因是在国内的访问速度你懂的。迁移之后发现问题来了，每次连接时 SSH 客户端发送本地私钥到服务端验证，而这个私钥默认是 ~/.ssh/id_rsa 文件，如果只有一个账户，连接的服务器上保存的公钥和发送的私钥自然是配对的。但是我已经有了两个账户了，当然 username 和 email 是完全不同的，如果还是都读取默认的 ~/.ssh/id_rsa 文件，那么 gitcafe 账户的公钥和私钥显然是不匹配的。所以需要为 gitcafe 账户再添加一对公秘钥，并且可以根据账户自动寻找匹配的公秘钥。转载请注明出处<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code></div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/02/02/gitru-he-tong-shi-shi-yong-duo-ge-gong-yao/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/01/31/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(si-):zi-ding-yi-zi-ti/">利用Octopress和Github搭建个人博客（四）：自定义字体</a></h1>
     
     
@@ -553,45 +591,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/11/29/windows-wen-jian-guan-lian-qian-xi/">Windows 文件关联浅析</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-11-29T23:43:14+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:43 pm</span></time>
-        
-         | <a href="/blog/2014/11/29/windows-wen-jian-guan-lian-qian-xi/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>引言</h2>
-
-
-<p>所谓的文件关联就是指系统把指定扩展名的文件自动关联到相应的应用程序，例如.doc默认打开方式是Microsoft Word，当用户双击时就会启动Word打开该文件。windows平台下的文件默认打开方式一直是各大互联网公司的必争之地，如：各种播放器抢媒体文件的默认打开方式，说白了就是为了争入口你抢我的我抢你的，写这篇文章并不是想比谁更流氓，只是简单的总结下windows下的文件关联方式。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/11/29/windows-wen-jian-guan-lian-qian-xi/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/3">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
