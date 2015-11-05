@@ -5,15 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Android XML 属性参考手册 - GLGJing&#8217;s Blog</title>
+  <title>Category: Widget - GLGJing&#8217;s Blog</title>
   <meta name="author" content="GLGJing">
 
   
-  <meta name="description" content="TextView android:autoLink：url、email、phone 等自动转换为可点击的 link
-android:autoText：拼写错误检查，错误的会被标出来
-android:digits：过略用户可输入的字符，只有被列出的字符可被输入
-android:drawableTop &hellip;">
-  <meta name="keywords" content="android xml 属性 参考手册">
+  <meta name="description" content="Category: widget">
+  
 
   <!-- http://t.co/dKP3o1e -->
   <meta name="HandheldFriendly" content="True">
@@ -21,7 +18,7 @@ android:drawableTop &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://glgjing.github.io/blog/2015/04/10/android-xml-shu-xing-can-kao-shou-ce">
+  <link rel="canonical" href="http://glgjing.github.io/blog/categories/widget">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -106,146 +103,46 @@ android:drawableTop &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      
-        <h1 class="entry-title">Android XML 属性参考手册</h1>
-      
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-10T15:36:04+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:36 pm</span></time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-        
-      </p>
+    <h1 class="entry-title">Category: Widget</h1>
     
   </header>
-
-
-<div class="entry-content"><h2>TextView</h2>
-
-<ul>
-<li>android:autoLink：url、email、phone 等自动转换为可点击的 link</li>
-<li>android:autoText：拼写错误检查，错误的会被标出来</li>
-<li>android:digits：过略用户可输入的字符，只有被列出的字符可被输入</li>
-<li>android:drawableTop：文字内容上方显示的 drawable</li>
-<li>android:drawableBottom：文字内容下方显示的 drawable</li>
-<li>android:drawableLeft：文字内容左方显示的 drawable</li>
-<li>android:drawableRight：文字内容右方显示的 drawable</li>
-<li>android:drawableStart：文字内容开始位置显示的 drawable，和 drawableLeft 区别在于 RTL 情况</li>
-<li>android:drawableEnd：文字内容结束结位置显示的 drawable，和 drawableRight 区别在于 RTL 情况</li>
-<li>android:drawablePadding：文字内容和 drawable 之间的 padding</li>
-<li>android:ellipsize：当文字内容超出 TextView 的宽度时会加上&hellip;位置可以设为 start, end, middle, marquee</li>
-<li>android:gravity：当 text 的 size 小于 TextView 的 size时，gravity 决定 text 在 TextView 内的对齐方式<!--more--></li>
-<li>android:height：TextView 的高度</li>
-<li>android:width：TextView 的宽度</li>
-<li>android:maxHeight：TextView 的最大高度</li>
-<li>android:maxWidth：TextView 的最大宽度</li>
-<li>android:minHeight：TextView 的最小高度</li>
-<li>android:minWidth：TextView 的最小宽度</li>
-<li>android:lines：text 正好显示的行数</li>
-<li>android:maxLines：text 的最大显示行数</li>
-<li>android:hint：当 text 为空时显示的提示内容</li>
-<li>android:linksClickable：设置 link 是否可点击，如果为 false 即使 autoLink 为 true 也不可点击</li>
-<li>android:marqueeRepeatLimit：marquee 动画的持续次数</li>
-<li>android:editable：设置 TextView 可以有输入法</li>
-<li>android:numeric：设置 TextView 的输入为数字输入法</li>
-<li>android:phoneNumber：设置 TextView 的输入为电话号码输入法</li>
-<li>android:password：text 内容显示为密码形式的小点，而非内容本身</li>
-<li>android:scrollHorizontally：设置 TextView 是否可以水平滚动</li>
-<li>android:selectAllOnFocus：当 TextView 处于 Focus 状态，Text 是否被全部选中</li>
-<li>android:shadowColor：阴影颜色</li>
-<li>android:shadowDx：阴影 X 方向偏移</li>
-<li>android:shadowDy：阴影 Y 方向偏移</li>
-<li>android:shadowRadius：阴影模糊半径</li>
-<li>android:singleLine：强制 Text 单行显示</li>
-<li>android:text：Text 的内容</li>
-<li>android:textAllCaps：将 Text 以大写的方式显示，当 TextView 同时包含 editable 或者 selectable 属性时，该属性被忽略</li>
-<li>android:textColor：Text 的颜色</li>
-<li>android:textColorHighlight：Text 被选中的高亮颜色</li>
-<li>android:textColorHint：提示 Text 的颜色</li>
-<li>android:textColorLink：Link 的文字颜色</li>
-<li>android:textIsSelectable：Text  内容是否可以被选中</li>
-<li>android:textScaleX：水平拉伸比例</li>
-<li>android:textSize：Text 的 size</li>
-<li>android:textStyle：Text 的 style (bold, italic, bolditalic)</li>
-<li>android:typeface：Text 的字体 (normal, sans, serif, monospace)</li>
-<li>android:width：设置 TextView 的宽度，目前没发现和 layout_width 有什么明显区别 ？</li>
-</ul>
-
-
-<p>转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a><br/>
-待更新&hellip;</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
+  <div id="blog-archives" class="category">
 
 
 
-  <span class="byline author vcard">Authored by <span class="fn">
   
-    GLGJing
+  <h2>2015</h2>
+
+<article>
   
-  </span></span>
+<h1><a href="/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/">Android 开发之 App Widget 详解</a></h1>
+<time datetime="2015-11-05T13:08:53+08:00" pubdate><span class='month'>Nov</span> <span class='day'>05</span> <span class='year'>2015</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/android/'>android,</a>, <a class='category' href='/blog/categories/widget/'>widget</a></span>
+</footer>
 
 
-      
-
-
-
-
-<time class='entry-date' datetime='2015-04-10T15:36:04+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:36 pm</span></time>
-      
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/android/'>android</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://glgjing.github.io/blog/2015/04/10/android-xml-shu-xing-can-kao-shou-ce/" data-via="" data-counturl="http://glgjing.github.io/blog/2015/04/10/android-xml-shu-xing-can-kao-shou-ce/" >Tweet</a>
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/04/03/markdown-biao-ge-yu-fa/" title="Previous Post: Markdown 插入表格语法">&laquo; Markdown 插入表格语法</a>
-      
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 
 </div>
+
+<aside class="sidebar">
+  
+    
+  
+</aside>
+
 
     </div>
   </div>
@@ -285,10 +182,7 @@ android:drawableTop &hellip;">
       var disqus_shortname = 'GLGJing';
       
         
-        // var disqus_developer = 1;
-        var disqus_identifier = 'http://glgjing.github.io/blog/2015/04/10/android-xml-shu-xing-can-kao-shou-ce/';
-        var disqus_url = 'http://glgjing.github.io/blog/2015/04/10/android-xml-shu-xing-can-kao-shou-ce/';
-        var disqus_script = 'embed.js';
+        var disqus_script = 'count.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
