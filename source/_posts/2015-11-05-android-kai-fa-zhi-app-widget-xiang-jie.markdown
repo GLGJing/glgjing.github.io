@@ -6,7 +6,7 @@ comments: true
 categories: android, widget
 ---
 ### 简介
-App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考[App Widgets| Android Developers](http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html)。
+App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考[App Widgets| Android Developers](http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html)，转载请注明出处：<http://glgjing.github.io/>。
 
 ### 创建一个 App Widget 的主要步骤
 1. 在 AndroidManifest 中声明 App Widget
@@ -26,7 +26,7 @@ App Widget：应用程序窗口小部件，微型的应用程序视图，它可�
 </receiver>
 
 ```
-
+<!-- more -->
 `<receiver>`的 android:name 属性声明的就是 Widget 所用的 AppWidgetProvider 类，并且`<intent-filter>`中必须要包含 APPWIDGET_UPDATE 这个 `<action>`，所有 Widget 的 broadcast 都是通过这个 filter 来接收的。
 
 `<meta-data>` 声明了 Widget 的 AppWidgetProviderInfo 对应的资源 xml 的位置，用的是 xml 目录下的 appwidget_provider.xml。这里需要简单介绍下 AppWidgetProviderInfo 类，该类是用来描述 Widget 的 meta 信息，包括 Widget 的 xml 布局文件、刷新频率、最小宽高等等，而这些信息正是通过上述 xml 的`<appwidget-provider>` 标签来描述的。
