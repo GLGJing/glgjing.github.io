@@ -110,6 +110,129 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang/">Android 开发之锁屏弹窗</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-10T20:10:24+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:10 pm</span></time>
+        
+         | <a href="/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>尝试利用 WindowManager 添加浮窗的方式实现</h2>
+
+<p>想在锁屏上面实现弹窗，第一个想法就是利用 WindowManager 设置 Window 的 Flag，通过设置 Flag 的显示优先级来让窗口显示在锁屏的上面。接下来就是试验可能相关的 Window Type 属性，验证该方案是否可行。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></p>
+
+<p>在尝试各个 Window Type 属性之前需要明确各个 Type 所需要的权限，下面是 com.android.internal.policy.impl.PhoneWindowManager.checkAddPermission 的源码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">checkAddPermission</span><span class="o">(</span><span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="na">type</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">&lt;</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FIRST_SYSTEM_WINDOW</span>
+</span><span class='line'>            <span class="o">||</span> <span class="n">type</span> <span class="o">&gt;</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">LAST_SYSTEM_WINDOW</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_OKAY</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">permission</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">switch</span> <span class="o">(</span><span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_TOAST:</span>
+</span><span class='line'>            <span class="c1">// XXX right now the app process has complete control over</span>
+</span><span class='line'>            <span class="c1">// this...  should introduce a token to let the system</span>
+</span><span class='line'>            <span class="c1">// monitor/control what they are doing.</span>
+</span><span class='line'>            <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_INPUT_METHOD:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_WALLPAPER:</span>
+</span><span class='line'>            <span class="c1">// The window manager will check these.</span>
+</span><span class='line'>            <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_PHONE:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_PRIORITY_PHONE:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_ALERT:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_ERROR:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_OVERLAY:</span>
+</span><span class='line'>            <span class="n">permission</span> <span class="o">=</span> <span class="n">android</span><span class="o">.</span><span class="na">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">SYSTEM_ALERT_WINDOW</span><span class="o">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>            <span class="n">permission</span> <span class="o">=</span> <span class="n">android</span><span class="o">.</span><span class="na">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">INTERNAL_SYSTEM_WINDOW</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">permission</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">mContext</span><span class="o">.</span><span class="na">checkCallingOrSelfPermission</span><span class="o">(</span><span class="n">permission</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">!=</span> <span class="n">PackageManager</span><span class="o">.</span><span class="na">PERMISSION_GRANTED</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_PERMISSION_DENIED</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_OKAY</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>明显不适合的 Type：TYPE_TOAST, TYPE_INPUT_METHOD, TYPE_WALLPAPER。</li>
+<li>可能适合的 Type：TYPE_PHONE, TYPE_PRIORITY_PHONE, TYPE_SYSTEM_ALERT, TYPE_SYSTEM_ERROR, TYPE_SYSTEM_OVERLAY。</li>
+<li>其它类型的 Type：需要 android.Manifest.permission.INTERNAL_SYSTEM_WINDOW 权限，而申请该权限需要系统签名，所以我们是无法获取权限的。</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/">Android 开发之 App Widget 详解</a></h1>
     
     
@@ -131,7 +254,7 @@
 
   <div class="entry-content"><h3>简介</h3>
 
-<p>App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考<a href="http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html">App Widgets| Android Developers</a>。</p>
+<p>App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考<a href="http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html">App Widgets| Android Developers</a>，转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。</p>
 
 <h3>创建一个 App Widget 的主要步骤</h3>
 
@@ -162,190 +285,12 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>&lt;receiver&gt;</code>的 android:name 属性声明的就是 Widget 所用的 AppWidgetProvider 类，并且<code>&lt;intent-filter&gt;</code>中必须要包含 APPWIDGET_UPDATE 这个 <code>&lt;action&gt;</code>，所有 Widget 的 broadcast 都是通过这个 filter 来接收的。</p>
-
-<p><code>&lt;meta-data&gt;</code> 声明了 Widget 的 AppWidgetProviderInfo 对应的资源 xml 的位置，用的是 xml 目录下的 appwidget_provider.xml。这里需要简单介绍下 AppWidgetProviderInfo 类，该类是用来描述 Widget 的 meta 信息，包括 Widget 的 xml 布局文件、刷新频率、最小宽高等等，而这些信息正是通过上述 xml 的<code>&lt;appwidget-provider&gt;</code> 标签来描述的。</p>
-
-<h3>在 xml 目录定义 App Widget 的初始化 xml 文件</h3>
-
-<p>前面所说的用来描述 AppWidgetProviderInfo 的 xml 定义如下：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nt">&lt;appwidget-provider</span>
-</span><span class='line'>  <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
-</span><span class='line'>    <span class="na">android:minWidth=</span><span class="s">&quot;200dp&quot;</span>
-</span><span class='line'>    <span class="na">android:minHeight=</span><span class="s">&quot;50dp&quot;</span>
-</span><span class='line'>    <span class="na">android:updatePeriodMillis=</span><span class="s">&quot;86400000&quot;</span>
-</span><span class='line'>    <span class="na">android:previewImage=</span><span class="s">&quot;@drawable/app_icon&quot;</span>
-</span><span class='line'>    <span class="na">android:initialLayout=</span><span class="s">&quot;@layout/widget&quot;</span>
-</span><span class='line'>    <span class="na">android:configure=</span><span class="s">&quot;com.example.android.ExampleAppWidgetConfigure&quot;</span>
-</span><span class='line'>    <span class="na">android:resizeMode=</span><span class="s">&quot;horizontal|vertical&quot;</span>
-</span><span class='line'>    <span class="na">android:widgetCategory=</span><span class="s">&quot;home_screen|keyguard&quot;</span><span class="nt">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>minWidth</strong> &amp; <strong>minHeight</strong>：定义了 Widget 的最小宽高，当 minWidth 和 minHeight 不是桌面 cell 的整数倍时，Widget 的宽高会被阔至与其最接近的 cells 大小。Google 官方给出了一个大致估算 minWidth &amp; minHeight 的公式，根据 Widget 所占的 cell 数量来计算宽高：<code>70 × n − 30</code>，n 是所占的 cell 数量。  <br/>
-<strong>updatePeriodMillis</strong>：定义了 Widget 的刷新频率，也就是 App Widget Framework 多久请求一次 AppWidgetProvider 的 onUpdate() 回调函数。该时间间隔并不保证精确，出于节约用户电量的考虑，Android 系统默认最小更新周期是 30 分钟，也就是说：如果您的程序需要实时更新数据，设置这个更新周期是 2 秒，那么您的程序是不会每隔 2 秒就收到更新通知的，而是要等到 30 分钟以上才可以，要想实时的更新 Widget，一般可以采用 Service 和 AlarmManager 对 Widget 进行更新。   <br/>
-<strong>previewImage</strong>：当用户选择添加 Widget 时的预览图片。如果该属性没有定义，则展示 application 的 launcher icon。<font color="#B72712">该属性是在 3.0 以后引入的。</font>    <br/>
-<strong>initialLayout</strong>：Widget 的布局 Layout 文件。    <br/>
-<strong>configure</strong>：定义了用户在添加 Widget 时弹出的配置页面的 Activity，用户可以在此进行 Widget 的一些配置，该 Activity 是可选的，如果不需要可以不进行声明。   <br/>
-<strong>resizeMode</strong>：Widget 在水平和垂直方向是否可以调整大小，值可以为：horizontal（水平方向可以调整大小），vertical（垂直方向可以调整大小），none（不可以调整大小），也可以 horizontal|vertical 组合表示水平和垂直方向均可以调整大小。    <br/>
-<strong>widgetCategory</strong>：表示 Widget 可以显示的位置，包括 home_screen（桌面），keyguard（锁屏），keyguard 属性需要 5.0 或以上 Android 版本才可以。    <br/>
-其它更多详细属性可以参考 <a href="http://developer.android.com/intl/zh-cn/reference/android/appwidget/AppWidgetProviderInfo.html">AppWidgetProviderInfo</a>。</p>
-
-<h3>继承 AppWidgetProvider 类</h3>
-
-<p>AppWidgetProvider 继承自 BroadcastReceiver，内部逻辑非常简单，就是在 onReceive() 中处理 Widget 相关的广播事件（ACTION_APPWIDGET_UPDATE, ACTION_APPWIDGET_DELETED, ACTION_APPWIDGET_ENABLED, ACTION_APPWIDGET_DISABLED, ACTION_APPWIDGET_OPTIONS_CHANGED）分发到各个回调函数中（onUpdate(), onDeleted(), onEnabled(), onDisabled, onAppWidgetOptionsChanged()）。</p>
-
-<p><strong>onUpdate()：</strong>是最重要的回调函数，根据 updatePeriodMillis 定义的定期刷新操作会调用该函数，此外当用户添加 Widget 时
-也会调用该函数，可以在这里进行必要的初始化操作。但如果在<code>&lt;appwidget-provider&gt;</code>中声明了 android:configure 的 Activity，在用户添加 Widget 时，不会调用 onUpdate()，需要由 configure Activity 去负责去调用 AppWidgetManager.updateAppWidget() 完成 Widget 更新，后续的定时更新还是会继续调用 onUpdate() 的。    <br/>
-<strong>onDeleted()：</strong>当 Widget 被删除时调用该方法。   <br/>
-<strong>onEnabled()：</strong>当 Widget 第一次被添加时调用，例如用户添加了两个你的 Widget，那么只有在添加第一个 Widget 时该方法会被调用。所以该方法比较适合执行你所有 Widgets 只需进行一次的操作。   <br/>
-<strong>onDisabled()：</strong>与 onEnabled 恰好相反，当你的最后一个 Widget 被删除时调用该方法，所以这里用来清理之前在 onEnabled() 中进行的操作。    <br/>
-<strong>onAppWidgetOptionsChanged()：</strong>当 Widget 第一次被添加或者大小发生变化时调用该方法，可以在此控制 Widget 元素的显示和隐藏。</p>
-
-<p>示例代码：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExampleAppWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kd">final</span> <span class="kt">int</span> <span class="n">N</span> <span class="o">=</span> <span class="n">appWidgetIds</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">// Perform this loop procedure for each App Widget that belongs to this provider</span>
-</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="kt">int</span> <span class="n">appWidgetId</span> <span class="o">=</span> <span class="n">appWidgetIds</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c1">// Create an Intent to launch ExampleActivity</span>
-</span><span class='line'>            <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">ExampleActivity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getActivity</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">intent</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c1">// Get the layout for the App Widget and attach an on-click listener</span>
-</span><span class='line'>            <span class="c1">// to the button</span>
-</span><span class='line'>            <span class="n">RemoteViews</span> <span class="n">views</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">appwidget_provider_layout</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">views</span><span class="o">.</span><span class="na">setOnClickPendingIntent</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">button</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="c1">// Tell the AppWidgetManager to perform an update on the current app widget</span>
-</span><span class='line'>            <span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="n">appWidgetId</span><span class="o">,</span> <span class="n">views</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>创建 App Widget Configuration Activity</h3>
-
-<p>如果你的 Widget 需要用户配置一些选项，你可以为你的 Widget 创建 Configuration Activity，当用户添加 Widget 时会自动弹出该 Activity。Configuration Activity 和普通 Activity 一样需要在 Manifest 中声明，但是需要额外声明一个 intent-filter: APPWIDGET_CONFIGURE，例如：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;activity</span> <span class="na">android:name=</span><span class="s">&quot;.ExampleAppWidgetConfigure&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;intent-filter&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">&quot;android.appwidget.action.APPWIDGET_CONFIGURE&quot;</span><span class="nt">/&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;/intent-filter&gt;</span>
-</span><span class='line'><span class="nt">&lt;/activity&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>同时还需要在上述的 appwidget-provider 中声明：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;appwidget-provider</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
-</span><span class='line'>    <span class="err">...</span>
-</span><span class='line'>    <span class="na">android:configure=</span><span class="s">&quot;com.example.android.ExampleAppWidgetConfigure&quot;</span>
-</span><span class='line'>    <span class="err">...</span> <span class="nt">&gt;</span>
-</span><span class='line'><span class="nt">&lt;/appwidget-provider&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>有两点需要注意的是：</p>
-
-<ol>
-<li>Activity 必须返回带 EXTRA_APPWIDGET_ID 的 result。</li>
-<li>声明Configuration Activity 后 onUpdate() 在 Widget 添加时不会被调用，Activity 负责调用 AppWidgetManager.updateAppWidget() 完成 Widget 更新。</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="n">getIntent</span><span class="o">();</span>
-</span><span class='line'><span class="n">Bundle</span> <span class="n">extras</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="na">getExtras</span><span class="o">();</span>
-</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">extras</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">mAppWidgetId</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span>
-</span><span class='line'>        <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">EXTRA_APPWIDGET_ID</span><span class="o">,</span>
-</span><span class='line'>        <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">INVALID_APPWIDGET_ID</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span> <span class="o">=</span> <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
-</span><span class='line'><span class="n">RemoteViews</span> <span class="n">views</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">(),</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">example_appwidget</span><span class="o">);</span>
-</span><span class='line'><span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="n">mAppWidgetId</span><span class="o">,</span> <span class="n">views</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Intent</span> <span class="n">resultValue</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">();</span>
-</span><span class='line'><span class="n">resultValue</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(</span><span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">EXTRA_APPWIDGET_ID</span><span class="o">,</span> <span class="n">mAppWidgetId</span><span class="o">);</span>
-</span><span class='line'><span class="n">setResult</span><span class="o">(</span><span class="n">RESULT_OK</span><span class="o">,</span> <span class="n">resultValue</span><span class="o">);</span>
-</span><span class='line'><span class="n">finish</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/">继续阅读 &rarr;</a>
+    </footer>
   
 
 
@@ -885,43 +830,6 @@
   
     <footer>
       <a rel="full-article" href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/">Markdown 语法新手指南</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-04T11:18:16+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>11:18 am</span></time>
-        
-         | <a href="/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>引言</h2>
-
-<p>Markdown 的权威介绍<a href="http://daringfireball.net/projects/markdown/syntax">Markdown Syntax</a>，中文版<a href="http://wowubuntu.com/markdown/">Markdown 语法说明</a>，本文只是把常用的一些语法总结一下，适合新手快速入门。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/02/04/markdownyu-fa-xin-shou-zhi-nan/">继续阅读 &rarr;</a>
     </footer>
   
 

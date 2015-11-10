@@ -4,7 +4,7 @@
   <title><![CDATA[GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-11-05T13:28:02+08:00</updated>
+  <updated>2015-11-10T20:18:24+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -14,13 +14,269 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Android 开发之锁屏弹窗]]></title>
+    <link href="http://glgjing.github.io/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang/"/>
+    <updated>2015-11-10T20:10:24+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang</id>
+    <content type="html"><![CDATA[<h2>尝试利用 WindowManager 添加浮窗的方式实现</h2>
+
+<p>想在锁屏上面实现弹窗，第一个想法就是利用 WindowManager 设置 Window 的 Flag，通过设置 Flag 的显示优先级来让窗口显示在锁屏的上面。接下来就是试验可能相关的 Window Type 属性，验证该方案是否可行。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></p>
+
+<p>在尝试各个 Window Type 属性之前需要明确各个 Type 所需要的权限，下面是 com.android.internal.policy.impl.PhoneWindowManager.checkAddPermission 的源码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">int</span> <span class="nf">checkAddPermission</span><span class="o">(</span><span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span> <span class="n">attrs</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">type</span> <span class="o">=</span> <span class="n">attrs</span><span class="o">.</span><span class="na">type</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">type</span> <span class="o">&lt;</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FIRST_SYSTEM_WINDOW</span>
+</span><span class='line'>            <span class="o">||</span> <span class="n">type</span> <span class="o">&gt;</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">LAST_SYSTEM_WINDOW</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_OKAY</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">permission</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">switch</span> <span class="o">(</span><span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_TOAST:</span>
+</span><span class='line'>            <span class="c1">// XXX right now the app process has complete control over</span>
+</span><span class='line'>            <span class="c1">// this...  should introduce a token to let the system</span>
+</span><span class='line'>            <span class="c1">// monitor/control what they are doing.</span>
+</span><span class='line'>            <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_INPUT_METHOD:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_WALLPAPER:</span>
+</span><span class='line'>            <span class="c1">// The window manager will check these.</span>
+</span><span class='line'>            <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_PHONE:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_PRIORITY_PHONE:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_ALERT:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_ERROR:</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">TYPE_SYSTEM_OVERLAY:</span>
+</span><span class='line'>            <span class="n">permission</span> <span class="o">=</span> <span class="n">android</span><span class="o">.</span><span class="na">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">SYSTEM_ALERT_WINDOW</span><span class="o">;</span>
+</span><span class='line'>            <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>            <span class="n">permission</span> <span class="o">=</span> <span class="n">android</span><span class="o">.</span><span class="na">Manifest</span><span class="o">.</span><span class="na">permission</span><span class="o">.</span><span class="na">INTERNAL_SYSTEM_WINDOW</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">permission</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">mContext</span><span class="o">.</span><span class="na">checkCallingOrSelfPermission</span><span class="o">(</span><span class="n">permission</span><span class="o">)</span>
+</span><span class='line'>                <span class="o">!=</span> <span class="n">PackageManager</span><span class="o">.</span><span class="na">PERMISSION_GRANTED</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_PERMISSION_DENIED</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">WindowManagerImpl</span><span class="o">.</span><span class="na">ADD_OKAY</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>明显不适合的 Type：TYPE_TOAST, TYPE_INPUT_METHOD, TYPE_WALLPAPER。</li>
+<li>可能适合的 Type：TYPE_PHONE, TYPE_PRIORITY_PHONE, TYPE_SYSTEM_ALERT, TYPE_SYSTEM_ERROR, TYPE_SYSTEM_OVERLAY。</li>
+<li>其它类型的 Type：需要 android.Manifest.permission.INTERNAL_SYSTEM_WINDOW 权限，而申请该权限需要系统签名，所以我们是无法获取权限的。</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p><strong>TYPE_PHONE</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Window type: phone.  These are non-application windows providing</span>
+</span><span class='line'><span class="cm"> * user interaction with the phone (in particular incoming calls).</span>
+</span><span class='line'><span class="cm"> * These windows are normally placed above all applications, but behind</span>
+</span><span class='line'><span class="cm"> * the status bar.</span>
+</span><span class='line'><span class="cm"> * In multiuser systems shows on all users&#39; windows.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">TYPE_PHONE</span>              <span class="o">=</span> <span class="n">FIRST_SYSTEM_WINDOW</span><span class="o">+</span><span class="mi">2</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>TYPE_PHONE 类型的窗口可以显示在其它 APP 的上面，但不能显示在锁屏的上面，所以 PASS。</p>
+
+<p><strong>TYPE_PRIORITY_PHONE</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Window type: priority phone UI, which needs to be displayed even if</span>
+</span><span class='line'><span class="cm"> * the keyguard is active.  These windows must not take input</span>
+</span><span class='line'><span class="cm"> * focus, or they will interfere with the keyguard.</span>
+</span><span class='line'><span class="cm"> * In multiuser systems shows on all users&#39; windows.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">TYPE_PRIORITY_PHONE</span>     <span class="o">=</span> <span class="n">FIRST_SYSTEM_WINDOW</span><span class="o">+</span><span class="mi">7</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>TYPE_PRIORITY_PHONE 类型的窗口可以显示在其它 APP 的上面，但不能显示在锁屏的上面，所以 PASS。而且实际的行为和注释并不相符，该类型的窗口是可以获取交互事件的，具体原因待查。</p>
+
+<p><strong>TYPE_SYSTEM_ALERT</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Window type: system window, such as low power alert. These windows</span>
+</span><span class='line'><span class="cm"> * are always on top of application windows.</span>
+</span><span class='line'><span class="cm"> * In multiuser systems shows only on the owning user&#39;s window.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">TYPE_SYSTEM_ALERT</span>       <span class="o">=</span> <span class="n">FIRST_SYSTEM_WINDOW</span><span class="o">+</span><span class="mi">3</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>TYPE_SYSTEM_ALERT 类型的窗口可以显示在其它 APP 的上面，但不能显示在锁屏的上面，所以 PASS。</p>
+
+<p><strong>TYPE_SYSTEM_OVERLAY</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Window type: system overlay windows, which need to be displayed</span>
+</span><span class='line'><span class="cm"> * on top of everything else.  These windows must not take input</span>
+</span><span class='line'><span class="cm"> * focus, or they will interfere with the keyguard.</span>
+</span><span class='line'><span class="cm"> * In multiuser systems shows only on the owning user&#39;s window.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">TYPE_SYSTEM_OVERLAY</span>     <span class="o">=</span> <span class="n">FIRST_SYSTEM_WINDOW</span><span class="o">+</span><span class="mi">6</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>TYPE_SYSTEM_OVERLAY 类型的窗口可以显示在所有其它窗口的上面，包括锁屏，而且不会影响它下面窗口的交互事件响应，但是该属性窗口不能获得焦点，无法进行交互（如果该窗口可以获取焦点，那么就可以用来抓取用户的锁屏密码，出于安全考虑，系统是不会允许的），所以只能用来简单的展示内容，如果需要交互的锁屏弹窗，那么该属性 PASS。</p>
+
+<p><strong>TYPE_SYSTEM_ERROR</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * Window type: internal system error windows, appear on top of</span>
+</span><span class='line'><span class="cm"> * everything they can.</span>
+</span><span class='line'><span class="cm"> * In multiuser systems shows only on the owning user&#39;s window.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">TYPE_SYSTEM_ERROR</span>       <span class="o">=</span> <span class="n">FIRST_SYSTEM_WINDOW</span><span class="o">+</span><span class="mi">10</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在原生 ROM 5.1 下试验是可以显示出来的，但根据注释来看（appear on top of everything they can）不是在所有情况下都可以显示在锁屏上面的，<font color="#B72712">而且像 MIUI 和 Flyme 等 ROM 默认是屏蔽浮窗权限的，考虑到这点，利用 WindowManager 添加浮窗的方式实现锁屏弹窗的方案基本 PASS。</font></p>
+
+<h2>使用 Activity 的方式实现</h2>
+
+<h4>首先需要对 Activity 进行如下设置</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">final</span> <span class="n">Window</span> <span class="n">win</span> <span class="o">=</span> <span class="n">getWindow</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">win</span><span class="o">.</span><span class="na">addFlags</span><span class="o">(</span><span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_SHOW_WHEN_LOCKED</span>
+</span><span class='line'>            <span class="o">|</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_DISMISS_KEYGUARD</span>
+</span><span class='line'>            <span class="o">|</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_KEEP_SCREEN_ON</span>
+</span><span class='line'>            <span class="o">|</span> <span class="n">WindowManager</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">FLAG_TURN_SCREEN_ON</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中最主要也是必须要设置的就是：FLAG_SHOW_WHEN_LOCKED，顾名思义就是锁屏下显示该 Activity。而其它几个 Flag 包括：解锁、保持屏幕常亮、点亮屏幕可以根据具体的需求选择设置。</p>
+
+<h4>在 AndroidManifest.xml 中声明 Activity</h4>
+
+<p>同样该 Activity 也需要在 AndroidManifest.xml 中声明，声明时需注意添加 <code>android:excludeFromRecents="true"</code> 属性，是为了将该 Activity 从最近任务列表中去除，否则用户会觉得很奇怪。还有因为这个 Activity 会整个盖在锁屏上面，而且就算设置成背景透明，锁屏界面也不会显示在下面（系统主要是出于安全考虑），所以需要考虑下该 Activity 的背景，这里为了显示不要太突兀将主题设为壁纸。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">activity</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;.LockScreenActivity&quot;</span>
+</span><span class='line'>          <span class="nl">android:</span><span class="n">launchMode</span><span class="o">=</span><span class="s">&quot;singleInstance&quot;</span>
+</span><span class='line'>          <span class="nl">android:</span><span class="n">excludeFromRecents</span><span class="o">=</span><span class="s">&quot;true&quot;</span>
+</span><span class='line'>          <span class="nl">android:</span><span class="n">theme</span><span class="o">=</span><span class="s">&quot;@android:style/Theme.Wallpaper.NoTitleBar&quot;</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>启动 Activity</h4>
+
+<p>由于该 Activity 是为了在锁屏的情况下显示的，所以启动 Activity 时不要忘了判断手机是否处于锁屏状态，可以通过下面这种方式判断锁屏状态：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">KeyguardManager</span> <span class="n">km</span> <span class="o">=</span> <span class="o">(</span><span class="n">KeyguardManager</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">KEYGUARD_SERVICE</span><span class="o">);</span>
+</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">km</span><span class="o">.</span><span class="na">inKeyguardRestrictedInputMode</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// 处于锁屏状态</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Android 开发之 App Widget 详解]]></title>
     <link href="http://glgjing.github.io/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/"/>
     <updated>2015-11-05T13:08:53+08:00</updated>
     <id>http://glgjing.github.io/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie</id>
     <content type="html"><![CDATA[<h3>简介</h3>
 
-<p>App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考<a href="http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html">App Widgets| Android Developers</a>。</p>
+<p>App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考<a href="http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html">App Widgets| Android Developers</a>，转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。</p>
 
 <h3>创建一个 App Widget 的主要步骤</h3>
 
@@ -49,6 +305,9 @@
 </span><span class='line'>               <span class="na">android:resource=</span><span class="s">&quot;@xml/appwidget_provider&quot;</span><span class="nt">/&gt;</span>
 </span><span class='line'><span class="nt">&lt;/receiver&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<!-- more -->
 
 
 <p><code>&lt;receiver&gt;</code>的 android:name 属性声明的就是 Widget 所用的 AppWidgetProvider 类，并且<code>&lt;intent-filter&gt;</code>中必须要包含 APPWIDGET_UPDATE 这个 <code>&lt;action&gt;</code>，所有 Widget 的 broadcast 都是通过这个 filter 来接收的。</p>
@@ -1044,7 +1303,7 @@
 
 <p><strong>显示结果：</strong><br/>
  网址：<a href="http://glgjing.github.io">http://glgjing.github.io</a><br/>
- 邮箱：<a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x47;&#x4c;&#71;&#x4a;&#105;&#110;&#103;&#x40;&#103;&#x6d;&#97;&#x69;&#108;&#x2e;&#99;&#111;&#x6d;">&#x47;&#x4c;&#x47;&#74;&#x69;&#x6e;&#103;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;</a></p>
+ 邮箱：<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#71;&#76;&#71;&#x4a;&#105;&#110;&#103;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#x47;&#x4c;&#x47;&#74;&#105;&#110;&#x67;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#46;&#x63;&#111;&#109;</a></p>
 
 <h2>强调</h2>
 
@@ -1138,7 +1397,7 @@ _   底线
 <h2>生成新的 rsa key</h2>
 
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#89;&#79;&#x55;&#82;&#x5f;&#69;&#x4d;&#x41;&#x49;&#x4c;&#x40;&#89;&#79;&#85;&#x52;&#69;&#x4d;&#x41;&#x49;&#76;&#46;&#x43;&#79;&#x4d;">&#x59;&#79;&#x55;&#82;&#95;&#69;&#x4d;&#x41;&#73;&#76;&#x40;&#x59;&#x4f;&#x55;&#x52;&#69;&#77;&#65;&#x49;&#76;&#x2e;&#67;&#79;&#77;</a> 改为你的 Email 地址。</p>
+<p>在命令行输入如下命令，将命令中的 <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x59;&#79;&#x55;&#x52;&#x5f;&#x45;&#77;&#x41;&#x49;&#76;&#64;&#89;&#x4f;&#x55;&#x52;&#69;&#x4d;&#65;&#73;&#76;&#46;&#x43;&#79;&#77;">&#89;&#x4f;&#85;&#82;&#95;&#69;&#x4d;&#65;&#73;&#x4c;&#x40;&#89;&#79;&#85;&#x52;&#x45;&#77;&#x41;&#73;&#x4c;&#x2e;&#x43;&#x4f;&#77;</a> 改为你的 Email 地址。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
@@ -2579,204 +2838,6 @@ _   底线
 
 
 <p>这里介绍了Octopress主题配置的几个主要部分，其他更细节配置如：字体的配置优化、侧边栏的定制、评论插件的配置等，会在后续的博文中更新。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（一）：基础环境搭建]]></title>
-    <link href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/"/>
-    <updated>2014-12-06T15:30:04+08:00</updated>
-    <id>http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-([?]-):ji-chu-huan-jing-da-jian</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://glgjing.github.io/images/1-1.png"></p>
-
-<h2>引言</h2>
-
-
-<p>如果你只想安安静静的写博客而不被各种博客网站的条条框框限制，如果你想自建博客网站而又不想买域名租服务器等繁琐流程，如果你恰好懂些shell command和git，那么Octopress + Gitbub搭建个人博客是个不错的选择。<a href="http://octopress.org/">Octopress</a>是一个基于<a href="https://github.com/jekyll/jekyll"><code>Jekyll</code></a>博客引擎开发的博客框架，可以很方便的生成静态页面用于在<a href="https://pages.github.com/">Github Pages</a>上展现。官方说法：<code>A blogging framework for hackers</code>。
-本文主要介绍在mac下如何利用Octopress和Github搭建个人博客的基础环境。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
-
-<h2>目录</h2>
-
-
-<ul>
-  <li>一 安装基本环境</li>
-  <li>二 通过Octopress将博客部署到Github</li>
-  <li>三 发布个人博客</li>
-  <li>四 其他配置</li>
-</ul>
-
-
-<h2>一 安装基本环境</h2>
-
-
-<h3>1 安装Ruby</h3>
-
-
-<p>Octopress运行需要Ruby环境，所以首先需要安装Ruby（<a href=“https://ruby-china.org/wiki/install_ruby_guide”>详细教程</a>）。
-首先安装RVM，RVM是用来安装和管理Ruby环境的。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>curl -L https://get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后，载入 RVM 环境，如果新开 Terminal 就不用这么做了，会自动重新载入的。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>source ~/.rvm/scripts/rvm</span></code></pre></td></tr></table></div></figure>
-
-
-<p>检查一下是否安装正确</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm -v
-</span><span class='line'>rvm 1.22.17 (stable) by Wayne E. Seguin &lt;wayneeseguin@gmail.com>, Michal Papis &lt;mpapis@gmail.com> [https://rvm.io/]</span></code></pre></td></tr></table></div></figure>
-
-
-<p>通过RVM安装Ruby，后面参数为版本号，可以根据版本进行调整。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm install 2.0.0</span></code></pre></td></tr></table></div></figure>
-
-
-<p>完成以后，Ruby就安装好了。RVM 装好以后，需要执行下面的命令将指定版本的 Ruby 设置为系统默认版本。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvm 2.0.0 --default</span></code></pre></td></tr></table></div></figure>
-
-
-<p>测试是否设置正确</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ruby -v
-</span><span class='line'>ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin13.0.0]</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<h3>2 安装Octopress</h3>
-
-
-<p>安装Octopress，需要git。所以先确保你的电脑里已经安装了git，在终端输入<code>git —version</code>，如果看到版本号类似<code>git version x.x.x.x&hellip;</code>，证明git环境已经OK，否则请先<a href="http://git-scm.com/">安装git</a>。
-git安装完成之后，就可以把Octopress从Github上clone到本地。切换到你想存储Octopress的目录运行如下命令：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress</span></code></pre></td></tr></table></div></figure>
-
-
-<p>接下来安装依赖项：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd octopress
-</span><span class='line'>gem install bundler
-</span><span class='line'>rbenv rehash # If you use rbenv, rehash to be able to run the bundle command
-</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
-
-
-<p>然后安装默认主题：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<h2>二 通过Octopress将博客部署到Github</h2>
-
-
-<p>首先需要在Github上建立一个仓库，Github号称是程序员的Facebook，如果还没有Github账号那就赶紧注册一个吧，仓库名称格式为：<code>username.github.io</code>。该名称就是博客以后的访问地址：<code><a href="http://username.github.io">http://username.github.io</a></code>。仓库创建完成后，需要运行下面命令来将该仓库和Octopress关联起来：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行该命令期间会要求你输入仓库url，按照提示格式进行输入即可。该命令的具体功能详细参考<a href="http://octopress.org/docs/deploying/github/"><code>Deploying to Github Pages</code></a>。主要就是设置Github仓库的URL，在本地创建_deploy，该目录存储的就是后续要部署到Github Pages的文件。详细内容会在后面的Octopress目录结构介绍博文中说明。
-接下来就可以将博客相关文件部署到Github Pages上了，运行如下命令：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
-</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上述命令主要是根据<code>source</code>目录下的文件，生成博客文件到<code>public</code>目录下，然后将<code>public</code>目录下的文件拷贝到<code>deploy</code>目录，并将<code>deploy</code>目录下的文件commit和push到Github上的<code>username.github.io</code>仓库里的<code>master</code>分支，执行完上述操作就可以访问<code><a href="http://username.github.io">http://username.github.io</a></code>了。有时会需要过几分钟才能打开，是正常现象。
-到此为止我们就完成了，博客的基本部署，但一般习惯性的我们会把生成博客文件的原始文件提交到另外一个<code>source</code>分之上，执行如下命令：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
-</span><span class='line'>git commit -m 'Initial source commit'
-</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<h2>三 发布个人博客</h2>
-
-
-<p>想要新建一个博文，运行如下命令：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post[“title"]</span></code></pre></td></tr></table></div></figure>
-
-
-<p>其中title为博客名，该命令会在<code>source/_posts/</code>目录下创建一个名称类似<code>2014-12-5-title.markdown</code>的文件，当然你也可以不用上述命令，手动在该目录下添加该文件，命名需要遵守<code>year-month-day-title.markdown</code>的规则。这个文件就是后续我们写博客的地方，通过<code>rake new_post</code>命令生成的文件会默认带如下内容：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>---
-</span><span class='line'>layout: post
-</span><span class='line'>title: “title"
-</span><span class='line'>date: 2013-08-03 16:36
-</span><span class='line'>comments: true
-</span><span class='line'>categories:
-</span><span class='line'>---</span></code></pre></td></tr></table></div></figure>
-
-
-<p>到目前为止我们就可以在这里写自己的博客了。博客完成之后，通过如下步骤部署到Github上：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake generate
-</span><span class='line'>rake deploy</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在部署到Github之前可以运行如下命令，在浏览器中输入<code><a href="http://localhost:4000/">http://localhost:4000/</a></code> 进行本地预览：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake preview</span></code></pre></td></tr></table></div></figure>
-
-
-<p>总结一下发布博文的完成流程：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_post[’title’]     # 新建博文文件
-</span><span class='line'>rake generate              # 将编辑好的博文生成网页
-</span><span class='line'>rake preview               # 提交前可以进行本地预览
-</span><span class='line'>rake deploy                # 将博文部署到Github上
-</span><span class='line'>git commit -a              # 提交本地更改的文件
-</span><span class='line'>git push origin source     # 将源文件push到Github的source分支</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>四 其他配置</h2>
-
-
-<p>更多的<code>Octopress</code>配置如：侧边栏定制，添加评论插件，字体高亮等等，会在后续博文中<code>持续更新</code>。</p>
 ]]></content>
   </entry>
   

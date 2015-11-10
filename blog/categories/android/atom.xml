@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Android, | GLGJing's Blog]]></title>
+  <title><![CDATA[Category: Android | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-11-05T13:28:02+08:00</updated>
+  <updated>2015-11-10T20:18:24+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -14,148 +14,162 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Android 开发之 App Widget 详解]]></title>
-    <link href="http://glgjing.github.io/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/"/>
-    <updated>2015-11-05T13:08:53+08:00</updated>
-    <id>http://glgjing.github.io/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie</id>
-    <content type="html"><![CDATA[<h3>简介</h3>
+    <title type="html"><![CDATA[Android 开发之锁屏弹窗]]></title>
+    <link href="http://glgjing.github.io/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang/"/>
+    <updated>2015-11-10T20:10:24+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang</id>
+    <content type="html"><![CDATA[<h2>尝试利用 WindowManager 添加浮窗的方式实现</h2>
 
-<p>App Widget：应用程序窗口小部件，微型的应用程序视图，它可以被嵌入到其它应用程序中，比如桌面，并接收周期性的更新。你可以通过一个 App Widget Provider 来发布一个 Widget。可以容纳 Widget 的应用叫做 App Widget Host，详细参考<a href="http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html">App Widgets| Android Developers</a>。</p>
+<p>想在锁屏上面实现弹窗，第一个想法就是利用 WindowManager 设置 Window 的 Flag，通过设置 Flag 的显示优先级来让窗口显示在锁屏的上面。接下来就是试验可能相关的 Window Type 属性，验证该方案是否可行。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></p>
 
-<h3>创建一个 App Widget 的主要步骤</h3>
+<p>在尝试各个 Window Type 属性之前需要明确各个 Type 所需要的权限，下面是 com.android.internal.policy.impl.PhoneWindowManager.checkAddPermission 的源码：</p>
 
-<ol>
-<li>在 AndroidManifest 中声明 App Widget</li>
-<li>在 xml 目录定义 App Widget 的初始化 xml 文件</li>
-<li>实现 Widget 具体布局的 Layout xml。</li>
-<li>继承 AppWidgetProvider 类，实现具体的 Widget 业务逻辑。</li>
-</ol>
+<pre><code class="java">public int checkAddPermission(WindowManager.LayoutParams attrs) {
+    int type = attrs.type;
 
-
-<h3>在 AndroidManifest 中声明 App Widget</h3>
-
-<pre><code class="xml">&lt;receiver android:name=".sample.MyWidgetProvider" &gt;
-    &lt;intent-filter&gt;
-        &lt;action android:name="android.appwidget.action.APPWIDGET_UPDATE" /&gt;
-    &lt;/intent-filter&gt;
-    &lt;meta-data android:name="android.appwidget.provider"
-               android:resource="@xml/appwidget_provider"/&gt;
-&lt;/receiver&gt;
-</code></pre>
-
-<p><code>&lt;receiver&gt;</code>的 android:name 属性声明的就是 Widget 所用的 AppWidgetProvider 类，并且<code>&lt;intent-filter&gt;</code>中必须要包含 APPWIDGET_UPDATE 这个 <code>&lt;action&gt;</code>，所有 Widget 的 broadcast 都是通过这个 filter 来接收的。</p>
-
-<p><code>&lt;meta-data&gt;</code> 声明了 Widget 的 AppWidgetProviderInfo 对应的资源 xml 的位置，用的是 xml 目录下的 appwidget_provider.xml。这里需要简单介绍下 AppWidgetProviderInfo 类，该类是用来描述 Widget 的 meta 信息，包括 Widget 的 xml 布局文件、刷新频率、最小宽高等等，而这些信息正是通过上述 xml 的<code>&lt;appwidget-provider&gt;</code> 标签来描述的。</p>
-
-<h3>在 xml 目录定义 App Widget 的初始化 xml 文件</h3>
-
-<p>前面所说的用来描述 AppWidgetProviderInfo 的 xml 定义如下：</p>
-
-<pre><code class="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
-
-&lt;appwidget-provider 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="200dp"
-    android:minHeight="50dp"
-    android:updatePeriodMillis="86400000"
-    android:previewImage="@drawable/app_icon"
-    android:initialLayout="@layout/widget"
-    android:configure="com.example.android.ExampleAppWidgetConfigure"
-    android:resizeMode="horizontal|vertical"
-    android:widgetCategory="home_screen|keyguard"/&gt;
-</code></pre>
-
-<p><strong>minWidth</strong> &amp; <strong>minHeight</strong>：定义了 Widget 的最小宽高，当 minWidth 和 minHeight 不是桌面 cell 的整数倍时，Widget 的宽高会被阔至与其最接近的 cells 大小。Google 官方给出了一个大致估算 minWidth &amp; minHeight 的公式，根据 Widget 所占的 cell 数量来计算宽高：<code>70 × n − 30</code>，n 是所占的 cell 数量。  <br/>
-<strong>updatePeriodMillis</strong>：定义了 Widget 的刷新频率，也就是 App Widget Framework 多久请求一次 AppWidgetProvider 的 onUpdate() 回调函数。该时间间隔并不保证精确，出于节约用户电量的考虑，Android 系统默认最小更新周期是 30 分钟，也就是说：如果您的程序需要实时更新数据，设置这个更新周期是 2 秒，那么您的程序是不会每隔 2 秒就收到更新通知的，而是要等到 30 分钟以上才可以，要想实时的更新 Widget，一般可以采用 Service 和 AlarmManager 对 Widget 进行更新。   <br/>
-<strong>previewImage</strong>：当用户选择添加 Widget 时的预览图片。如果该属性没有定义，则展示 application 的 launcher icon。<font color="#B72712">该属性是在 3.0 以后引入的。</font>    <br/>
-<strong>initialLayout</strong>：Widget 的布局 Layout 文件。    <br/>
-<strong>configure</strong>：定义了用户在添加 Widget 时弹出的配置页面的 Activity，用户可以在此进行 Widget 的一些配置，该 Activity 是可选的，如果不需要可以不进行声明。   <br/>
-<strong>resizeMode</strong>：Widget 在水平和垂直方向是否可以调整大小，值可以为：horizontal（水平方向可以调整大小），vertical（垂直方向可以调整大小），none（不可以调整大小），也可以 horizontal|vertical 组合表示水平和垂直方向均可以调整大小。    <br/>
-<strong>widgetCategory</strong>：表示 Widget 可以显示的位置，包括 home_screen（桌面），keyguard（锁屏），keyguard 属性需要 5.0 或以上 Android 版本才可以。    <br/>
-其它更多详细属性可以参考 <a href="http://developer.android.com/intl/zh-cn/reference/android/appwidget/AppWidgetProviderInfo.html">AppWidgetProviderInfo</a>。</p>
-
-<h3>继承 AppWidgetProvider 类</h3>
-
-<p>AppWidgetProvider 继承自 BroadcastReceiver，内部逻辑非常简单，就是在 onReceive() 中处理 Widget 相关的广播事件（ACTION_APPWIDGET_UPDATE, ACTION_APPWIDGET_DELETED, ACTION_APPWIDGET_ENABLED, ACTION_APPWIDGET_DISABLED, ACTION_APPWIDGET_OPTIONS_CHANGED）分发到各个回调函数中（onUpdate(), onDeleted(), onEnabled(), onDisabled, onAppWidgetOptionsChanged()）。</p>
-
-<p><strong>onUpdate()：</strong>是最重要的回调函数，根据 updatePeriodMillis 定义的定期刷新操作会调用该函数，此外当用户添加 Widget 时
-也会调用该函数，可以在这里进行必要的初始化操作。但如果在<code>&lt;appwidget-provider&gt;</code>中声明了 android:configure 的 Activity，在用户添加 Widget 时，不会调用 onUpdate()，需要由 configure Activity 去负责去调用 AppWidgetManager.updateAppWidget() 完成 Widget 更新，后续的定时更新还是会继续调用 onUpdate() 的。    <br/>
-<strong>onDeleted()：</strong>当 Widget 被删除时调用该方法。   <br/>
-<strong>onEnabled()：</strong>当 Widget 第一次被添加时调用，例如用户添加了两个你的 Widget，那么只有在添加第一个 Widget 时该方法会被调用。所以该方法比较适合执行你所有 Widgets 只需进行一次的操作。   <br/>
-<strong>onDisabled()：</strong>与 onEnabled 恰好相反，当你的最后一个 Widget 被删除时调用该方法，所以这里用来清理之前在 onEnabled() 中进行的操作。    <br/>
-<strong>onAppWidgetOptionsChanged()：</strong>当 Widget 第一次被添加或者大小发生变化时调用该方法，可以在此控制 Widget 元素的显示和隐藏。</p>
-
-<p>示例代码：</p>
-
-<pre><code class="java">public class ExampleAppWidgetProvider extends AppWidgetProvider {
-
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
-
-        // Perform this loop procedure for each App Widget that belongs to this provider
-        for (int i=0; i&lt;N; i++) {
-            int appWidgetId = appWidgetIds[i];
-
-            // Create an Intent to launch ExampleActivity
-            Intent intent = new Intent(context, ExampleActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-            // Get the layout for the App Widget and attach an on-click listener
-            // to the button
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_provider_layout);
-            views.setOnClickPendingIntent(R.id.button, pendingIntent);
-
-            // Tell the AppWidgetManager to perform an update on the current app widget
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+    if (type &lt; WindowManager.LayoutParams.FIRST_SYSTEM_WINDOW
+            || type &gt; WindowManager.LayoutParams.LAST_SYSTEM_WINDOW) {
+        return WindowManagerImpl.ADD_OKAY;
+    }
+    String permission = null;
+    switch (type) {
+        case TYPE_TOAST:
+            // XXX right now the app process has complete control over
+            // this...  should introduce a token to let the system
+            // monitor/control what they are doing.
+            break;
+        case TYPE_INPUT_METHOD:
+        case TYPE_WALLPAPER:
+            // The window manager will check these.
+            break;
+        case TYPE_PHONE:
+        case TYPE_PRIORITY_PHONE:
+        case TYPE_SYSTEM_ALERT:
+        case TYPE_SYSTEM_ERROR:
+        case TYPE_SYSTEM_OVERLAY:
+            permission = android.Manifest.permission.SYSTEM_ALERT_WINDOW;
+            break;
+        default:
+            permission = android.Manifest.permission.INTERNAL_SYSTEM_WINDOW;
+    }
+    if (permission != null) {
+        if (mContext.checkCallingOrSelfPermission(permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            return WindowManagerImpl.ADD_PERMISSION_DENIED;
         }
     }
+    return WindowManagerImpl.ADD_OKAY;
 }
 </code></pre>
 
-<h3>创建 App Widget Configuration Activity</h3>
+<ul>
+<li>明显不适合的 Type：TYPE_TOAST, TYPE_INPUT_METHOD, TYPE_WALLPAPER。</li>
+<li>可能适合的 Type：TYPE_PHONE, TYPE_PRIORITY_PHONE, TYPE_SYSTEM_ALERT, TYPE_SYSTEM_ERROR, TYPE_SYSTEM_OVERLAY。</li>
+<li>其它类型的 Type：需要 android.Manifest.permission.INTERNAL_SYSTEM_WINDOW 权限，而申请该权限需要系统签名，所以我们是无法获取权限的。</li>
+</ul>
 
-<p>如果你的 Widget 需要用户配置一些选项，你可以为你的 Widget 创建 Configuration Activity，当用户添加 Widget 时会自动弹出该 Activity。Configuration Activity 和普通 Activity 一样需要在 Manifest 中声明，但是需要额外声明一个 intent-filter: APPWIDGET_CONFIGURE，例如：</p>
 
-<pre><code class="xml">&lt;activity android:name=".ExampleAppWidgetConfigure"&gt;
-    &lt;intent-filter&gt;
-        &lt;action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/&gt;
-    &lt;/intent-filter&gt;
-&lt;/activity&gt;
+<!-- more -->
+
+
+<p><strong>TYPE_PHONE</strong></p>
+
+<pre><code class="java">/**
+ * Window type: phone.  These are non-application windows providing
+ * user interaction with the phone (in particular incoming calls).
+ * These windows are normally placed above all applications, but behind
+ * the status bar.
+ * In multiuser systems shows on all users' windows.
+ */
+public static final int TYPE_PHONE              = FIRST_SYSTEM_WINDOW+2;
 </code></pre>
 
-<p>同时还需要在上述的 appwidget-provider 中声明：</p>
+<p>TYPE_PHONE 类型的窗口可以显示在其它 APP 的上面，但不能显示在锁屏的上面，所以 PASS。</p>
 
-<pre><code class="xml">&lt;appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    ...
-    android:configure="com.example.android.ExampleAppWidgetConfigure" 
-    ... &gt;
-&lt;/appwidget-provider&gt;
+<p><strong>TYPE_PRIORITY_PHONE</strong></p>
+
+<pre><code class="java">/**
+ * Window type: priority phone UI, which needs to be displayed even if
+ * the keyguard is active.  These windows must not take input
+ * focus, or they will interfere with the keyguard.
+ * In multiuser systems shows on all users' windows.
+ */
+public static final int TYPE_PRIORITY_PHONE     = FIRST_SYSTEM_WINDOW+7;
 </code></pre>
 
-<p>有两点需要注意的是：</p>
+<p>TYPE_PRIORITY_PHONE 类型的窗口可以显示在其它 APP 的上面，但不能显示在锁屏的上面，所以 PASS。而且实际的行为和注释并不相符，该类型的窗口是可以获取交互事件的，具体原因待查。</p>
 
-<ol>
-<li>Activity 必须返回带 EXTRA_APPWIDGET_ID 的 result。</li>
-<li>声明Configuration Activity 后 onUpdate() 在 Widget 添加时不会被调用，Activity 负责调用 AppWidgetManager.updateAppWidget() 完成 Widget 更新。</li>
-</ol>
+<p><strong>TYPE_SYSTEM_ALERT</strong></p>
 
+<pre><code class="java">/**
+ * Window type: system window, such as low power alert. These windows
+ * are always on top of application windows.
+ * In multiuser systems shows only on the owning user's window.
+ */
+public static final int TYPE_SYSTEM_ALERT       = FIRST_SYSTEM_WINDOW+3;
+</code></pre>
 
-<pre><code class="java">Intent intent = getIntent();
-Bundle extras = intent.getExtras();
-if (extras != null) {
-    mAppWidgetId = extras.getInt(
-        AppWidgetManager.EXTRA_APPWIDGET_ID, 
-        AppWidgetManager.INVALID_APPWIDGET_ID);
+<p>TYPE_SYSTEM_ALERT 类型的窗口可以显示在其它 APP 的上面，但不能显示在锁屏的上面，所以 PASS。</p>
+
+<p><strong>TYPE_SYSTEM_OVERLAY</strong></p>
+
+<pre><code class="java">/**
+ * Window type: system overlay windows, which need to be displayed
+ * on top of everything else.  These windows must not take input
+ * focus, or they will interfere with the keyguard.
+ * In multiuser systems shows only on the owning user's window.
+ */
+public static final int TYPE_SYSTEM_OVERLAY     = FIRST_SYSTEM_WINDOW+6;
+</code></pre>
+
+<p>TYPE_SYSTEM_OVERLAY 类型的窗口可以显示在所有其它窗口的上面，包括锁屏，而且不会影响它下面窗口的交互事件响应，但是该属性窗口不能获得焦点，无法进行交互（如果该窗口可以获取焦点，那么就可以用来抓取用户的锁屏密码，出于安全考虑，系统是不会允许的），所以只能用来简单的展示内容，如果需要交互的锁屏弹窗，那么该属性 PASS。</p>
+
+<p><strong>TYPE_SYSTEM_ERROR</strong></p>
+
+<pre><code class="java">/**
+ * Window type: internal system error windows, appear on top of
+ * everything they can.
+ * In multiuser systems shows only on the owning user's window.
+ */
+public static final int TYPE_SYSTEM_ERROR       = FIRST_SYSTEM_WINDOW+10;
+</code></pre>
+
+<p>在原生 ROM 5.1 下试验是可以显示出来的，但根据注释来看（appear on top of everything they can）不是在所有情况下都可以显示在锁屏上面的，<font color="#B72712">而且像 MIUI 和 Flyme 等 ROM 默认是屏蔽浮窗权限的，考虑到这点，利用 WindowManager 添加浮窗的方式实现锁屏弹窗的方案基本 PASS。</font></p>
+
+<h2>使用 Activity 的方式实现</h2>
+
+<h4>首先需要对 Activity 进行如下设置</h4>
+
+<pre><code class="java">protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);  
+    final Window win = getWindow();  
+    win.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED  
+            | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD  
+            | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON  
+            | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);  
 }
+</code></pre>
 
-AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-RemoteViews views = new RemoteViews(context.getPackageName(),R.layout.example_appwidget);
-appWidgetManager.updateAppWidget(mAppWidgetId, views);
+<p>其中最主要也是必须要设置的就是：FLAG_SHOW_WHEN_LOCKED，顾名思义就是锁屏下显示该 Activity。而其它几个 Flag 包括：解锁、保持屏幕常亮、点亮屏幕可以根据具体的需求选择设置。</p>
 
-Intent resultValue = new Intent();
-resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-setResult(RESULT_OK, resultValue);
-finish();
+<h4>在 AndroidManifest.xml 中声明 Activity</h4>
+
+<p>同样该 Activity 也需要在 AndroidManifest.xml 中声明，声明时需注意添加 <code>android:excludeFromRecents="true"</code> 属性，是为了将该 Activity 从最近任务列表中去除，否则用户会觉得很奇怪。还有因为这个 Activity 会整个盖在锁屏上面，而且就算设置成背景透明，锁屏界面也不会显示在下面（系统主要是出于安全考虑），所以需要考虑下该 Activity 的背景，这里为了显示不要太突兀将主题设为壁纸。</p>
+
+<pre><code class="java">&lt;activity android:name=".LockScreenActivity"  
+          android:launchMode="singleInstance"  
+          android:excludeFromRecents="true"  
+          android:theme="@android:style/Theme.Wallpaper.NoTitleBar"/&gt;  
+</code></pre>
+
+<h4>启动 Activity</h4>
+
+<p>由于该 Activity 是为了在锁屏的情况下显示的，所以启动 Activity 时不要忘了判断手机是否处于锁屏状态，可以通过下面这种方式判断锁屏状态：</p>
+
+<pre><code class="java">KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+if (km.inKeyguardRestrictedInputMode()) {
+    // 处于锁屏状态
+}
 </code></pre>
 ]]></content>
   </entry>
