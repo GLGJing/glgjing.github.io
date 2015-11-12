@@ -4,7 +4,7 @@
   <title><![CDATA[GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-11-10T20:18:24+08:00</updated>
+  <updated>2015-11-12T16:22:02+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,314 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android 开发之实时更新 App Widget]]></title>
+    <link href="http://glgjing.github.io/blog/2015/11/12/android-kai-fa-zhi-shi-shi-geng-xin-app-widget/"/>
+    <updated>2015-11-12T16:14:50+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/11/12/android-kai-fa-zhi-shi-shi-geng-xin-app-widget</id>
+    <content type="html"><![CDATA[<p><a href="http://glgjing.github.io/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/">Android 开发之 App Widget 详解</a>中说到 updatePeriodMills 定义了 Widget 的刷新频率，但是出于节约用户电量的考虑，Android 系统默认最小更新周期是 30 分钟，也就是说：如果您的程序需要实时更新数据，设置这个更新周期是 2 秒，那么您的程序是不会每隔 2 秒就收到更新通知的，而是要等到 30 分钟以上才可以，要想实时的更新 Widget，一般可以采用 Service 和 AlarmManager 对 Widget 进行更新。</p>
+
+<h3>利用 Service 更新 Widget</h3>
+
+<p>在 onUpdate() 方法中启动 Service：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">context</span><span class="o">.</span><span class="na">startService</span><span class="o">(</span><span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 Service 中对 Widget 进行更新，这里 Service 利用 AlarmManager 每隔一段时间进行自启，防止 Service 被系统 Kill 掉后无法对 Widget 进行更新，转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WidgetService</span> <span class="kd">extends</span> <span class="n">Service</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">ALARM_DURATION</span>  <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span> <span class="c1">// service 自启间隔</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_DURATION</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span>     <span class="c1">// Widget 更新间隔</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_MESSAGE</span>  <span class="o">=</span> <span class="mi">1000</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">UpdateHandler</span> <span class="n">updateHandler</span><span class="o">;</span> <span class="c1">// 更新 Widget 的 Handler</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="n">IBinder</span> <span class="nf">onBind</span><span class="o">(</span><span class="n">Intent</span> <span class="n">intent</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">onStartCommand</span><span class="o">(</span><span class="n">Intent</span> <span class="n">intent</span><span class="o">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="o">,</span> <span class="kt">int</span> <span class="n">startId</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// 每个 ALARM_DURATION 自启一次</span>
+</span><span class='line'>    <span class="n">AlarmManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="o">(</span><span class="n">AlarmManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">ALARM_SERVICE</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Intent</span> <span class="n">alarmIntent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="mi">0</span><span class="o">,</span>
+</span><span class='line'>      <span class="n">alarmIntent</span><span class="o">,</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">FLAG_UPDATE_CURRENT</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">manager</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">AlarmManager</span><span class="o">.</span><span class="na">ELAPSED_REALTIME_WAKEUP</span><span class="o">,</span>
+</span><span class='line'>      <span class="n">SystemClock</span><span class="o">.</span><span class="na">elapsedRealtime</span><span class="o">()</span> <span class="o">+</span> <span class="n">ALARM_DURATION</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">START_STICKY</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="n">updateHandler</span><span class="o">.</span><span class="na">obtainMessage</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">message</span><span class="o">.</span><span class="na">what</span> <span class="o">=</span> <span class="n">UPDATE_MESSAGE</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">updateHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">UpdateHandler</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">updateHandler</span><span class="o">.</span><span class="na">sendMessageDelayed</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">UPDATE_DURATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">updateWidget</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// 更新 Widget</span>
+</span><span class='line'>    <span class="n">RemoteViews</span> <span class="n">remoteViews</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">().</span><span class="na">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">widget</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span> <span class="o">=</span> <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="k">new</span> <span class="nf">ComponentName</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">MyWidgetProvider</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">remoteViews</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 发送下次更新的消息</span>
+</span><span class='line'>    <span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="n">updateHandler</span><span class="o">.</span><span class="na">obtainMessage</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">message</span><span class="o">.</span><span class="na">what</span> <span class="o">=</span> <span class="n">UPDATE_MESSAGE</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">updateHandler</span><span class="o">.</span><span class="na">sendMessageDelayed</span><span class="o">(</span><span class="n">message</span><span class="o">,</span> <span class="n">UPDATE_DURATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">protected</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">UpdateHandler</span> <span class="kd">extends</span> <span class="n">Handler</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleMessage</span><span class="o">(</span><span class="n">Message</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">switch</span> <span class="o">(</span><span class="n">msg</span><span class="o">.</span><span class="na">what</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nl">UPDATE_MESSAGE:</span>
+</span><span class='line'>          <span class="n">updateWidget</span><span class="o">();</span>
+</span><span class='line'>          <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>          <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Service + AlarmManager 更新 Widget</h3>
+
+<p>上面是利用 Service 的内部消息循环更新 Widget，也可以利用 AlarmManager 来定时触发更新。在 onUpdate() 中启动 Alarm，通过 AlarmManager 来循环启动 Service，剩下的原理基本就是一样的了。记得在 onDisabled() 取消掉 Alarm。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_DURATION</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span> <span class="c1">// Widget 更新间隔</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">PendingIntent</span> <span class="n">pendingIntent</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">AlarmManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="o">(</span><span class="n">AlarmManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">ALARM_SERVICE</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Intent</span> <span class="n">alarmIntent</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">pendingIntent</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">pendingIntent</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getService</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="mi">0</span><span class="o">,</span>
+</span><span class='line'>        <span class="n">alarmIntent</span><span class="o">,</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">FLAG_UPDATE_CURRENT</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">manager</span><span class="o">.</span><span class="na">setRepeating</span><span class="o">(</span><span class="n">AlarmManager</span><span class="o">.</span><span class="na">ELAPSED_REALTIME_WAKEUP</span><span class="o">,</span>
+</span><span class='line'>      <span class="n">SystemClock</span><span class="o">.</span><span class="na">elapsedRealtime</span><span class="o">(),</span> <span class="n">UPDATE_DURATION</span><span class="o">,</span> <span class="n">pendingIntent</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onDisabled</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">AlarmManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="o">(</span><span class="n">AlarmManager</span><span class="o">)</span> <span class="n">context</span><span class="o">.</span><span class="na">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">ALARM_SERVICE</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">manager</span><span class="o">.</span><span class="na">cancel</span><span class="o">(</span><span class="n">pendingIntent</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>MyService 源码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyService</span> <span class="kd">extends</span> <span class="n">Service</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">onStartCommand</span><span class="o">(</span><span class="n">Intent</span> <span class="n">intent</span><span class="o">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="o">,</span> <span class="kt">int</span> <span class="n">startId</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">buildUpdate</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kd">super</span><span class="o">.</span><span class="na">onStartCommand</span><span class="o">(</span><span class="n">intent</span><span class="o">,</span> <span class="n">flags</span><span class="o">,</span> <span class="n">startId</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">buildUpdate</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">RemoteViews</span> <span class="n">view</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">widget</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">RemoteViews</span> <span class="n">remoteViews</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">().</span><span class="na">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">widget</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span> <span class="o">=</span> <span class="n">AppWidgetManager</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">appWidgetManager</span><span class="o">.</span><span class="na">updateAppWidget</span><span class="o">(</span><span class="k">new</span> <span class="nf">ComponentName</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">MyWidgetProvider</span><span class="o">.</span><span class="na">class</span><span class="o">),</span> <span class="n">remoteViews</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>添加自定义 View</h3>
+
+<p>更新 Widget 是通过 RemoteViews 实现的，而 RemoteViews 支持的 View 有限，详细参考<a href="http://developer.android.com/intl/zh-cn/guide/topics/appwidgets/index.html#CreatingLayout">这里</a>，如果想要在 Widget 中使用自定义 View，可以通过一下方式实现：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">RemoteViews</span> <span class="n">remoteViews</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">RemoteViews</span><span class="o">(</span><span class="n">context</span><span class="o">.</span><span class="na">getPackageName</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">widget</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">MyCustomView</span> <span class="n">customView</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">MyCustomView</span><span class="o">(</span><span class="n">context</span><span class="o">);</span>
+</span><span class='line'><span class="n">customView</span><span class="o">.</span><span class="na">measure</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">height</span><span class="o">);</span>
+</span><span class='line'><span class="n">customView</span><span class="o">.</span><span class="na">layout</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">width</span><span class="o">,</span> <span class="n">height</span><span class="o">);</span>
+</span><span class='line'><span class="n">Bitmap</span> <span class="n">bitmap</span> <span class="o">=</span> <span class="n">Bitmap</span><span class="o">.</span><span class="na">createBitmap</span><span class="o">(</span><span class="n">width</span><span class="o">,</span> <span class="n">height</span><span class="o">,</span> <span class="n">Bitmap</span><span class="o">.</span><span class="na">Config</span><span class="o">.</span><span class="na">ARGB_8888</span><span class="o">);</span>
+</span><span class='line'><span class="n">customView</span><span class="o">.</span><span class="na">draw</span><span class="o">(</span><span class="k">new</span> <span class="nf">Canvas</span><span class="o">(</span><span class="n">bitmap</span><span class="o">));</span>
+</span><span class='line'><span class="n">remoteViews</span><span class="o">.</span><span class="na">setImageViewBitmap</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">bitmap</span><span class="o">,</span> <span class="n">bitmap</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>实际上就是将自定义 View 在 Bitmap 上绘制，然后通过 ImageView 进行展现。</p>
+
+<h3>处理点击事件</h3>
+
+<p>RemoteViews 可以设置 setOnClickPendingIntent，通过 PendingIntent 来处理点击事件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">// 设置 button 事件为启动一个 Activity</span>
+</span><span class='line'><span class="n">Intent</span> <span class="n">intent1</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="s">&quot;open_widget_activity&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">PendingIntent</span> <span class="n">pendingIntent1</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getActivity</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">intent1</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'><span class="n">remoteViews</span><span class="o">.</span><span class="na">setOnClickPendingIntent</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">button1</span><span class="o">,</span> <span class="n">pendingIntent1</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 设置 button 事件为发送一个广播</span>
+</span><span class='line'><span class="n">Intent</span> <span class="n">intent2</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="s">&quot;send_broadcast&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">PendingIntent</span> <span class="n">pendingIntent2</span> <span class="o">=</span> <span class="n">PendingIntent</span><span class="o">.</span><span class="na">getBroadcast</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">intent2</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+</span><span class='line'><span class="n">remoteViews</span><span class="o">.</span><span class="na">setOnClickPendingIntent</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">button2</span><span class="o">,</span> <span class="n">pendingIntent2</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后需要处理事件的 Activity 或者 Receiver 接受对应的 Intent 即可。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android 开发之锁屏弹窗]]></title>
@@ -1303,7 +1611,7 @@
 
 <p><strong>显示结果：</strong><br/>
  网址：<a href="http://glgjing.github.io">http://glgjing.github.io</a><br/>
- 邮箱：<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#71;&#76;&#71;&#x4a;&#105;&#110;&#103;&#64;&#x67;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#x47;&#x4c;&#x47;&#74;&#105;&#110;&#x67;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#46;&#x63;&#111;&#109;</a></p>
+ 邮箱：<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x47;&#76;&#71;&#x4a;&#105;&#110;&#103;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#x47;&#x4c;&#71;&#x4a;&#x69;&#110;&#x67;&#x40;&#103;&#x6d;&#x61;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
 
 <h2>强调</h2>
 
@@ -1397,7 +1705,7 @@ _   底线
 <h2>生成新的 rsa key</h2>
 
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x59;&#79;&#x55;&#x52;&#x5f;&#x45;&#77;&#x41;&#x49;&#76;&#64;&#89;&#x4f;&#x55;&#x52;&#69;&#x4d;&#65;&#73;&#76;&#46;&#x43;&#79;&#77;">&#89;&#x4f;&#85;&#82;&#95;&#69;&#x4d;&#65;&#73;&#x4c;&#x40;&#89;&#79;&#85;&#x52;&#x45;&#77;&#x41;&#73;&#x4c;&#x2e;&#x43;&#x4f;&#77;</a> 改为你的 Email 地址。</p>
+<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x59;&#x4f;&#x55;&#x52;&#95;&#x45;&#77;&#65;&#x49;&#x4c;&#64;&#89;&#x4f;&#85;&#x52;&#x45;&#x4d;&#65;&#x49;&#76;&#46;&#x43;&#x4f;&#77;">&#x59;&#x4f;&#85;&#x52;&#95;&#69;&#x4d;&#x41;&#x49;&#76;&#64;&#x59;&#x4f;&#x55;&#x52;&#69;&#77;&#x41;&#x49;&#x4c;&#46;&#67;&#79;&#x4d;</a> 改为你的 Email 地址。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
@@ -2652,192 +2960,6 @@ _   底线
 
 
 <p>这里主要介绍了如何将博客网站添加到搜索引擎，并添加网站流量统计工具，各种流量统计工具的优劣可以自行google，后面需要做的就是SEO了，而SEO是一件长期持续的工作。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（二）：自定义主题]]></title>
-    <link href="http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/"/>
-    <updated>2014-12-12T16:19:09+08:00</updated>
-    <id>http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://glgjing.github.io/images/1-2.png"></p>
-
-<h2>引言</h2>
-
-
-<p>在为Octopress博客自定义主题之前，你应该已经搭建好了基础环境。如果还没开始搭建可以参考<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">利用Octopress和Github搭建个人博客（一）：基础环境搭建</a>。在搭建好基础环境之后，如果单纯的写写博文，默认主题也是可以满足需求的。但既然选择了用Octopress和Github Pages来管理自己的博客，不折腾折腾都对不起自己。不要求效果有多炫，但要方便浏览查找。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
-
-<h2>目录</h2>
-
-
-<ul>
-    <li>一 Octopress目录结构介绍</li>
-    <li>二 安装第三方主题</li>
-    <li>三 主题样式修改</li>
-    <li>四 总结</li>
-</ul>
-
-
-<h2>一 Octopress目录结构介绍</h2>
-
-
-<p>在更改主题之前有必要了解一下Octopress目录下的文件结构，后续所有的修改都在这个目录下进行的。Octopress的目录文件如下：
-<img class="center" src="http://glgjing.github.io/images/1-3.png">
-初始的Octopress目录下是没有source、sass、public、_deploy这几个文件夹的，运行<code>rake install[&lsquo;theme_name&rsquo;]</code>命令后会生成这几个文件夹。</p>
-
-<ul>
-    <li>_config.yml: 站点的配置文件，也是后续需要修改最多的文件。</li>
-    <li>source: 该目录是执行<code>rake install['theme_name']</code>后从.themes\theme_name目录中的source拷贝而来(theme_name是你选择的主题名)，并且添加了一个_posts目录了，当执行了rake new_post[&#8221;title&#8221;]后会在_post生成博文的markdown文件。包括后面的很多设置页是在该目录中进行；</li>
-    <li>sass：也是在执行<code>rake install['theme_name']</code>后从.themes\theme_name目录中的sass拷贝而来。关于sass可以参考<a href="http://sass-lang.com/guide">这里</a></li>
-    <li>public: 当执行了<code>rake generate</code>命令后会编译source目录下的内容然后将编译后的内容复制到public目录中。</li>
-  <li>_deploy: 在执行<code>rake deploy</code>命令后，会将public的内容拷贝到_deploy目录下然后提交到Github的master分支上，我们最终看到的网站内容就是master分支下的内容。所以public和_deploy中的内容都是自动生成的，不要手动修改，否则在运行<code>rake generate</code>和<code>rake deploy</code>命令后所有的更改都会被覆盖掉。</li>
-</ul>
-
-
-<h2>二 安装第三方主题</h2>
-
-
-<p>在做任何主题相关的修改之前，最好选定一款自己喜欢的主题，否则后续再更换主题，会覆盖之前的修改。Github上有很多第三方的主题，可以到<a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">这里</a>下载。运行类似如下命令进行主题安装：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd octopress
-</span><span class='line'>git clone git://github.com/macjasp/cleanpress.git .themes/cleanpress
-</span><span class='line'>rake install['cleanpress']
-</span><span class='line'>rake generate</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>三 主题样式修改</h2>
-
-
-<h3>1 基本配置修改</h3>
-
-
-<p>在选定好主题之后就可以进行自定义修改了。首先更改基本配置，Octopress的基本配置存在_config.yml文件里，具体内容如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>url: http://glgjing.github.io  # 网站的url
-</span><span class='line'>title: GLGJing's Blog          # 网站的标题
-</span><span class='line'>author: GLGJing                # 网站作者，会显示在底部等位置
-</span><span class='line'>simple_search: https://www.google.com/search #搜索引擎
-</span><span class='line'>description:                   # 网站描述</span></code></pre></td></tr></table></div></figure>
-
-
-<p>此处列出了主要的博客配置信息，有些配置项大概看名字就知道功能了，例如网站title，email等；有些配置项比较复杂，后面单独介绍，如添加评论插件、侧边栏等。</p>
-
-<h3>2 设置标题栏: Header</h3>
-
-
-<p>Octopress的很多自定义配置是存储在/source/_includes/custom/目录下的，如果想要更改标题栏，可以修改该文件夹下的header.html文件。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;hgroup&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;h1&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>GLGJing&#39;s Blog<span class="nt">&lt;/a&gt;&lt;/h1&gt;</span>
-</span><span class='line'>  {% if site.subtitle %}
-</span><span class='line'>    <span class="nt">&lt;h2&gt;</span>{{ site.subtitle }}<span class="nt">&lt;/h2&gt;</span>
-</span><span class='line'>  {% endif %}
-</span><span class='line'><span class="nt">&lt;/hgroup&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>其中的title和subtitle可以直接在_config.yml中修改。</p>
-
-<h3>3 设置导航栏: Navigation</h3>
-
-
-<p>Navigation的配置方法和Header类似，直接修改/source/_includes/custom/navigation.html文件。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;main-navigation&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>主页<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/blog/archives&quot;</span><span class="nt">&gt;</span>文章<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/about&quot;</span><span class="nt">&gt;</span>关于<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-</span><span class='line'><span class="nt">&lt;/ul&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果想添加新的页面，可以运行如下命令：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake new_page['page_name']</span></code></pre></td></tr></table></div></figure>
-
-
-<p>该命令会建立source/page_name/index.html文件，然后编辑此文件，添加自己想要展示的内容即可，再在navigation.html里添加正确的路径即可,如:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;/page_name&quot;</span><span class="nt">&gt;</span>新标签页<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>4 设置尾栏: Footer</h3>
-
-
-<p>修改/source/_includes/custom/footer.html文件来设置尾栏。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2015 - GLGJing -
-</span><span class='line'>  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;credit&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    Powered by<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;http://octopress.org&quot;</span><span class="nt">&gt;</span>Octopress<span class="nt">&lt;/a&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/span&gt;</span>
-</span><span class='line'><span class="nt">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>可以将不需要的信息去掉，添加自己想要的信息如：流量统计工具，个人声明等。</p>
-
-<h3>5 设置背景图和LOGO</h3>
-
-
-<p>想要更改背景图片，可以在sass/custom/_styles.scss中添加如下内容：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>html {
-</span><span class='line'>  background: #555555 url(&quot;/images/bg3.jpg&quot;);
-</span><span class='line'>}
-</span><span class='line'>body &gt; div {
-</span><span class='line'>  background-image: none;
-</span><span class='line'>}
-</span><span class='line'>body &gt; div &gt; div {
-</span><span class='line'>  background-image: none;
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>更改LOGO图片可以直接替换/source目录下的favicon.png, 或者将LOGO图片放入source/images中，然后修改source/_includes/head.html，找到favicon.png，修改其路径指向你的图片即可。</p>
-
-<h2>四 总结</h2>
-
-
-<p>这里介绍了Octopress主题配置的几个主要部分，其他更细节配置如：字体的配置优化、侧边栏的定制、评论插件的配置等，会在后续的博文中更新。</p>
 ]]></content>
   </entry>
   

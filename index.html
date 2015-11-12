@@ -110,6 +110,66 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/11/12/android-kai-fa-zhi-shi-shi-geng-xin-app-widget/">Android 开发之实时更新 App Widget</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-12T16:14:50+08:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>4:14 pm</span></time>
+        
+         | <a href="/blog/2015/11/12/android-kai-fa-zhi-shi-shi-geng-xin-app-widget/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://glgjing.github.io/blog/2015/11/05/android-kai-fa-zhi-app-widget-xiang-jie/">Android 开发之 App Widget 详解</a>中说到 updatePeriodMills 定义了 Widget 的刷新频率，但是出于节约用户电量的考虑，Android 系统默认最小更新周期是 30 分钟，也就是说：如果您的程序需要实时更新数据，设置这个更新周期是 2 秒，那么您的程序是不会每隔 2 秒就收到更新通知的，而是要等到 30 分钟以上才可以，要想实时的更新 Widget，一般可以采用 Service 和 AlarmManager 对 Widget 进行更新。</p>
+
+<h3>利用 Service 更新 Widget</h3>
+
+<p>在 onUpdate() 方法中启动 Service：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyWidgetProvider</span> <span class="kd">extends</span> <span class="n">AppWidgetProvider</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onUpdate</span><span class="o">(</span><span class="n">Context</span> <span class="n">context</span><span class="o">,</span> <span class="n">AppWidgetManager</span> <span class="n">appWidgetManager</span><span class="o">,</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">appWidgetIds</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">context</span><span class="o">.</span><span class="na">startService</span><span class="o">(</span><span class="k">new</span> <span class="nf">Intent</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">WidgetService</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 Service 中对 Widget 进行更新，这里 Service 利用 AlarmManager 每隔一段时间进行自启，防止 Service 被系统 Kill 掉后无法对 Widget 进行更新，转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a>。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/11/12/android-kai-fa-zhi-shi-shi-geng-xin-app-widget/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/11/10/android-kai-fa-zhi-suo-ping-dan-chuang/">Android 开发之锁屏弹窗</a></h1>
     
     
@@ -761,75 +821,6 @@
   
     <footer>
       <a rel="full-article" href="/blog/2015/02/18/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:claass-yu-struct-de-qu-bie/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/">深度探索C++对象模型：三种对象模型</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-11T15:57:03+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:57 pm</span></time>
-        
-         | <a href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>现在有一个<code>Point</code>类，声明如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="k">class</span> <span class="nc">Point</span> <span class="p">{</span>
-</span><span class='line'> <span class="k">public</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">Point</span><span class="p">(</span><span class="kt">float</span> <span class="n">xval</span><span class="p">);</span>
-</span><span class='line'>  <span class="k">virtual</span> <span class="o">~</span><span class="n">Point</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kt">float</span> <span class="n">x</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="nf">PointCount</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">protected</span><span class="o">:</span>
-</span><span class='line'>  <span class="k">virtual</span> <span class="n">ostream</span><span class="o">&amp;</span> <span class="n">print</span><span class="p">(</span><span class="n">ostream</span> <span class="o">&amp;</span><span class="n">os</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kt">float</span> <span class="n">_x</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">_point_count</span><span class="p">;</span>
-</span><span class='line'><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>  <br/>
-这个类在机器上是通过什么模型来表示的呢？下面就介绍三种不同的实现方式。转载请注明出处：<a href="http://glgjing.github.io/">http://glgjing.github.io/</a></div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/">继续阅读 &rarr;</a>
     </footer>
   
 
