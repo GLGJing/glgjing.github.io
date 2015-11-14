@@ -110,6 +110,56 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/02/18/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:claass-yu-struct-de-qu-bie/">深度探索C++对象模型：class 与 Struct 的区别</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-18T01:32:20+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:32 am</span></time>
+        
+         | <a href="/blog/2015/02/18/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:claass-yu-struct-de-qu-bie/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><code>class</code>和<code>struct</code>的区别到底是什么，什么时候应该用<code>struct</code>取代<code>class</code>呢？我想大多数从<code>C</code>转到<code>C++</code>的程序员都会有过这样的困惑。看了<code>Lippman</code>的《深度探索C++对象模型》对该问题的回答之后，我只想说一句：尼玛，只要跟哲学沾边的问题就注定不会有一个简单明了的答案！</p>
+
+<p>首先引用<code>Lippman</code>的一句话：</p>
+
+<blockquote><p>嘿，你知道吗，struct 那个关键字其实没什么用。。。“什么时候应该用 struct 取代 class ？” 答案之一是：当他让一个感觉比较好的时候。</p></blockquote>
+
+<p>大部分<code>C++</code>程序员都知道，如果单纯从语法角度来区分<code>struct</code>和<code>class</code>的话，其实除了以下几点没有什么不同：</p>
+
+<ol>
+<li>默认继承权限不同。<code>class</code>的默认继承权限为<code>private</code>，而<code>struct</code>的默认继承权限为<code>public</code>；</li>
+<li>成员的默认访问权限不同。<code>class</code>的成员默认是<code>private</code>权限，<code>struct</code>默认是<code>public</code>权限。</li>
+<li><code>struct</code>不能作为模板参数，而<code>class</code>可以。</li>
+</ol>
+
+
+<p>那&#8217;Lippman&#8217;为什么不直说呢？偏得之乎者也的提升到精神层次，搞的读者一头雾水。</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2015/02/18/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-:claass-yu-struct-de-qu-bie/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/02/11/shen-du-tan-suo-c-plus-plus-dui-xiang-mo-xing-san-chong-dui-xiang-mo-xing/">深度探索C++对象模型：三种对象模型</a></h1>
     
     
@@ -570,46 +620,6 @@
   
     <footer>
       <a rel="full-article" href="/blog/2014/12/27/c-plus-plus-zhong-zai-,-zhong-xie-,-zhong-ding-yi-qu-bie/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/">利用Octopress和Github搭建个人博客（三）：添加统计信息</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-12-22T16:46:14+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>4:46 pm</span></time>
-        
-         | <a href="/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/#disqus_thread">Comments</a>
-        
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/1-4.png"></p>
-
-<h2>引言</h2>
-
-
-<p>搭建好基本环境（如果没有请戳<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">这里</a>），折腾完主题（如果想折腾请戳<a href="http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/">这里</a>），就可以安安静静的写博客了。但博客毕竟不是日记，还是需要和其他人分享交流的，尤其是技术博客。那么首先你需要别人能够通过搜索引擎找到你的博客，其次你需要别人能够更方便准确的找到你的博客，这就需要为你的博客录入搜索引擎，添加统计信息，以便进行SEO。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/">继续阅读 &rarr;</a>
     </footer>
   
 

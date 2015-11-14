@@ -4,7 +4,7 @@
   <title><![CDATA[GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-11-12T16:22:02+08:00</updated>
+  <updated>2015-11-14T17:53:06+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[利用 Android Studio 阅读 Android 源码]]></title>
+    <link href="http://glgjing.github.io/blog/2015/11/14/li-yong-android-studio-yue-du-android-yuan-ma/"/>
+    <updated>2015-11-14T17:50:48+08:00</updated>
+    <id>http://glgjing.github.io/blog/2015/11/14/li-yong-android-studio-yue-du-android-yuan-ma</id>
+    <content type="html"><![CDATA[<p>Android 源码中有一个目录 <code>development/tools/idegen</code>, 该目录下的 idegen.sh 脚本可以生成 intellij IDE 的 project 文件，当然也可用于 Android Studio, 这样就可以利用 Android Studio 来阅读 Android 源码了，具体步骤如下：</p>
+
+<ol>
+<li><strong>生成 idegen.jar</strong>: 执行 idegen.sh 脚本需要 idegen.jar 文件，生成该文件需要编译源码，如果不想编译源码，也可以下载一个编译好的 idegen.jar，附上<a href="http://glgjing.github.io/assets/idegen.jar">下载链接</a>，并将该文件 copy 到 <code>/out/host/linux-x86/framework/idegen.jar</code>。</li>
+<li><strong>运行 idegen.sh</strong>: 切换到 Android 源码根目录，运行<code>development/tools/idegen/idegen.sh</code>，过几秒钟后会在根目录下生成 android.ipr 和 android.iml 两个文件。</li>
+<li><strong> 导入到 Android Studio</strong>: 打开 Android studio，点击 File > Open，选择刚刚生成的 android.ipr 打开，等待加载好了就可以了。</li>
+</ol>
+
+
+<p>不得不说函数跳转、查找等&hellip;体验太爽了！</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android 开发之实时更新 App Widget]]></title>
@@ -1611,7 +1629,7 @@
 
 <p><strong>显示结果：</strong><br/>
  网址：<a href="http://glgjing.github.io">http://glgjing.github.io</a><br/>
- 邮箱：<a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x47;&#76;&#71;&#x4a;&#105;&#110;&#103;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#x47;&#x4c;&#71;&#x4a;&#x69;&#110;&#x67;&#x40;&#103;&#x6d;&#x61;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+ 邮箱：<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#71;&#76;&#x47;&#74;&#x69;&#110;&#x67;&#x40;&#x67;&#x6d;&#x61;&#x69;&#108;&#x2e;&#99;&#x6f;&#109;">&#x47;&#76;&#x47;&#x4a;&#x69;&#x6e;&#103;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;&#x63;&#x6f;&#109;</a></p>
 
 <h2>强调</h2>
 
@@ -1705,7 +1723,7 @@ _   底线
 <h2>生成新的 rsa key</h2>
 
 
-<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x59;&#x4f;&#x55;&#x52;&#95;&#x45;&#77;&#65;&#x49;&#x4c;&#64;&#89;&#x4f;&#85;&#x52;&#x45;&#x4d;&#65;&#x49;&#76;&#46;&#x43;&#x4f;&#77;">&#x59;&#x4f;&#85;&#x52;&#95;&#69;&#x4d;&#x41;&#x49;&#76;&#64;&#x59;&#x4f;&#x55;&#x52;&#69;&#77;&#x41;&#x49;&#x4c;&#46;&#67;&#79;&#x4d;</a> 改为你的 Email 地址。</p>
+<p>在命令行输入如下命令，将命令中的 <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#89;&#79;&#85;&#82;&#x5f;&#69;&#x4d;&#65;&#x49;&#76;&#x40;&#89;&#x4f;&#85;&#82;&#x45;&#x4d;&#65;&#73;&#x4c;&#x2e;&#x43;&#x4f;&#77;">&#x59;&#79;&#85;&#82;&#x5f;&#69;&#77;&#65;&#x49;&#76;&#64;&#89;&#x4f;&#x55;&#82;&#69;&#x4d;&#x41;&#x49;&#76;&#46;&#x43;&#79;&#x4d;</a> 改为你的 Email 地址。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>ssh-keygen -t rsa -C "YOUR_EMAIL@YOUREMAIL.COM" -f ~/.ssh/gitcafe_rsa</span></code></pre></td></tr></table></div></figure>
@@ -2853,113 +2871,6 @@ _   底线
 
 
 <p>重载、重写、重定义书面上的区别，以及各自的规则没有太大意义，而且这些名词本身都是翻译过来的，不同的地方翻译也不尽相同，如果初学C++，弄清每个概念的实际意义，以及为什么这么设计才是最重要的。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[利用Octopress和Github搭建个人博客（三）：添加统计信息]]></title>
-    <link href="http://glgjing.github.io/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi/"/>
-    <updated>2014-12-22T16:46:14+08:00</updated>
-    <id>http://glgjing.github.io/blog/2014/12/22/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(san-):tian-jia-tong-ji-xin-xi</id>
-    <content type="html"><![CDATA[<p><img class="center" src="http://glgjing.github.io/images/1-4.png"></p>
-
-<h2>引言</h2>
-
-
-<p>搭建好基本环境（如果没有请戳<a href="http://glgjing.github.io/blog/2014/12/06/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(%5B%3F%5D-):ji-chu-huan-jing-da-jian/">这里</a>），折腾完主题（如果想折腾请戳<a href="http://glgjing.github.io/blog/2014/12/12/li-yong-octopresshe-githubda-jian-ge-ren-bo-ke-(er-):zi-ding-yi-zhu-ti/">这里</a>），就可以安安静静的写博客了。但博客毕竟不是日记，还是需要和其他人分享交流的，尤其是技术博客。那么首先你需要别人能够通过搜索引擎找到你的博客，其次你需要别人能够更方便准确的找到你的博客，这就需要为你的博客录入搜索引擎，添加统计信息，以便进行SEO。转载请注明出处：<code><a href="http://glgjing.github.io/">http://glgjing.github.io/</a></code>。<!-- more --></p>
-
-<h2>目录</h2>
-
-
-<ul>
-    <li>一 录入搜索引擎</li>
-    <li>二 添加统计信息</li>
-    <li>三 总结</li>
-</ul>
-
-
-<h2>一 录入搜索引擎</h2>
-
-
-<p>在自建博客网站上写的博客，一开始并不会在搜索引擎中搜得到，不像博客平台一样，因为你还没有向搜索引擎提交你的网站URL，让它去抓取你博客网站的内容。所以赶紧提交吧，提交地址：<code><a href="http://www.gongju.com/addurl/">http://www.gongju.com/addurl/</a></code>，也可以自行google：搜索引擎提交入口。提交完成之后，就可以在相应的搜索引擎中找到你的博客了。现在你还需要为你的网站和博文添加描述信息以及关键字，让其他人可以在搜索引擎中更方便准确的找到你的博客。为每篇博文添加关键字和描述的方法是，打开<code>source/_posts/</code>目录下对应的博文文件，在文件头部添加类似如下内容：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>---
-</span><span class='line'>layout: post
-</span><span class='line'>title: "利用Octopress和Github搭建个人博客（三）：添加统计信息"
-</span><span class='line'>date: 2014-12-22 16:46:14 +0800
-</span><span class='line'>comments: true
-</span><span class='line'>categories: Octopress
-</span><span class='line'>keywords: Octopress github 搭建博客 添加统计 SEO 录入搜索引擎
-</span><span class='line'>description: 为Octopress博客录入搜索引擎，并添加流量统计信息，进行SEO。
-</span><span class='line'>---</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果没有为博文添加描述信息，Octopress会自动以文章的前150字作为博文的描述信息。为网站首页添加关键字和描述的方法是，打开<code>source/index.html</code>文件，在文件头部添加类似如下内容：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>---
-</span><span class='line'>layout: default
-</span><span class='line'>tags: [windows c++ octopress Github DirectUI GDI]
-</span><span class='line'>keywords: windows c++ octopress Github
-</span><span class='line'>description: 博客网站的描述信息在这里
-</span><span class='line'>---</span></code></pre></td></tr></table></div></figure>
-
-
-<p>通过以上操作，搜索引擎就可以根据用户输入的关键字对你的博文进行更准确的索引。如果想让自己的博客出现在搜索结果中靠前的位置，就需要网站流量统计工具进行进一步的SEO了。</p>
-
-<h2>二 添加统计信息</h2>
-
-
-<p>常用的网站统计工具有：Google Analytics，Yahoo网站流量统计，百度统计，CNZZ，51.la等等。Octopress自带Google Analytics工具，所以添加Google统计比较方便：</p>
-
-<ol>
-    <li>注册<a href="http://www.google.com/analytics/">Google Analytics</a>账号</li>
-    <li>获得一个google_analytics_tracking_id，添加到_config.yml中google_analytics_tracking_id:后面</li>
-    <li>按照Google Analytics提示，对博客网站进行验证</li>
-</ol>
-
-
-<p>完成以上步骤，就可以利用Google Analytics进行流量统计了，你还可以注册<a href="https://www.google.com/webmasters/tools/home?hl=zh-CN">Google站长工具</a>，进行更详细的分析和SEO。
-除了自带的Google Analytics你还可以添加其他统计工具，具体步骤都比较类似，这里以CNZZ为例：</p>
-
-<ol>
-    <li>注册<a href="http://zhanzhang.cnzz.com/">CNZZ账号</a></li>
-    <li>按照提示获取统计代码</li>
-    <li>将统计代码添加到需要统计的页面，一般可以添加到<code>source/_includes/custom/footer.html</code>中</li>
-</ol>
-
-
-<p>添加到<code>source/_includes/custom/footer.html</code>中的统计代码类似如下：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;p&gt;</span>
-</span><span class='line'>  Copyright <span class="ni">&amp;copy;</span> 2015 - GLGJing
-</span><span class='line'>  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span><span class="kd">var</span> <span class="nx">cnzz_protocol</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;https:&quot;</span> <span class="o">==</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot; https://&quot;</span> <span class="o">:</span> <span class="s2">&quot; http://&quot;</span><span class="p">);</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="s2">&quot;%3Cspan id=&#39;cnzz_stat_icon_1253899728&#39;%3E%3C/span%3E%3Cscript src=&#39;&quot;</span> <span class="o">+</span> <span class="nx">cnzz_protocol</span> <span class="o">+</span> <span class="s2">&quot;s4.cnzz.com/z_stat.php%3Fid%3D1253899728&#39; type=&#39;text/javascript&#39;%3E%3C/script%3E&quot;</span><span class="p">));</span><span class="nt">&lt;/script&gt;</span>
-</span><span class='line'><span class="nt">&lt;/p&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>三 总结</h2>
-
-
-<p>这里主要介绍了如何将博客网站添加到搜索引擎，并添加网站流量统计工具，各种流量统计工具的优劣可以自行google，后面需要做的就是SEO了，而SEO是一件长期持续的工作。</p>
 ]]></content>
   </entry>
   
