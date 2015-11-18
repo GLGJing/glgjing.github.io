@@ -4,7 +4,7 @@
   <title><![CDATA[Category: 源码 | GLGJing's Blog]]></title>
   <link href="http://glgjing.github.io/blog/categories/yuan-ma/atom.xml" rel="self"/>
   <link href="http://glgjing.github.io/"/>
-  <updated>2015-11-14T17:53:06+08:00</updated>
+  <updated>2015-11-18T20:15:25+08:00</updated>
   <id>http://glgjing.github.io/</id>
   <author>
     <name><![CDATA[GLGJing]]></name>
@@ -23,7 +23,7 @@
 <ol>
 <li><strong>生成 idegen.jar</strong>: 执行 idegen.sh 脚本需要 idegen.jar 文件，生成该文件需要编译源码，如果不想编译源码，也可以下载一个编译好的 idegen.jar，附上<a href="/assets/idegen.jar">下载链接</a>，并将该文件 copy 到 <code>/out/host/linux-x86/framework/idegen.jar</code>。</li>
 <li><strong>运行 idegen.sh</strong>: 切换到 Android 源码根目录，运行<code>development/tools/idegen/idegen.sh</code>，过几秒钟后会在根目录下生成 android.ipr 和 android.iml 两个文件。</li>
-<li><strong> 导入到 Android Studio</strong>: 打开 Android studio，点击 File > Open，选择刚刚生成的 android.ipr 打开，等待加载好了就可以了。</li>
+<li><strong>导入到 Android Studio</strong>: 打开 Android studio，点击 File > Open，选择刚刚生成的 android.ipr 打开，等待加载好了就可以了。</li>
 </ol>
 
 
